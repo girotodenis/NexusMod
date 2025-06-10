@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: LogBundle
+Bundle-SymbolicName: com.dsg.nexusmod.log.LogBundle
+Bundle-Version: 1.0.0
+Bundle-Activator: com.dsg.nexusmod.log.LogBundleActivator
+Import-Package: org.osgi.framework

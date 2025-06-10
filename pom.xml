@@ -4,4 +4,8 @@
   <artifactId>core</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <modules>
+  	<module>osgi</module>
+  	<module>log-bundle</module>
+  </modules>
 </project>
