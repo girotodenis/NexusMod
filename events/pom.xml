@@ -5,10 +5,15 @@
     <artifactId>core</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>log-bundle</artifactId>
+  <artifactId>events</artifactId>
   
-    <dependencies>
-			
+  <dependencies>
+		<dependency>
+		    <groupId>com.dsg.nexusmod</groupId>
+		    <artifactId>log-bundle</artifactId>
+		    <version>${project.version}</version>
+		</dependency>
+		
 		<!-- Dependência principal do Apache Felix -->
 		<dependency>
 			<groupId>org.apache.felix</groupId>

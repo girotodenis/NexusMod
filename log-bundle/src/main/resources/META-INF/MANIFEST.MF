@@ -5,3 +5,4 @@ Bundle-SymbolicName: com.dsg.nexusmod.log.LogBundle
 Bundle-Version: 1.0.0
 Bundle-Activator: com.dsg.nexusmod.log.LogBundleActivator
 Import-Package: org.osgi.framework
+Export-Package: com.dsg.nexusmod.log

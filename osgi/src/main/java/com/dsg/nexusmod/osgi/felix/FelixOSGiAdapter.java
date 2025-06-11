@@ -22,12 +22,12 @@ public class FelixOSGiAdapter implements OSGiFramework {
 
     private Framework framework;
     private Map<String, String> config = new HashMap<>();
-    
     private BundleContext bundleContext;
+    private List<BundleActivator> bundles = new ArrayList<>();
     
     public FelixOSGiAdapter() {
 		// Configurações iniciais do Apache Felix, se necessário
-		config.put(FelixConstants.LOG_LEVEL_PROP, "1"); // Nível de log (1 = erro, 2 = aviso, 3 = info, 4 = debug)
+		config.put(FelixConstants.LOG_LEVEL_PROP, "4"); // Nível de log (1 = erro, 2 = aviso, 3 = info, 4 = debug)
 		
 		init();
 	}
@@ -67,8 +67,8 @@ public class FelixOSGiAdapter implements OSGiFramework {
 			framework.start();
 			System.out.println("Apache Felix iniciado!");
 	        // Manter o programa rodando até que o usuário pressione Enter
-	        System.out.println("Pressione Enter para sair...");
-	        System.in.read();
+	        //System.out.println("Pressione Enter para sair...");
+	        //System.in.read();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,16 +81,27 @@ public class FelixOSGiAdapter implements OSGiFramework {
 //                felix.stop();
 //                System.out.println("Apache Felix parado com sucesso!");
 //            }
-        	framework.stop();
-            framework.waitForStop(0);
-            
-            listBundles().forEach(bundle -> {
+        	bundles.forEach(bundle -> {
 				try {
-					bundle.stop();
+					System.out.println("Parando bundle: " + bundle.toString());
+					bundle.stop(bundleContext);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			});
+        	
+        	listBundles().forEach(bundle -> {
+        		try {
+        			System.out.println("Parando bundle: " + bundle.getSymbolicName());
+        			bundle.stop();
+        		} catch (Exception e) {
+        			e.printStackTrace();
+        		}
+        	});
+        	
+        	framework.stop();
+            framework.waitForStop(0);
+            
         } catch (Exception e) {
             System.err.println("Erro ao parar o Apache Felix: " + e.getMessage());
             e.printStackTrace();
@@ -127,8 +138,10 @@ public class FelixOSGiAdapter implements OSGiFramework {
     
     public void installBundle(Object bundle) {
     	try {
-    		if(bundle instanceof BundleActivator)
+    		if(bundle instanceof BundleActivator) {
     			((BundleActivator)bundle).start(bundleContext);
+    			bundles.add((BundleActivator) bundle);
+    		}
     	} catch (Exception e) {
     		e.printStackTrace();
     	}

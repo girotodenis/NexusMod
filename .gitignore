@@ -1,0 +1,10 @@
+
+bundles/
+
+.settings/
+
+events/.project
+
+events/.classpath
+
+log-bundle/

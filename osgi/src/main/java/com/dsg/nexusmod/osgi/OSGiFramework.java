@@ -1,7 +1,5 @@
 package com.dsg.nexusmod.osgi;
 
-import org.osgi.framework.BundleActivator;
-
 public interface OSGiFramework {
 	
 	 /**

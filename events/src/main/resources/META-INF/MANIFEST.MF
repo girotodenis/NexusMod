@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EventsBundle
+Bundle-SymbolicName: com.dsg.nexusmod.events.EventsBundle
+Bundle-Version: 1.0.0
+Bundle-Activator: com.dsg.nexusmod.events.EventsBundleActivator
+Import-Package: org.osgi.framework, com.dsg.nexusmod.log.export

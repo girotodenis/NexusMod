@@ -1,25 +1,23 @@
 package com.dsg.nexusmod.log;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+import com.dsg.nexusmod.log.export.LoggingService;
+
 public class LogBundleActivator implements BundleActivator {
-
-    // Logger do Log4j
-    private static final Logger logger = LogManager.getLogger(LogBundleActivator.class);
-
-    @Override
-    public void start(BundleContext context) {
-        logger.info("LogBundle iniciado com sucesso!");
-        logger.info("Este é um exemplo de log usando Log4j em um bundle OSGi.");
-        System.out.println("LogBundle iniciado com sucesso!");
+    
+	LoggingServiceImpl service = new LoggingServiceImpl();
+	
+	@Override
+    public void start(BundleContext context) throws Exception {
+        context.registerService(LoggingService.class, service, null);
+        service.info(LogBundleActivator.class, "LogBundleActivator bundle started!");
     }
 
     @Override
-    public void stop(BundleContext context) {
-        logger.info("LogBundle parado!");
-        System.out.println("LogBundle parado!");
+    public void stop(BundleContext context) throws Exception {
+    	service.info(LogBundleActivator.class, "LogBundleActivator bundle stopped!");
     }
 }
+

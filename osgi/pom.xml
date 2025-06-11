@@ -13,7 +13,12 @@
 		<dependency>
 		    <groupId>com.dsg.nexusmod</groupId>
 		    <artifactId>log-bundle</artifactId>
-		    <version>0.0.1-SNAPSHOT</version>
+		    <version>${project.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.dsg.nexusmod</groupId>
+		    <artifactId>events</artifactId>
+		    <version>${project.version}</version>
 		</dependency>
 		
 		<!-- Dependência principal do Apache Felix -->
