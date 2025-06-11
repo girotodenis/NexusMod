@@ -8,3 +8,5 @@ events/.project
 events/.classpath
 
 log-bundle/
+
+osgi/felix-cache/
