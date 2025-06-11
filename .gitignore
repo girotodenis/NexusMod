@@ -10,3 +10,5 @@ events/.classpath
 log-bundle/
 
 osgi/felix-cache/
+
+events-bundle/target/

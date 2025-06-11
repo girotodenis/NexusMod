@@ -9,7 +9,7 @@
 	<modules>
 		<module>osgi</module>
 		<module>log-bundle</module>
-		<module>events</module>
+		<module>events-bundle</module>
 	</modules>
 
 	<properties>
