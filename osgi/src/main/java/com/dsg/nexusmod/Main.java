@@ -10,6 +10,7 @@ import com.dsg.nexusmod.plugin.MessageListener;
 
 import br.com.dsg.legui.controller.StartLeGui;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
+import uia3.componentes.ConfigController;
 
 public class Main {
 	
@@ -40,16 +41,7 @@ public class Main {
 				.abrirFecharMenuPadrao();
 		
 		
-		osgiCore.registerPlugin(com.dsg.nexusmod.ui.ItemMenu.class, (item) -> app.addItemMenu(
-				new EventAdicionarItemMenu(
-						item.nome(),
-						item.imageA(),
-						item.imageB(),
-						item.imageHorizontalAlignRIGHT(),
-						item.desabilitarSelecaoMenu(),
-						item.action()
-				)
-		) );
+		osgiCore.registerPlugin(com.dsg.nexusmod.ui.ItemMenu.class, (item) -> item.addItemMenu(app) );
 		
 		app.addItemMenu(
 				new EventAdicionarItemMenu(
@@ -61,6 +53,7 @@ public class Main {
 						(c) -> c.setAppFinalizado(true) 
 				)
 		);
+	
 		
 		app.start();
 		

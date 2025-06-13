@@ -2,18 +2,11 @@ package com.dsg.nexusmod.ui;
 
 import org.pf4j.ExtensionPoint;
 
-import br.com.dsg.legui.controller.ActionMenu;
-import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.controller.StartLeGui;
 
 
 public interface ItemMenu extends ExtensionPoint{
 	
-	String nome(); 
-	String imageA();
-	String imageB();
-	boolean imageHorizontalAlignRIGHT();
-	boolean desabilitarSelecaoMenu();
-	ActionMenu<LeGuiController> action();
-	boolean configSubMenuButtonMouse2();
+	void addItemMenu(StartLeGui app);
 
 }

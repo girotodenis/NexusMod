@@ -10,8 +10,8 @@ import com.dsg.nexusmod.configuracao.ui.HomeController;
 import com.dsg.nexusmod.plugin.MessageListener;
 import com.dsg.nexusmod.ui.ItemMenu;
 
-import br.com.dsg.legui.controller.ActionMenu;
-import br.com.dsg.legui.controller.LeGuiController;
+import br.com.dsg.legui.controller.StartLeGui;
+import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 
 public class ConfiguacaoActivator extends Plugin {
 
@@ -34,41 +34,17 @@ public class ConfiguacaoActivator extends Plugin {
     public static class ItemMenuImpl implements ItemMenu {
 
 		@Override
-		public String nome() {
-			// TODO Auto-generated method stub
-			return "Configuração";
-		}
-
-		@Override
-		public String imageA() {
-			// TODO Auto-generated method stub
-			return "imagens/setting-configure.png";
-		}
-
-		@Override
-		public String imageB() {
-			return null;
-		}
-
-		@Override
-		public boolean imageHorizontalAlignRIGHT() {
-			return false;
-		}
-
-		@Override
-		public boolean desabilitarSelecaoMenu() {
-			return false;
-		}
-
-		@Override
-		public ActionMenu<LeGuiController> action() {
-			// TODO Auto-generated method stub
-			return (controllerPai)->new ConfigController(controllerPai);
-		}
-
-		@Override
-		public boolean configSubMenuButtonMouse2() {
-			return false;
+		public void addItemMenu(StartLeGui app) {
+			app.addItemMenu(
+					new EventAdicionarItemMenu(
+							"Configuração",
+							"imagens/setting-configure-px.png", 
+							null,
+							false,
+							(controllerPai)->new ConfigController(controllerPai),
+							false
+							)
+			);
 		}
 
     }
@@ -77,44 +53,32 @@ public class ConfiguacaoActivator extends Plugin {
     public static class ItemMenu2Impl implements ItemMenu {
     	
     	@Override
-    	public String nome() {
-    		// TODO Auto-generated method stub
-    		return "Configuração2";
-    	}
-    	
-    	@Override
-    	public String imageA() {
-    		// TODO Auto-generated method stub
-    		return "imagens/setting-configure.png";
-    	}
-    	
-    	@Override
-    	public String imageB() {
-    		return null;
-    	}
-    	
-    	@Override
-    	public boolean imageHorizontalAlignRIGHT() {
-    		return false;
-    	}
-    	
-    	@Override
-    	public boolean desabilitarSelecaoMenu() {
-    		return false;
-    	}
-    	
-    	@Override
-    	public ActionMenu<LeGuiController> action() {
-    		// TODO Auto-generated method stub
-    		return (controllerPai)->new HomeController(controllerPai);
-    	}
-    	
-    	@Override
-    	public boolean configSubMenuButtonMouse2() {
-    		return false;
+    	public void addItemMenu(StartLeGui app) {
+    		app.addItemMenu(
+    				new EventAdicionarItemMenu(
+    						"Home",
+    						"imagens/home_house_10811.png", 
+    						null,
+    						false,
+    						(controllerPai)->new HomeController(controllerPai),
+    						true
+    						)
+    				.addCOntrollerMenuSubMenuFlutuante(
+    						"Sub Item 1", 
+    						"imagens/setting-configure.png",
+    						(controllerPai)->new ConfigController(controllerPai)
+    						)
+    				.addActionMenuSubMenuFlutuante(
+    						"Sub Item 2", 
+    						"imagens/icons8-exit-sign-64.png",
+    						(c)->System.out.println("Sair")
+    						)
+    				);
     	}
     	
     }
+    
+   
 
 }
 
