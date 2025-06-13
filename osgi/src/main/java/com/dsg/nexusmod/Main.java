@@ -10,7 +10,6 @@ import com.dsg.nexusmod.plugin.MessageListener;
 
 import br.com.dsg.legui.controller.StartLeGui;
 import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
-import uia3.componentes.ConfigController;
 
 public class Main {
 	
