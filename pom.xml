@@ -10,6 +10,8 @@
 		<module>osgi</module>
 		<module>log-bundle</module>
 		<module>plugin-api</module>
+		<module>ui</module>
+		<module>configurar</module>
 	</modules>
 
 	<properties>

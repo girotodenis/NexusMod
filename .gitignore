@@ -12,3 +12,5 @@ log-bundle/
 osgi/felix-cache/
 
 events-bundle/target/
+
+ui/logs/

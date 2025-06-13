@@ -15,10 +15,10 @@ public class LogBundleActivator extends Plugin {
     @Extension
     public static class MessageListenerImpl implements MessageListener {
 
+    	LoggingServiceImpl loggingService = new LoggingServiceImpl();
     	
     	@Override
     	public void onMessage(String senderPluginId, String message) {
-    		LoggingServiceImpl loggingService = new LoggingServiceImpl();
     		loggingService.info(LogBundleActivator.class, "Received message from plugin {}: {}", senderPluginId, message);
     	}
 

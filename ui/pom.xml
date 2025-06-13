@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.dsg.nexusmod</groupId>
+    <artifactId>core</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>ui</artifactId>
+  
+  <properties>
+		<maven.compiler.source>21</maven.compiler.source>
+		<maven.compiler.target>21</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	
+	<repositories>
+		<repository>
+			<id>SpinyOwl2</id>
+			<name>your custom repo</name>
+			<url>https://raw.github.com/SpinyOwl/repo/releases</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/girotodenis/repo</url>
+		</repository>
+	</distributionManagement>
+
+	<dependencies>
+	
+		
+		<dependency>
+			<groupId>org.liquidengine</groupId>
+			<artifactId>legui</artifactId>
+			<version>3.3.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.17</version>
+		</dependency>
+
+
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.7</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.6.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.12.2</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+		    <plugin>
+		      <artifactId>maven-source-plugin</artifactId>
+		      <executions>
+		        <execution>
+		          <id>attach-sources</id>
+		          <phase>deploy</phase>
+		          <goals><goal>jar-no-fork</goal></goals> 
+		        </execution>
+		      </executions>
+		    </plugin>
+		    
+<!-- 		    <plugin>  -->
+		      <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+<!-- 		      <artifactId>maven-deploy-plugin</artifactId>  -->
+<!-- 		      <executions>  -->
+<!-- 		        <execution>  -->
+<!-- 		          <id>deploy</id> -->
+<!-- 		          <phase>deploy</phase> -->
+<!-- 		          <goals><goal>deploy</goal></goals>  -->
+<!-- 		        </execution>  -->
+<!-- 		      </executions>  -->
+<!-- 		    </plugin> -->
+			<!-- JAR EXTERNAL LIBS -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-jar-plugin</artifactId> -->
+			<!-- <version>2.4</version> -->
+			<!-- <configuration> -->
+			<!-- <archive> -->
+			<!-- <manifest> -->
+			<!-- <addClasspath>true</addClasspath> -->
+			<!-- <classpathPrefix>libs/</classpathPrefix> -->
+			<!-- <mainClass>br.com.dsg.swing.Main</mainClass> -->
+			<!-- </manifest> -->
+			<!-- </archive> -->
+			<!-- </configuration> -->
+			<!-- </plugin> -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-dependency-plugin</artifactId> -->
+			<!-- <version>2.4</version> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>copy</id> -->
+			<!-- <phase>install</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>copy-dependencies</goal> -->
+			<!-- </goals> -->
+			<!-- <configuration> -->
+			<!-- <outputDirectory> -->
+			<!-- ${project.build.directory}/libs -->
+			<!-- </outputDirectory> -->
+			<!-- </configuration> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+
+			<!-- FATJAR -->
+			<!-- <plugin> -->
+			<!-- <groupId>org.apache.maven.plugins</groupId> -->
+			<!-- <artifactId>maven-assembly-plugin</artifactId> -->
+			<!-- <version>2.4.1</version> -->
+			<!-- <configuration> -->
+			<!-- <archive> -->
+			<!-- <manifest> -->
+			<!-- <addClasspath>true</addClasspath> -->
+			<!-- <classpathPrefix>libs/</classpathPrefix> -->
+			<!-- <mainClass>br.com.dsg.swing.Main</mainClass> -->
+			<!-- </manifest> -->
+			<!-- </archive> -->
+			<!-- <descriptorRefs> -->
+			<!-- <descriptorRef>jar-with-dependencies</descriptorRef> -->
+			<!-- </descriptorRefs> -->
+			<!-- </configuration> -->
+			<!-- <executions> -->
+			<!-- <execution> -->
+			<!-- <id>make-assembly</id> -->
+			<!-- <phase>package</phase> -->
+			<!-- <goals> -->
+			<!-- <goal>single</goal> -->
+			<!-- </goals> -->
+			<!-- </execution> -->
+			<!-- </executions> -->
+			<!-- </plugin> -->
+		</plugins>
+	</build>
+</project>
