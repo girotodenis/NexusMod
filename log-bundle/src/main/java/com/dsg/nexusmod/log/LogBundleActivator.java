@@ -1,23 +1,30 @@
 package com.dsg.nexusmod.log;
 
-import org.osgi.framework.BundleActivator;
-import org.osgi.framework.BundleContext;
+import org.pf4j.Extension;
+import org.pf4j.Plugin;
+import org.pf4j.PluginWrapper;
 
-import com.dsg.nexusmod.log.export.LoggingService;
+import com.dsg.nexusmod.plugin.MessageListener;
 
-public class LogBundleActivator implements BundleActivator {
-    
-	LoggingServiceImpl service = new LoggingServiceImpl();
-	
-	@Override
-    public void start(BundleContext context) throws Exception {
-        context.registerService(LoggingService.class, service, null);
-        service.info(LogBundleActivator.class, "LogBundleActivator bundle started!");
+public class LogBundleActivator extends Plugin {
+
+    public LogBundleActivator(PluginWrapper wrapper) {
+        super(wrapper);
     }
 
-    @Override
-    public void stop(BundleContext context) throws Exception {
-    	service.info(LogBundleActivator.class, "LogBundleActivator bundle stopped!");
+    @Extension
+    public static class MessageListenerImpl implements MessageListener {
+
+    	
+    	@Override
+    	public void onMessage(String senderPluginId, String message) {
+    		LoggingServiceImpl loggingService = new LoggingServiceImpl();
+    		loggingService.info(LogBundleActivator.class, "Received message from plugin {}: {}", senderPluginId, message);
+    	}
+
     }
+
 }
+
+
 

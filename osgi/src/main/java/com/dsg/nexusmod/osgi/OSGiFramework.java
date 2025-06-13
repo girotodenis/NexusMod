@@ -1,5 +1,7 @@
 package com.dsg.nexusmod.osgi;
 
+import java.util.function.Consumer;
+
 public interface OSGiFramework {
 	
 	 /**
@@ -13,45 +15,39 @@ public interface OSGiFramework {
     void stop();
 
     /**
-     * Define um diretório onde o framework deve buscar JARs para instalar automaticamente.
+     *  instalar um plugin  automaticamente.
      *
      * @param directoryPath Caminho do diretório.
      */
-    void setBundleDirectory(String directoryPath);
-
+    void installBundle(String directoryPath);
+  
     /**
-     * Instala e inicia um bundle fornecendo a classe principal do bundle.
-     *
-     * @param bundleClassName Nome da classe principal do bundle.
+     * Registra os plugins que implementam ClassT
+     * @param <T>
+     * @param classPlugin
+     * @param putter
      */
-    void installBundle(Object bundleClassName);
-
-//    /**
-//     * Lista todos os bundles instalados no framework.
-//     *
-//     * @return Lista de bundles instalados.
-//     */
-//    List<Bundle> listBundles();
+    <T> void registerPlugin(Class<T> classPlugin, Consumer<T> putter );
 
     /**
      * Para um bundle específico.
      *
      * @param bundleId ID do bundle a ser parado.
      */
-    void stopBundle(long bundleId);
+    void stopBundle(String bundleId);
 
     /**
      * Reinicia um bundle específico.
      *
      * @param bundleId ID do bundle a ser reiniciado.
      */
-    void restartBundle(long bundleId);
+    void restartBundle(String bundleId);
 
     /**
      * Desinstala um bundle específico.
      *
      * @param bundleId ID do bundle a ser desinstalado.
      */
-    void uninstallBundle(long bundleId);
+    void uninstallBundle(String bundleId);
 
 }

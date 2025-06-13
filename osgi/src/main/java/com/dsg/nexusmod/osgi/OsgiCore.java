@@ -1,6 +1,6 @@
 package com.dsg.nexusmod.osgi;
 
-import org.osgi.framework.BundleActivator;
+import java.util.function.Consumer;
 
 public class OsgiCore implements OSGiFramework {
 	
@@ -21,30 +21,28 @@ public class OsgiCore implements OSGiFramework {
 	}
 
 	@Override
-	public void setBundleDirectory(String directoryPath) {
-		this.osgi.setBundleDirectory(directoryPath);
-	}
-
-	
-	@Override
-	public void installBundle(Object bundleClass) {
-		this.osgi.installBundle(bundleClass);
-	}
-	
+	public void installBundle(String directoryPath) {
+		this.osgi.installBundle(directoryPath);
+	}	
 
 	@Override
-	public void stopBundle(long bundleId) {
+	public void stopBundle(String bundleId) {
 		this.osgi.stopBundle(bundleId);
 	}
 
 	@Override
-	public void restartBundle(long bundleId) {
+	public void restartBundle(String bundleId) {
 		this.osgi.restartBundle(bundleId);
 	}
 
 	@Override
-	public void uninstallBundle(long bundleId) {
+	public void uninstallBundle(String bundleId) {
 		this.osgi.uninstallBundle(bundleId);
+	}
+
+	@Override
+	public <T> void registerPlugin(Class<T> classPlugin, Consumer<T> putter) {
+		this.osgi.registerPlugin(classPlugin, putter);
 	}
 
 }

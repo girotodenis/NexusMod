@@ -10,37 +10,13 @@
 	<artifactId>osgi</artifactId>
 
 	<dependencies>
+		<!-- Plugin API -->
 		<dependency>
-		    <groupId>com.dsg.nexusmod</groupId>
-		    <artifactId>log-bundle</artifactId>
-		    <version>${project.version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.dsg.nexusmod</groupId>
-		    <artifactId>events</artifactId>
-		    <version>${project.version}</version>
+			<groupId>com.dsg.nexusmod</groupId>
+			<artifactId>plugin-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		
-		<!-- Dependência principal do Apache Felix -->
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.framework</artifactId>
-			<version>7.0.1</version>
-		</dependency>
-
-		<!-- Dependência opcional para logs -->
-		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.log</artifactId>
-			<version>1.2.0</version>
-		</dependency>
-
-		<!-- Dependência para integração com OSGi -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>osgi.core</artifactId>
-			<version>6.0.0</version>
-		</dependency>
 
 	</dependencies>
 </project>

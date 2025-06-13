@@ -1,35 +1,36 @@
 package com.dsg.nexusmod;
 
-import com.dsg.nexusmod.events.EventsBundleActivator;
-import com.dsg.nexusmod.log.LogBundleActivator;
+import java.io.File;
+
+import com.dsg.nexusmod.nessagebus.MessageBus;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiCore;
-import com.dsg.nexusmod.osgi.felix.FelixOSGiAdapter;
+import com.dsg.nexusmod.osgi.pf4j.Pf4jOSGiAdapter;
+import com.dsg.nexusmod.plugin.MessageListener;
 
 public class Main {
 	
 	public static void main(String[] args) {
 		
-		OSGiFramework osgiFramework = new FelixOSGiAdapter();
+		OSGiFramework osgiFramework = new Pf4jOSGiAdapter();
 		
 		OsgiCore osgiCore = new OsgiCore(osgiFramework);
 
         // Iniciar o framework OSGi
 
         // Configurar o diretório de bundles
-		osgiCore.setBundleDirectory("../bundles/");
-
-        // Listar bundles instalados
-		//osgiCore.listBundles();
-
-        // Instalar um bundle manualmente (exemplo)
-//		osgiCore.installBundle("file:example-bundle.jar");
+		File plugin = new File("../log-bundle/target/log-bundle-0.0.1-SNAPSHOT.jar");
+		System.out.println(plugin.isFile());
+		osgiCore.installBundle("/opt/dpf/git/girotodenis/NexusMod/log-bundle/target/log-bundle-0.0.1-SNAPSHOT.jar");
 		
-		 // Instala o bundle usando a classe do LogBundleActivator
+		MessageBus messageBus = new MessageBus();
 		
-//		osgiCore.installBundle(new LogBundleActivator());
-//		osgiCore.installBundle(new EventsBundleActivator());
-		osgiCore.start();
+		osgiCore.registerPlugin(MessageListener.class, (listener) -> messageBus.registerListener(listener) );
+		
+		messageBus.sendMessage("Main", "Olá, todos os plugins!");
+
+
+		
 		
 		osgiCore.stop();
 		

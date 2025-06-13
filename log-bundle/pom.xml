@@ -1,45 +1,53 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.dsg.nexusmod</groupId>
-    <artifactId>core</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>log-bundle</artifactId>
-  
-    <dependencies>
-			
-		<!-- Dependência principal do Apache Felix -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.dsg.nexusmod</groupId>
+		<artifactId>core</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>log-bundle</artifactId>
+
+	<dependencies>
+
+		<!-- Plugin API -->
 		<dependency>
-			<groupId>org.apache.felix</groupId>
-			<artifactId>org.apache.felix.framework</artifactId>
-			<version>7.0.1</version>
+			<groupId>com.dsg.nexusmod</groupId>
+			<artifactId>plugin-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 
-		<!-- Dependência para integração com OSGi -->
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>osgi.core</artifactId>
-			<version>6.0.0</version>
-		</dependency>
+	
 
 	</dependencies>
-	
+
 	<build>
 		<plugins>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-compiler-plugin</artifactId>
+			<version>2.5.1</version>
+			<configuration>
+				<annotationProcessors>
+					<annotationProcessor>
+						org.pf4j.processor.ExtensionAnnotationProcessor</annotationProcessor>
+				</annotationProcessors>
+			</configuration>
+		</plugin>
 			<!-- Plugin para empacotar o JAR -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
-				<configuration>
-					<!-- Apontar para o arquivo MANIFEST.MF personalizado -->
-					<archive>
-						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-					</archive>
-				</configuration>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.3.0</version>-->
+<!--				<configuration>-->
+<!--					 Apontar para o arquivo MANIFEST.MF personalizado -->
+<!--					<archive>-->
+<!--						<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
 		</plugins>
 	</build>
-	
+
 </project>
