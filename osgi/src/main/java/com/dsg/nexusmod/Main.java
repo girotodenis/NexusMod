@@ -1,6 +1,7 @@
 package com.dsg.nexusmod;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.dsg.nexusmod.nessagebus.MessageBus;
 import com.dsg.nexusmod.osgi.OSGiFramework;
@@ -22,11 +23,15 @@ public class Main {
         // Iniciar o framework OSGi
 
         // Configurar o diretório de bundles
-		File plugin = new File("../log-bundle/target/log-bundle-0.0.1-SNAPSHOT.jar");
-		System.out.println(plugin.isFile());
+		try {
+			File plugin = new File("../configurar/target/configurar-0.0.1-SNAPSHOT.jar");
+			System.out.println(plugin.isFile());
+			osgiCore.installBundle(plugin.getCanonicalPath());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		osgiCore.installBundle("/opt/dpf/git/girotodenis/NexusMod/log-bundle/target/log-bundle-0.0.1-SNAPSHOT.jar");
-		osgiCore.installBundle("/opt/dpf/git/girotodenis/NexusMod/configurar/target/configurar-0.0.1-SNAPSHOT.jar");
 		
 		
 		MessageBus messageBus = new MessageBus();

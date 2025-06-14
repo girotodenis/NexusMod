@@ -3,6 +3,9 @@ package br.com.dsg.legui.controller.eventos;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.liquidengine.legui.image.LoadableImage;
+import org.liquidengine.legui.image.loader.ImageLoader;
+
 import br.com.dsg.legui.controller.ActionMenu;
 import br.com.dsg.legui.controller.EventoController;
 import br.com.dsg.legui.controller.GerarController;
@@ -11,8 +14,8 @@ import br.com.dsg.legui.controller.LeGuiController;
 public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 	
 	protected String nome;
-	protected String imageA; 
-	protected String imageB;
+	protected LoadableImage imageA; 
+	protected LoadableImage imageB;
 	protected boolean imageHorizontalAlignRIGHT; 
 	protected GerarController<?> cController;
 	protected Boolean inicializar;
@@ -30,8 +33,9 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 		super(LeGuiController.get());
 		
 		this.nome = nome;
-		this.imageA = imageA;
-		this.imageB = imageB;
+		this.imageA = imageA!= null ? ImageLoader.loadImage(imageA):null;
+		this.imageA.getImageData();
+		this.imageB = imageB!= null ? ImageLoader.loadImage(imageB):null;// ImageLoader.loadImage(imageB);
 		this.imageHorizontalAlignRIGHT = imageHorizontalAlignRIGHT;
 		this.cController = cController;
 		this.inicializar = inicializar;
@@ -45,8 +49,8 @@ public class EventAdicionarItemMenu extends EventoController<LeGuiController>{
 	public EventAdicionarItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, boolean configSubMenuButtonMouse2) {
 		super(LeGuiController.get());
 		this.nome = nome;
-		this.imageA = imageA;
-		this.imageB = imageB;
+		this.imageA = imageA!= null ? ImageLoader.loadImage(imageA):null;
+		this.imageB = imageB!= null ? ImageLoader.loadImage(imageB):null;
 		this.imageHorizontalAlignRIGHT = imageHorizontalAlignRIGHT;
 		this.desabilitarSelecaoMenu = desabilitarSelecaoMenu;
 		this.action = action;

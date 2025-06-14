@@ -9,6 +9,7 @@ import org.joml.Vector2f;
 import org.liquidengine.legui.component.Component;
 import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.event.WindowSizeEvent;
+import org.liquidengine.legui.image.LoadableImage;
 import org.liquidengine.legui.listener.WindowSizeEventListener;
 import org.liquidengine.legui.listener.processor.EventProcessorProvider;
 import org.liquidengine.legui.theme.Theme;
@@ -65,7 +66,7 @@ public class MenuLeGui extends Panel {
 	}
 
 	
-	public ItemMenu criarItemMenu(String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT) {
+	public ItemMenu criarItemMenu(String nome, LoadableImage imageA, LoadableImage imageB, boolean imageHorizontalAlignRIGHT) {
 		ItemMenu item = new ItemMenu(this.theme, Constantes.LARGURA_MENU_ABERTO, Constantes.ALTURA_ITEM_MENU, nome, imageA, imageB, imageHorizontalAlignRIGHT);
 		mapa.put(item.getNome(), item);
 		item.setOrdem(mapa.size()-1);

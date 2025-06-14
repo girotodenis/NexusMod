@@ -38,8 +38,8 @@ public class ConfiguacaoActivator extends Plugin {
 			app.addItemMenu(
 					new EventAdicionarItemMenu(
 							"Configuração",
-							"imagens/setting-configure-px.png", 
-							null,
+							"imagens/setting-configure.png", 
+							"imagens/setting-configure-px.png",
 							false,
 							(controllerPai)->new ConfigController(controllerPai),
 							false

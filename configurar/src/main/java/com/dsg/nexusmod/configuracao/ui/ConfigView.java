@@ -1,7 +1,12 @@
 package com.dsg.nexusmod.configuracao.ui;
 
+import org.joml.Vector2f;
 import org.liquidengine.legui.component.Button;
 import org.liquidengine.legui.component.Panel;
+import org.liquidengine.legui.icon.Icon;
+import org.liquidengine.legui.icon.ImageIcon;
+import org.liquidengine.legui.image.LoadableImage;
+import org.liquidengine.legui.image.loader.ImageLoader;
 
 /**
  *
@@ -11,15 +16,21 @@ public class ConfigView extends Panel {
 
 	public Button btCriarMenu;
 	public Button btCancelar;
-
+	
 	public ConfigView() {
 
 		add(this.btCriarMenu = new Button("criar menu", 50, 50, 50, 30));
 		
+		LoadableImage image = ImageLoader.loadImage("/imagens/setting-configure-px.png");
+		//image.load();
+		Icon bgIm = new ImageIcon(image);
+		bgIm.setSize(new Vector2f(35, 30));
+		bgIm.setPosition(new Vector2f(8, 5));
+		this.btCriarMenu.getStyle().getBackground().setIcon(bgIm);
+		
 		System.out.println("ConfigView: " + this.getClass().getName());
 		
 		add(this.btCancelar = new Button("Cancelar", 150, 50, 50, 30));
-		
 		
 
 	}

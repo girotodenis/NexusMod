@@ -16,3 +16,7 @@ events-bundle/target/
 ui/logs/
 
 osgi/logs/
+
+configurar/.classpath
+
+configurar/.project

@@ -10,7 +10,7 @@ import org.liquidengine.legui.component.Panel;
 import org.liquidengine.legui.component.optional.align.HorizontalAlign;
 import org.liquidengine.legui.icon.Icon;
 import org.liquidengine.legui.icon.ImageIcon;
-import org.liquidengine.legui.image.loader.ImageLoader;
+import org.liquidengine.legui.image.LoadableImage;
 import org.liquidengine.legui.theme.Theme;
 
 import br.com.dsg.legui.componentes.eventos.MenuChangeSizeEvent;
@@ -28,8 +28,8 @@ public class ItemMenu extends Button {
 	private static final long serialVersionUID = 1923843665779481525L;
 
 	private String nome = "";
-	private String imagePathAberta = "";
-	private String imagePathFechada = "";
+	private LoadableImage imagePathAberta;
+	private LoadableImage imagePathFechada;
 	private boolean imageHorizontalAlignRIGHT = false;
 	
 	private Class<? extends Panel> panel;
@@ -42,15 +42,15 @@ public class ItemMenu extends Button {
 	
 	private Theme theme = null;
 
-	public ItemMenu(Theme theme,float w, float h, String nome, String imagePathAberta) {
+	public ItemMenu(Theme theme,float w, float h, String nome, LoadableImage imagePathAberta) {
 		this(theme, w, h, nome, imagePathAberta, imagePathAberta, false);
 	}
 	
-	public ItemMenu(Theme theme,float w, float h, String nome, String imagePathAberta, boolean imageHorizontalAlignRIGHT) {
+	public ItemMenu(Theme theme,float w, float h, String nome, LoadableImage imagePathAberta, boolean imageHorizontalAlignRIGHT) {
 		this(theme,w,h,nome, imagePathAberta, imagePathAberta, false);
 	}
 	
-	public ItemMenu(Theme theme,float w, float h, String nome, String imagePathAberta, String imagePathFechada, boolean imageHorizontalAlignRIGHT) {
+	public ItemMenu(Theme theme,float w, float h, String nome, LoadableImage imagePathAberta, LoadableImage imagePathFechada, boolean imageHorizontalAlignRIGHT) {
 		
 		this.theme=theme;
 		
@@ -68,7 +68,7 @@ public class ItemMenu extends Button {
 		
 		setSize(this.w, this.h);
 
-		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
+		Icon bgIm = new ImageIcon(this.imagePathAberta);
 		bgIm.setSize(new Vector2f(35, 30));
 		bgIm.setPosition(new Vector2f(8, 5));
 		getStyle().getBackground().setIcon(bgIm);
@@ -92,7 +92,7 @@ public class ItemMenu extends Button {
 	}
 
 	private void encolher() {
-		Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathFechada!=null?this.imagePathFechada:this.imagePathAberta));
+		Icon bgIm = new ImageIcon(this.imagePathFechada!=null?this.imagePathFechada:this.imagePathAberta);
 		bgIm.setSize(new Vector2f(35, 30));
 		bgIm.setPosition(new Vector2f(8, 5));
 		getStyle().getBackground().setIcon(bgIm);
@@ -102,12 +102,12 @@ public class ItemMenu extends Button {
 	
 	private void expandir() {
 		if(imageHorizontalAlignRIGHT) {
-			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
+			Icon bgIm = new ImageIcon(this.imagePathAberta);
 			bgIm.setSize(new Vector2f(35, 30));
 			bgIm.setPosition(new Vector2f(getSize().x()-37, 5));
 			getStyle().getBackground().setIcon(bgIm);
 		}else {
-			Icon bgIm = new ImageIcon(ImageLoader.loadImage(this.imagePathAberta));
+			Icon bgIm = new ImageIcon(this.imagePathAberta);
 			bgIm.setSize(new Vector2f(35, 30));
 			bgIm.setPosition(new Vector2f(8, 5));
 			getStyle().getBackground().setIcon(bgIm);

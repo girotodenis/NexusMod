@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 import org.liquidengine.legui.component.Dialog;
+import org.liquidengine.legui.image.LoadableImage;
 
 import br.com.dsg.legui.componentes.ItemMenu;
 import br.com.dsg.legui.componentes.MenuLeGui;
@@ -143,7 +144,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 	 * @param inicializar
 	 * @return
 	 */
-	public ItemMenu addItemMenu(LeGuiController controller,MenuLeGui menu, String nome, String imageA, String imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar,Dialog menuFrame) {
+	public ItemMenu addItemMenu(LeGuiController controller,MenuLeGui menu, String nome, LoadableImage imageA, LoadableImage imageB,boolean imageHorizontalAlignRIGHT, GerarController<?> cController, Boolean inicializar,Dialog menuFrame) {
 		
 		
 		LOG.debug("addItemMenu " + nome + " criado");
@@ -174,7 +175,7 @@ public class ListenerEventAdicionarItemMenu implements ControllerEventListener<E
 		return item;
 	}
 
-	public ItemMenu addItemMenuAcao(LeGuiController controller, MenuLeGui menu, String nome, String imageA, String imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, Dialog menuFrame) {
+	public ItemMenu addItemMenuAcao(LeGuiController controller, MenuLeGui menu, String nome, LoadableImage imageA, LoadableImage imageB, boolean imageHorizontalAlignRIGHT, boolean desabilitarSelecaoMenu, ActionMenu<LeGuiController> action, Dialog menuFrame) {
 		
 		LOG.debug("addItemMenuAcao " + nome + " criado");
 		ItemMenu item = menu.criarItemMenu(nome, imageA, imageB, imageHorizontalAlignRIGHT);
