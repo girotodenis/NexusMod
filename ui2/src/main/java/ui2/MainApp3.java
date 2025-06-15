@@ -22,8 +22,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
+import com.dsg.ui.JPanelApp;
+import com.dsg.ui.componente.ContextMenu;
 import com.dsg.ui.componente.CustomSideMenu;
-import com.dsg.ui.componente.JPanelApp;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
@@ -59,10 +60,10 @@ public class MainApp3 {
     
     // Método para criar o menu lateral
     private static JPanel createSideMenuPanel() {
-        CustomSideMenu sideMenu = new CustomSideMenu();
+        CustomSideMenu sideMenu = new CustomSideMenu((ContextMenu) mainPanel);
         // Adicionar itens de menu
-        mainPanel.addMenuItem("Menu 1 Tela Icons", UIManager.getIcon("FileView.directoryIcon"), (itemMenu) -> mainPanel.showContent(createSubItemPanel("Menu 1")));
-        mainPanel.addMenuItem("Menu 2 BadgeNumber ", UIManager.getIcon("FileView.directoryIcon"), (itemMenu) -> itemMenu.setBadgeNumber(++click));
+        mainPanel.addMenuItem("Menu 1 Tela Icons", UIManager.getIcon("FileView.directoryIcon"), (mainPanel,itemMenu) -> mainPanel.showContent(createSubItemPanel("Menu 1")));
+        mainPanel.addMenuItem("Menu 2 BadgeNumber ", UIManager.getIcon("FileView.directoryIcon"), (mainPanel,itemMenu) -> itemMenu.setBadgeNumber(++click));
 //        mainPanel.addMenuItem("Menu Modal ", UIManager.getIcon("FileView.directoryIcon"), (itemMenu) -> {
 //        	 JPanel content = new JPanel();
 //             content.setLayout(new BorderLayout());
@@ -77,12 +78,14 @@ public class MainApp3 {
 //             mainPanel.openModal("Minha Modal", content, new Dimension(600, 600), footerButtons, "center");
 //        });
         // Adicionar um item com sub-itens
-        List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
-        subItems.add(sideMenu.new MenuItem("SubItem 3.1 FlatMacDarkLaf", UIManager.getIcon("FileView.floppyDriveIcon"), (itemMenu) -> mainPanel.updatePanel(FlatMacDarkLaf.class) ));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.2 FlatDarculaLaf", UIManager.getIcon("FileChooser.homeFolderIcon"), (itemMenu) -> mainPanel.updatePanel(FlatDarculaLaf.class)));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.3 FlatIntelliJLaf", UIManager.getIcon("HelpButton.icon"), (itemMenu) -> mainPanel.updatePanel(FlatIntelliJLaf.class)));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.4 FlatMacLightLaf", UIManager.getIcon("Tree.leafIcon"), (itemMenu) -> mainPanel.updatePanel(FlatMacLightLaf.class)));
-        mainPanel.addMenuItemWithSubItems("Menu 3", subItems);
+//        List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
+//        subItems.add(sideMenu.new MenuItem("SubItem 3.1 FlatMacDarkLaf", UIManager.getIcon("FileView.floppyDriveIcon"), (mainPanel,itemMenu) -> mainPanel.updatePanel(FlatMacDarkLaf.class) ));
+//        subItems.add(sideMenu.new MenuItem("SubItem 3.2 FlatDarculaLaf", UIManager.getIcon("FileChooser.homeFolderIcon"), (mainPanel,itemMenu) -> mainPanel.updatePanel(FlatDarculaLaf.class)));
+//        subItems.add(sideMenu.new MenuItem("SubItem 3.3 FlatIntelliJLaf", UIManager.getIcon("HelpButton.icon"), (mainPanel,itemMenu) -> mainPanel.updatePanel(FlatIntelliJLaf.class)));
+//        subItems.add(sideMenu.new MenuItem("SubItem 3.4 FlatMacLightLaf", UIManager.getIcon("Tree.leafIcon"), (mainPanel,itemMenu) -> mainPanel.updatePanel(FlatMacLightLaf.class)));
+//        mainPanel.addMenuItemWithSubItems("Menu 3", subItems);
+        
+        mainPanel.loadMenu();
         return sideMenu;
     }
 

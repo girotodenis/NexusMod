@@ -3,11 +3,13 @@ package com.dsg.ui.componente;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import com.dsg.ui.JPanelApp;
 import com.dsg.ui.util.UIUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 // Classe para o menu lateral
@@ -19,14 +21,16 @@ public class CustomSideMenu extends JPanel {
     private final int collapsedWidth = 50; // Largura do menu encolhido
     private final List<MenuItem> menuItems = new ArrayList<>();
 
+    private final ContextMenu app; // Contêiner para os itens do menu
     private final JPanel menuContainer; // Contêiner para os itens do menu
     private final Color padrao; 
     private final Color menuContainerColor; 
     private final Color itemMenuColor; 
     private final Color toggleMenuColor; 
 
-    public CustomSideMenu() {
+    public CustomSideMenu(ContextMenu app) {
     	
+    	this.app = app;
     	this.padrao = getBackground();
     	this.menuContainerColor = UIUtils.ajustColor(padrao,-20);
     	this.itemMenuColor = UIUtils.ajustColor(this.padrao,-10);
@@ -79,7 +83,7 @@ public class CustomSideMenu extends JPanel {
     }
 
     // Método para adicionar um item de menu
-    public void addMenuItem(String text, Icon icon, Consumer<MenuItem> action) {
+    public void addMenuItem(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action) {
         MenuItem item = new MenuItem(text, icon, action);
         menuItems.add(item);
         menuContainer.add(item);
@@ -116,9 +120,9 @@ public class CustomSideMenu extends JPanel {
         protected MenuItem root;
         private List<CustomSideMenu.MenuItem> filhos = new ArrayList<CustomSideMenu.MenuItem>();
         protected Icon icon;
-        Consumer<MenuItem> action;
+        BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action;
         
-        public MenuItem(String text, Icon icon, Consumer<MenuItem> action) {
+        public MenuItem(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action) {
         	this.text = text;
         	this.icon = icon;
         	this.action = action;
@@ -149,7 +153,8 @@ public class CustomSideMenu extends JPanel {
                     		menuItem.setBackground( itemMenuColor );
 						}
                     	((MenuItem)e.getSource()).setBackground(padrao);
-                        action.accept(MenuItem.this);
+                        action.accept(CustomSideMenu.this.app, CustomSideMenu.MenuItem.this);
+                        CustomSideMenu.this.app.lastItemMenu(CustomSideMenu.MenuItem.this.getText());
                     }
                 });
             }
@@ -199,7 +204,7 @@ public class CustomSideMenu extends JPanel {
 			return icon;
 		}
 
-		public Consumer<MenuItem> getAction() {
+		public BiConsumer<ContextMenu, CustomSideMenu.MenuItem> getAction() {
 			return action;
 		}
 		

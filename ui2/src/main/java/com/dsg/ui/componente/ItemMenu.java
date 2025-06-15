@@ -1,21 +1,22 @@
 package com.dsg.ui.componente;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 import javax.swing.Icon;
 
-import com.dsg.ui.componente.CustomSideMenu.MenuItem;
+import com.dsg.ui.JPanelApp;
 
 
 public class ItemMenu {
 	
 	private String text;
 	private Icon icon;
-	private Consumer<MenuItem> action;
+	private BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action;
 	private List<ItemMenu> subItems;
 	
-	public ItemMenu(String text, Icon icon, Consumer<MenuItem> consumer, List<ItemMenu> subItems) {
+	public ItemMenu(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> consumer, List<ItemMenu> subItems) {
 		super();
 		this.text = text;
 		this.icon = icon;
@@ -31,12 +32,20 @@ public class ItemMenu {
 		return icon;
 	}
 
-	public Consumer<MenuItem> getAction() {
+	public BiConsumer<ContextMenu, CustomSideMenu.MenuItem> getAction() {
 		return action;
 	}
 
 	public List<ItemMenu> getSubItems() {
 		return subItems;
+	}
+	
+	public ItemMenu addSubItems(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> consumer) {
+		if(subItems==null) {
+			subItems = new ArrayList<ItemMenu>();
+		}
+		subItems.add(new ItemMenu(text, icon, consumer, null));
+		return this;
 	}
 	
 	
