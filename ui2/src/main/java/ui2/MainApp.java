@@ -12,9 +12,13 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.dsg.ui.componente.CustomSideMenu;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 public class MainApp {
+	
+	public static int click = 0;
+	
     public static void main(String[] args) {
         // Configurar o tema FlatLaf
         try {
@@ -46,15 +50,15 @@ public class MainApp {
         CustomSideMenu sideMenu = new CustomSideMenu();
 
         // Adicionar itens de menu
-        sideMenu.addMenuItem("Menu 1", UIManager.getIcon("FileView.directoryIcon"), () -> System.out.println("Menu 1 clicado"));
-        sideMenu.addMenuItem("Menu 2", UIManager.getIcon("FileView.directoryIcon"), () -> System.out.println("Menu 2 clicado"));
+        sideMenu.addMenuItem("Menu 1", UIManager.getIcon("FileView.directoryIcon"), (menu) -> menu.setBadgeNumber(click++));
+        sideMenu.addMenuItem("Menu 2", UIManager.getIcon("FileView.directoryIcon"), (menu) -> System.out.println("Menu 2 clicado"));
 
         // Adicionar um item com sub-itens
         List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
-        subItems.add(sideMenu.new MenuItem("SubItem 3.1", UIManager.getIcon("FileView.floppyDriveIcon"), () -> System.out.println("SubItem 1 clicado")));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.2", UIManager.getIcon("FileChooser.homeFolderIcon"), () -> System.out.println("SubItem 1 clicado")));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.3", UIManager.getIcon("HelpButton.icon"), () -> System.out.println("SubItem 2 clicado")));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.4", UIManager.getIcon("Tree.leafIcon"), () -> System.out.println("SubItem 2 clicado")));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.1", UIManager.getIcon("FileView.floppyDriveIcon"), (menu) -> System.out.println("SubItem 1 clicado")));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.2", UIManager.getIcon("FileChooser.homeFolderIcon"), (menu) -> System.out.println("SubItem 1 clicado")));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.3", UIManager.getIcon("HelpButton.icon"), (menu) -> System.out.println("SubItem 2 clicado")));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.4", UIManager.getIcon("Tree.leafIcon"), (menu) -> System.out.println("SubItem 2 clicado")));
         sideMenu.addMenuItemWithSubItems("Menu 3",  subItems);
 
         // Adicionar o menu lateral à janela

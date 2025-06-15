@@ -1,6 +1,7 @@
 package ui2;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,7 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.border.MatteBorder;
 
+import com.dsg.ui.componente.CustomSideMenu;
+import com.dsg.ui.util.UIUtils;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
@@ -26,7 +30,7 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 public class MainApp2 {
     private static JPanel contentPanel; // Painel de conteúdo principal
-
+    public static int click = 0;
     public static void main(String[] args) {
         // Configurar o tema FlatLaf
 //    	FlatMacDarkLaf.setup();
@@ -41,15 +45,28 @@ public class MainApp2 {
             frame.setLocationRelativeTo(null);
 
             JPanel mainPanel = new JPanel(new BorderLayout());
-            criar(mainPanel);
+            newPanel(mainPanel);
 
             // Adicionar o painel principal à janela
             frame.setContentPane(mainPanel);
             frame.setVisible(true);
         });
     }
+    private static void updatePanel(JPanel mainPanel, Class classLook) {
+    	try {
+//    		FlatIntelliJLaf.setup() ;
+    		UIManager.setLookAndFeel(classLook.getName());
+    		mainPanel.removeAll();
+    		mainPanel.setLayout(new BorderLayout());
+    		newPanel(mainPanel);
+    		mainPanel.revalidate();
+    		mainPanel.repaint();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
 
-	private static void criar(JPanel mainPanel) {
+	private static void newPanel(JPanel mainPanel) {
 		// Criar o layout principal (BorderLayout)
 
 		// Cabeçalho
@@ -77,7 +94,6 @@ public class MainApp2 {
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         JLabel titleLabel = new JLabel("Cabeçalho do Aplicativo");
-//        titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
         headerPanel.add(titleLabel);
@@ -90,88 +106,16 @@ public class MainApp2 {
         CustomSideMenu sideMenu = new CustomSideMenu();
 
         // Adicionar itens de menu
-        sideMenu.addMenuItem("Menu 1", UIManager.getIcon("FileView.directoryIcon"), () -> showContent(createSubItemPanel("Menu 1")));
-        sideMenu.addMenuItem("Menu 2", UIManager.getIcon("FileView.directoryIcon"), () -> showContent(createSubItemPanel("Menu 2")));
+        sideMenu.addMenuItem("Menu 1", UIManager.getIcon("FileView.directoryIcon"), (itemMenu) -> showContent(createSubItemPanel("Menu 1")));
+        sideMenu.addMenuItem("Menu 2", UIManager.getIcon("FileView.directoryIcon"), (itemMenu) -> itemMenu.setBadgeNumber(++click));
 
         // Adicionar um item com sub-itens
         List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
-        subItems.add(sideMenu.new MenuItem("SubItem 3.1 FlatMacDarkLaf", UIManager.getIcon("FileView.floppyDriveIcon"), () -> 
-        {
-            try {
-            	FlatMacDarkLaf.setup() ;
-            	UIManager.setLookAndFeel(FlatMacDarkLaf.class.getName());
-            	// Atualiza todos os componentes existentes para refletir o novo Look and Feel
-//            	SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(new JButton())); // Atualiza todos os componentes
-            	frame.removeAll();
-            	frame.setLayout(new BorderLayout());
-            	criar(frame);
-            	frame.revalidate();
-            	frame.repaint();
-            	 
-            } catch (Exception e) {
-            	// TODO: handle exception
-            }
-
-        }));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.2 FlatDarculaLaf", UIManager.getIcon("FileChooser.homeFolderIcon"), () -> 
-        {
-        	try {
-        		FlatDarculaLaf.setup() ;
-        		UIManager.setLookAndFeel(FlatDarculaLaf.class.getName());
-        		// Atualiza todos os componentes existentes para refletir o novo Look and Feel
-//        		SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(new JButton())); // Atualiza todos os componentes
-        		frame.removeAll();
-        		frame.setLayout(new BorderLayout());
-        		criar(frame);
-        		frame.revalidate();
-        		frame.repaint();
-        		
-                 
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-        }
-        ));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.3 FlatIntelliJLaf", UIManager.getIcon("HelpButton.icon"), () -> 
-        {
-        	try {
-        		FlatIntelliJLaf.setup() ;
-        		UIManager.setLookAndFeel(FlatIntelliJLaf.class.getName());
-        		// Atualiza todos os componentes existentes para refletir o novo Look and Feel
-//        		SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(new JButton())); // Atualiza todos os componentes
-        		frame.removeAll();
-        		frame.setLayout(new BorderLayout());
-        		criar(frame);
-        		frame.revalidate();
-        		frame.repaint();
-        		
-                 
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-        }
-        ));
-        subItems.add(sideMenu.new MenuItem("SubItem 3.4 FlatMacLightLaf", UIManager.getIcon("Tree.leafIcon"), () -> 
-        {
-        	try {
-        		FlatMacLightLaf.setup() ;
-        		UIManager.setLookAndFeel(FlatMacLightLaf.class.getName());
-        		// Atualiza todos os componentes existentes para refletir o novo Look and Feel
-//        		SwingUtilities.updateComponentTreeUI(SwingUtilities.getWindowAncestor(new JButton())); // Atualiza todos os componentes
-        		frame.removeAll();
-        		frame.setLayout(new BorderLayout());
-        		criar(frame);
-        		frame.revalidate();
-        		frame.repaint();
-        		
-                 
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-        }
-        ));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.1 FlatMacDarkLaf", UIManager.getIcon("FileView.floppyDriveIcon"), (itemMenu) -> updatePanel(frame, FlatMacDarkLaf.class) ));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.2 FlatDarculaLaf", UIManager.getIcon("FileChooser.homeFolderIcon"), (itemMenu) -> updatePanel(frame, FlatDarculaLaf.class)));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.3 FlatIntelliJLaf", UIManager.getIcon("HelpButton.icon"), (itemMenu) -> updatePanel(frame, FlatIntelliJLaf.class)));
+        subItems.add(sideMenu.new MenuItem("SubItem 3.4 FlatMacLightLaf", UIManager.getIcon("Tree.leafIcon"), (itemMenu) -> updatePanel(frame, FlatMacLightLaf.class)));
         sideMenu.addMenuItemWithSubItems("Menu 3", subItems);
-
 
         return sideMenu;
     }
@@ -179,7 +123,9 @@ public class MainApp2 {
     // Método para criar o conteúdo principal
     private static JPanel createContentPanel() {
         JPanel contentPanel = new JPanel();
-//        contentPanel.setBackground(new Color(35, 35, 35));
+        Color padrao = contentPanel.getBackground();
+        MatteBorder borda = new MatteBorder(2, 0, 2, 0, UIUtils.ajustColor(padrao, -10)); // Borda vermelha com espessura 5
+        contentPanel.setBorder(borda);
         return contentPanel; // Inicializa um painel vazio
     }
 
@@ -187,18 +133,15 @@ public class MainApp2 {
     // Método para criar um painel para subitens
     private static JPanel createSubItemPanel(String content) {
     	JPanel panel = new JPanel();
-//        panel.setBackground(new Color(70, 70, 70));
         panel.setLayout(new BorderLayout()); // Usar BorderLayout para adicionar título e tabela
 
         // Adicionar título
         JLabel titleLabel = new JLabel(content);
-//        titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
         panel.add(titleLabel, BorderLayout.NORTH);
 
         // Criar um painel para os ícones
         JPanel iconPanel = new JPanel();
-//        iconPanel.setBackground(new Color(7, 70, 70));
         iconPanel.setLayout(new GridLayout(0, 3)); // 0 linhas e 5 colunas
 
         // Adicionar ícones ao painel
@@ -226,12 +169,10 @@ public class MainApp2 {
     // Método para criar o rodapé
     private static JPanel createFooterPanel() {
         JPanel footerPanel = new JPanel();
-//        footerPanel.setBackground(new Color(45, 45, 45));
         footerPanel.setPreferredSize(new Dimension(800, 30));
         footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
         JLabel footerLabel = new JLabel("Rodapé do Aplicativo");
-//        footerLabel.setForeground(Color.WHITE);
         footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
 
         footerPanel.add(footerLabel);
