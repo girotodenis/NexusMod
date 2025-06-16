@@ -189,15 +189,15 @@ public class JPanelApp extends JPanel implements ContextMenu{
 		}
     }
     
-    public void toast(String title, String content, Icon icon) {
+    public void toast(String title, String content, Icon icon, Color color) {
     	JPanel contentToast = new JPanel();
     	contentToast.setLayout(new BorderLayout());
     	JLabel comp = new JLabel(content, icon, SwingConstants.CENTER);
     	comp.setFont(new Font("Arial", Font.BOLD, 14));
     	comp.setForeground(Color.WHITE);
 		contentToast.add(comp, BorderLayout.CENTER);
-		contentToast.setBackground(Color.GREEN);
-    	openModal(title, contentToast, new Dimension(300, 180), null, "top-right");
+		contentToast.setBackground(color);
+    	openModal(title, contentToast, new Dimension(300, 180), null, "top-right", color);
     	
     	try {
     		// Definir um Timer para remover o painel após 4 segundos
@@ -211,7 +211,7 @@ public class JPanelApp extends JPanel implements ContextMenu{
 		}
     }
     
-    public void openModal(String title, JPanel content, Dimension size, JButton[] footerButtons, String position) {
+    public void openModal(String title, JPanel content, Dimension size, JButton[] footerButtons, String positionn, Color color) {
     	
     	SwingUtilities.invokeLater(() -> {
     		// Modal (escondido inicialmente)
@@ -219,7 +219,7 @@ public class JPanelApp extends JPanel implements ContextMenu{
     		remove(this.sideMenuPanel);
     		remove(this.footerPanel);
     		remove(this.contentPanel);
-    		modalPanel = createModalPanel(Color.GREEN);
+    		modalPanel = createModalPanel(color);
     		
     		add(modalPanel, BorderLayout.CENTER); // Adiciona o modal ao painel principal
     		
@@ -229,7 +229,7 @@ public class JPanelApp extends JPanel implements ContextMenu{
     		add(this.headerPanel, BorderLayout.NORTH);
     		
     		
-    		modalPanel.openModal(title, content, size, footerButtons, position);
+    		modalPanel.openModal(title, content, size, footerButtons, positionn);
     		revalidate();
     		repaint();
     	});

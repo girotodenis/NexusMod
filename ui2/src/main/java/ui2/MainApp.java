@@ -1,6 +1,7 @@
 package ui2;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -44,7 +45,7 @@ public class MainApp {
                 JButton button2 = new JButton("Cancelar");
                 JButton[] footerButtons = null;//{button1, button2};
                 // Abre a modal
-                mainPanel.toast("Erro", "Erro 123 123 123", UIManager.getIcon("OptionPane.errorIcon"));
+                mainPanel.toast("Erro", "Erro 123 123 123", UIManager.getIcon("OptionPane.errorIcon"), Color.RED);
 	    	})
 	    	.addMenuItem("Menu 3","SubItem 3.2 FlatMacDarkLaf", UIManager.getIcon("FileView.floppyDriveIcon"), (mainPanel,itemMenu) -> mainPanel.updateAll(FlatMacDarkLaf.class))
 	    	.addMenuItem("Menu 3","SubItem 3.2 FlatDarculaLaf", UIManager.getIcon("FileChooser.homeFolderIcon"), (mainPanel,itemMenu) -> mainPanel.updateAll(FlatDarculaLaf.class))

@@ -32,12 +32,12 @@ public class CustomModal extends JPanel {
         // Painel central da modal inicializado, mas sem configuração
         modalPanel = new JPanel(null); // Layout absoluto no modal principal
         modalPanel.setBackground(color);
-        modalPanel.setBorder(BorderFactory.createLineBorder(UIUtils.ajustColor(color, 90), 3));
+        modalPanel.setBorder(BorderFactory.createLineBorder(UIUtils.ajustColor(color, 130), 3));
         add(modalPanel);
 
         // Cabeçalho inicializado, mas sem configuração
         headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(UIUtils.ajustColor(color, 30));
+        headerPanel.setBackground(UIUtils.ajustColor(color, 130));
 
         // Título da modal
         titleLabel = new JLabel();
