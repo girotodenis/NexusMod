@@ -13,7 +13,7 @@
 		
 		<dependency>
 			<groupId>com.dsg.nexusmod</groupId>
-			<artifactId>ui</artifactId>
+			<artifactId>ui2</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

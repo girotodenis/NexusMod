@@ -2,11 +2,11 @@ package com.dsg.nexusmod.ui;
 
 import org.pf4j.ExtensionPoint;
 
-import br.com.dsg.legui.controller.StartLeGui;
+import com.dsg.nexusmod.controller.MenuPlugin;
 
 
 public interface ItemMenu extends ExtensionPoint{
 	
-	void addItemMenu(StartLeGui app);
+	void addItemMenu(MenuPlugin menu);
 
 }

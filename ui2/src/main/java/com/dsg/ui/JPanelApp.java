@@ -7,7 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -69,11 +69,11 @@ public class JPanelApp extends JPanel implements ContextMenu{
         return headerPanel;
     }
     
-    public void addMenuItem(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action) {
+    public void addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
     	itens.add(new ItemMenu(text, icon, action, null));
     }
     
-    public void addMenuItem(String group, String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action) {
+    public void addMenuItem(String group, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
     	
     	ItemMenu item = null;
     	var op = itens.stream().filter(m->m.getText().equals(group)).findFirst();

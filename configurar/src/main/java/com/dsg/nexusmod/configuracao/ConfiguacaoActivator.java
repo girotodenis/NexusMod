@@ -1,17 +1,16 @@
 package com.dsg.nexusmod.configuracao;
 
 
+import javax.swing.UIManager;
+
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import com.dsg.nexusmod.configuracao.ui.ConfigController;
-import com.dsg.nexusmod.configuracao.ui.HomeController;
+import com.dsg.nexusmod.configuracao.ui.ControllerTeste;
+import com.dsg.nexusmod.controller.MenuPlugin;
 import com.dsg.nexusmod.plugin.MessageListener;
 import com.dsg.nexusmod.ui.ItemMenu;
-
-import br.com.dsg.legui.controller.StartLeGui;
-import br.com.dsg.legui.controller.eventos.EventAdicionarItemMenu;
 
 public class ConfiguacaoActivator extends Plugin {
 
@@ -34,50 +33,14 @@ public class ConfiguacaoActivator extends Plugin {
     public static class ItemMenuImpl implements ItemMenu {
 
 		@Override
-		public void addItemMenu(StartLeGui app) {
-			app.addItemMenu(
-					new EventAdicionarItemMenu(
-							"Configuração",
-							"imagens/setting-configure.png", 
-							"imagens/setting-configure-px.png",
-							false,
-							(controllerPai)->new ConfigController(controllerPai),
-							false
-							)
-			);
+		public void addItemMenu(MenuPlugin menu) {
+			menu.addMenuItem("Configuração", UIManager.getIcon("FileView.directoryIcon"), new ControllerTeste());
 		}
+
 
     }
     
-    @Extension
-    public static class ItemMenu2Impl implements ItemMenu {
-    	
-    	@Override
-    	public void addItemMenu(StartLeGui app) {
-    		app.addItemMenu(
-    				new EventAdicionarItemMenu(
-    						"Home",
-    						"imagens/home_house_10811.png", 
-    						null,
-    						false,
-    						(controllerPai)->new HomeController(controllerPai),
-    						true
-    						)
-    				.addCOntrollerMenuSubMenuFlutuante(
-    						"Sub Item 1", 
-    						"imagens/setting-configure.png",
-    						(controllerPai)->new ConfigController(controllerPai)
-    						)
-    				.addActionMenuSubMenuFlutuante(
-    						"Sub Item 2", 
-    						"imagens/icons8-exit-sign-64.png",
-    						(c)->System.out.println("Sair")
-    						)
-    				);
-    	}
-    	
-    }
-    
+   
    
 
 }

@@ -1,16 +1,24 @@
 package com.dsg.ui.componente;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-
-import com.dsg.ui.JPanelApp;
-import com.dsg.ui.util.UIUtils;
-
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+
+import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
+import com.dsg.ui.util.UIUtils;
 
 // Classe para o menu lateral
 public class CustomSideMenu extends JPanel {
@@ -83,7 +91,7 @@ public class CustomSideMenu extends JPanel {
     }
 
     // Método para adicionar um item de menu
-    public void addMenuItem(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action) {
+    public void addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
         MenuItem item = new MenuItem(text, icon, action);
         menuItems.add(item);
         menuContainer.add(item);
@@ -112,6 +120,7 @@ public class CustomSideMenu extends JPanel {
 		
     	private static final long serialVersionUID = 5652164465879606302L;
 		
+    	private final String id;
     	private final LabelWithBadge labelIcon;
 		private final JLabel label;
         private final String text;
@@ -120,9 +129,11 @@ public class CustomSideMenu extends JPanel {
         protected MenuItem root;
         private List<CustomSideMenu.MenuItem> filhos = new ArrayList<CustomSideMenu.MenuItem>();
         protected Icon icon;
-        BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action;
+        Consumer<CustomSideMenu.MenuItem> action;
         
-        public MenuItem(String text, Icon icon, BiConsumer<ContextMenu, CustomSideMenu.MenuItem> action) {
+        public MenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
+        	this.id = String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));;
+        	System.out.println("MenuItem ID: " + id);
         	this.text = text;
         	this.icon = icon;
         	this.action = action;
@@ -153,7 +164,7 @@ public class CustomSideMenu extends JPanel {
                     		menuItem.setBackground( itemMenuColor );
 						}
                     	((MenuItem)e.getSource()).setBackground(padrao);
-                        action.accept(CustomSideMenu.this.app, CustomSideMenu.MenuItem.this);
+                        action.accept(CustomSideMenu.MenuItem.this);
                         CustomSideMenu.this.app.lastItemMenu(CustomSideMenu.MenuItem.this.getText());
                     }
                 });
@@ -204,11 +215,13 @@ public class CustomSideMenu extends JPanel {
 			return icon;
 		}
 
-		public BiConsumer<ContextMenu, CustomSideMenu.MenuItem> getAction() {
+		public Consumer<CustomSideMenu.MenuItem> getAction() {
 			return action;
 		}
+
+		public String getId() {
+			return id;
+		}
 		
-		
-        
     }
 }

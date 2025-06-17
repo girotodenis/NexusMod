@@ -31,17 +31,22 @@
 
 	<dependencies>
 	
-		
-		<dependency>
-			<groupId>org.liquidengine</groupId>
-			<artifactId>legui</artifactId>
-			<version>3.3.1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf</artifactId>
+			<version>3.5</version> <!-- Substitua pela versão mais recente -->
+		</dependency>
+		<dependency>
+			<groupId>com.formdev</groupId>
+			<artifactId>flatlaf-extras</artifactId>
+			<version>3.5</version>
 		</dependency>
 
 

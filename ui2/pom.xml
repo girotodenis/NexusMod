@@ -10,6 +10,15 @@
 	<artifactId>ui2</artifactId>
 
 	<dependencies>
+	
+		<!-- Plugin API -->
+		<dependency>
+			<groupId>com.dsg.nexusmod</groupId>
+			<artifactId>plugin-api</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.formdev</groupId>
 			<artifactId>flatlaf</artifactId>
