@@ -12,6 +12,15 @@ public class ContextAppImp implements ContextApp {
 	
 	private Map<String, List<AbstractEventListener<?>>> eventListeners = new HashMap<String, List<AbstractEventListener<?>>>();
 	
+	private static ContextAppImp instance = new ContextAppImp();
+	
+	private ContextAppImp() {
+	}
+	
+	public static ContextAppImp getInstance() {
+		return instance;
+	}
+	
 	/**
 	 * Aciona o <code>AbstractEventListener</code> relacionado ao
 	 * <code>AbstractEvent</code> para que o <code>listener</code> trate o evento.

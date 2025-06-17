@@ -18,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.dsg.ui.ContextAppImp;
 import com.dsg.ui.util.UIUtils;
 
 // Classe para o menu lateral
@@ -29,16 +30,15 @@ public class CustomSideMenu extends JPanel {
     private final int collapsedWidth = 50; // Largura do menu encolhido
     private final List<MenuItem> menuItems = new ArrayList<>();
 
-    private final ContextMenu app; // Contêiner para os itens do menu
+//    private final ContextMenu app; // Contêiner para os itens do menu
     private final JPanel menuContainer; // Contêiner para os itens do menu
     private final Color padrao; 
     private final Color menuContainerColor; 
     private final Color itemMenuColor; 
     private final Color toggleMenuColor; 
 
-    public CustomSideMenu(ContextMenu app) {
+    public CustomSideMenu() {
     	
-    	this.app = app;
     	this.padrao = getBackground();
     	this.menuContainerColor = UIUtils.ajustColor(padrao,-20);
     	this.itemMenuColor = UIUtils.ajustColor(this.padrao,-10);
@@ -154,6 +154,9 @@ public class CustomSideMenu extends JPanel {
             	
             add(labelIcon, BorderLayout.WEST);
             add(label, BorderLayout.CENTER);
+            
+            ContextAppImp.getInstance().registerEvent(this.id+".badgeNumber", (date)-> this.setBadgeNumber((int)date) );
+            ContextAppImp.getInstance().registerEvent(this.id+".visible", (date)-> this.setVisible((boolean)date) );
 
             // Configura ação ao clicar no item principal
             if (action != null) {
@@ -165,7 +168,6 @@ public class CustomSideMenu extends JPanel {
 						}
                     	((MenuItem)e.getSource()).setBackground(padrao);
                         action.accept(CustomSideMenu.MenuItem.this);
-                        CustomSideMenu.this.app.lastItemMenu(CustomSideMenu.MenuItem.this.getText());
                     }
                 });
             }

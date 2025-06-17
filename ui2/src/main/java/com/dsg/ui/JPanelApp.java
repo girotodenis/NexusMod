@@ -21,16 +21,16 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
-import com.dsg.ui.componente.ContextMenu;
 import com.dsg.ui.componente.CustomModal;
 import com.dsg.ui.componente.CustomSideMenu;
 import com.dsg.ui.componente.ItemMenu;
 import com.dsg.ui.util.UIUtils;
 
-public class JPanelApp extends JPanel implements ContextMenu{
+public class JPanelApp extends JPanel {
 
 	private static final long serialVersionUID = 8898685804729074138L;
 
+	
 	private JPanel headerPanel;
 	private JPanel sideMenuPanel;
 	private JPanel contentPanel;
@@ -94,14 +94,14 @@ public class JPanelApp extends JPanel implements ContextMenu{
     	if(sideMenu!=null) {
     		sideMenu.removeAll();
     	}
-    	sideMenu = new CustomSideMenu(this);
+    	sideMenu = new CustomSideMenu();
         return sideMenu;
     }
 
 	public void loadMenu() {
 		
 		if(sideMenu==null) {
-			sideMenu = new CustomSideMenu(this);
+			sideMenu = new CustomSideMenu();
     	}
 		
     	itens.forEach(item->{
@@ -257,5 +257,7 @@ public class JPanelApp extends JPanel implements ContextMenu{
     		lastItemMenu = op.get();
     	}
 	}
+	
+	
 
 }

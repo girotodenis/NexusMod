@@ -16,10 +16,12 @@ public class ControllerTeste implements Controller<Teste>, OnInit {
 
 	@Override
 	public void onInit(ContextApp contextApp) {
+		
+		
 		this.contextApp = contextApp;
 		
 		panel.button.addActionListener(e -> {
-			contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração", ++count);
+			contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração.badgeNumber", ++count);
 		});
 		
 	}

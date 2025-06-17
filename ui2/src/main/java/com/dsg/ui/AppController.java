@@ -3,7 +3,6 @@ package com.dsg.ui;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-import com.dsg.nexusmod.controller.ContextApp;
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.controller.MenuPlugin;
 import com.dsg.nexusmod.controller.OnInit;
@@ -11,7 +10,7 @@ import com.dsg.ui.componente.CustomSideMenu;
 
 public class AppController implements MenuPlugin, Controller<JPanelApp> {
 	
-	private ContextApp context = new ContextAppImp();
+	
 	private JPanelApp panel;
 	
 	public AppController(JPanelApp panel) {
@@ -20,11 +19,8 @@ public class AppController implements MenuPlugin, Controller<JPanelApp> {
 	
 	private void show(CustomSideMenu.MenuItem itemMenu, Controller<? extends JPanel> controller) {
 		
-		
-		context.registerEvent(itemMenu.getId(), (date)-> itemMenu.setBadgeNumber((int)date) );
-		
 		if(controller instanceof OnInit) {
-			((OnInit)controller).onInit(context);
+			((OnInit)controller).onInit(ContextAppImp.getInstance());
 		}
 		getPanel().showContent( controller.getPanel() );
 	}
