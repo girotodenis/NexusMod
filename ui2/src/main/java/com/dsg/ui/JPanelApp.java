@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -21,9 +22,11 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
+import com.dsg.nexusmod.ui.ContextApp;
 import com.dsg.ui.componente.ContextMenu;
 import com.dsg.ui.componente.CustomModal;
 import com.dsg.ui.componente.CustomSideMenu;
+import com.dsg.ui.componente.CustomSideMenu.MenuItem;
 import com.dsg.ui.componente.ItemMenu;
 import com.dsg.ui.util.UIUtils;
 
@@ -31,10 +34,12 @@ public class JPanelApp extends JPanel implements ContextMenu{
 
 	private static final long serialVersionUID = 8898685804729074138L;
 
+	private static final ContextApp context = new ContextAppImp();
 	private JPanel headerPanel;
 	private JPanel sideMenuPanel;
 	private JPanel contentPanel;
 	private JPanel footerPanel;
+	private Class<?> classLook;
 	
 	private CustomModal modalPanel; // Painel que funciona como a modal
 
@@ -44,6 +49,7 @@ public class JPanelApp extends JPanel implements ContextMenu{
 	
 	public JPanelApp(Class<?> classLook) {
 		try {
+			this.classLook = classLook;
 			updateAll(classLook);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,27 +102,46 @@ public class JPanelApp extends JPanel implements ContextMenu{
     	if(sideMenu!=null) {
     		sideMenu.removeAll();
     	}
-    	sideMenu = new CustomSideMenu(this);
+    	sideMenu = new CustomSideMenu();
         return sideMenu;
     }
 
 	public void loadMenu() {
 		
 		if(sideMenu==null) {
-			sideMenu = new CustomSideMenu(this);
+			sideMenu = new CustomSideMenu();
     	}
 		
     	itens.forEach(item->{
     		if(item.getAction() != null) {
-    			sideMenu.addMenuItem(item.getId(), item.getText(), item.getIcon(), item.getAction());
+    			var itemMenu = sideMenu.addMenuItem(item.getId(), item.getText(), item.getIcon(), item.getAction());
+    			registarEventosMenu(item.getId(), itemMenu);
     		}else {
     			List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
     			item.getSubItems().forEach(subitem->{
-    				subItems.add(sideMenu.new MenuItem(subitem.getId(), subitem.getText(), subitem.getIcon(), subitem.getAction() ));
+    				MenuItem itemMenu = sideMenu.new MenuItem(subitem.getId(), subitem.getText(), subitem.getIcon(), subitem.getAction() );
+					subItems.add(itemMenu);
+					registarEventosMenu(item.getId(), itemMenu);
     			});
     			sideMenu.addMenuItemWithSubItems(item.getText(), subItems);
     		}
     	});
+	}
+
+	private void registarEventosMenu(String id, MenuItem itemMenu) {
+		if( !context.contens(id+".badgeNumber")){
+			System.out.println("Registra evento badgeNumber: " + id+".badgeNumber");
+			context.registerEvent(id+".badgeNumber", (date)-> {
+				System.out.println("Registra evento badgeNumber: " + id+".badgeNumber " + date);
+				itemMenu.setBadgeNumber((int)date);
+				itemMenu.revalidate();
+				itemMenu.repaint();
+			});
+		}
+		if( !context.contens(id+".visible")){
+			System.out.println("Registra evento visible: " + id+".visible");
+			context.registerEvent(id+".visible", (date)-> itemMenu.setVisible((boolean)date) );
+		}
 	}
     
     // Método para criar o conteúdo principal
@@ -140,24 +165,31 @@ public class JPanelApp extends JPanel implements ContextMenu{
         return footerPanel;
     }
     
-    // Método para mostrar um JPanel como conteúdo
+   
+    
     public void showContent(JPanel panel) {
-    	// Limpar o painel de conteúdo existente
-        contentPanel.removeAll();
-        contentPanel.setLayout(new BorderLayout());
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setBorder(null);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        // Adicionar o novo conteúdo ao painel de conteúdo
-        contentPanel.add(scrollPane, BorderLayout.CENTER); // Adiciona o painel no centro
-        // Atualizar o painel
-        contentPanel.revalidate();
-        contentPanel.repaint();
+    	contentPanel.removeAll();
+    	contentPanel.setLayout(new BorderLayout());
+    	System.out.println("showContent: contentPanel " + contentPanel.getBackground());
+    	System.out.println("showContent: " + panel.getBackground());
+    	JScrollPane scrollPane = new JScrollPane(panel);
+    	scrollPane.setBorder(null);
+    	scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+    	scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+    	// Adicionar o novo conteúdo ao painel de conteúdo
+    	contentPanel.add(scrollPane, BorderLayout.WEST); // Adiciona o painel no centro
+    	// Atualizar o painel
+    	contentPanel.revalidate();
+    	contentPanel.repaint();
     }
     
     public void updateAll(Class<?> classLook) {
-    	updateAll(classLook.getName());
+    	this.classLook = classLook;
+    	Timer timer = new Timer(10, e -> {
+			updateAll(classLook.getName());
+		});
+		timer.setRepeats(false); // Garantir que o Timer execute apenas uma vez
+		timer.start();
     }
     
     public void updateAll(String classLook) {
@@ -173,12 +205,9 @@ public class JPanelApp extends JPanel implements ContextMenu{
     		sideMenuPanel = createSideMenuPanel(); // Não precisa mais do frame aqui
     		add(sideMenuPanel, BorderLayout.WEST);
 
-    		// Conteúdo principal
     		contentPanel = createContentPanel(); // Inicializa o painel de conteúdo
     		add(contentPanel, BorderLayout.CENTER);
     		
-    		
-
     		// Rodapé
     		footerPanel = createFooterPanel();
     		add(footerPanel, BorderLayout.SOUTH);
@@ -259,5 +288,15 @@ public class JPanelApp extends JPanel implements ContextMenu{
     		lastItemMenu = op.get();
     	}
 	}
+
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
+
+	public ContextApp getContext() {
+		return context;
+	}
+	
+	
 
 }

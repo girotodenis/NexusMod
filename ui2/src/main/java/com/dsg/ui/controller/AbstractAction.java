@@ -1,5 +1,7 @@
 package com.dsg.ui.controller;
 
+import com.dsg.nexusmod.ui.Action;
+
 /**
  * @author Denis Giroto
  * 

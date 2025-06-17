@@ -30,8 +30,11 @@ public class ContextAppImp implements ContextApp {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date ) {
+		System.out.println("Firing event: " + event);
+		System.out.println("Firing event: this " + this+ event);
 		if (eventListeners.get(event) != null) {
 			for (AbstractEventListener eventListener : eventListeners.get(event)) {
+				System.out.println("Firing eventListener: " + eventListener);
 				eventListener.handleEvent(date);
 			}
 		}
@@ -45,7 +48,6 @@ public class ContextAppImp implements ContextApp {
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	public <T> void registerEvent(Class<T> eventClass, AbstractEventListener<T> eventListener) {
-		System.out.println("Registering event: " + eventClass.getName());
 		registerEvent(eventClass.getName(), eventListener);
 	}
 	
@@ -57,6 +59,7 @@ public class ContextAppImp implements ContextApp {
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
+		System.out.println("Registering event: this " + this);
 		System.out.println("Registering event: " + event);
 		List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 		if (listenersForEvent == null) {
@@ -64,6 +67,11 @@ public class ContextAppImp implements ContextApp {
 		}
 		listenersForEvent.add(eventListener);
 		eventListeners.put(event, listenersForEvent);
+	}
+
+	@Override
+	public boolean contens(String event) {
+		return eventListeners.get(event)!=null && !eventListeners.get(event).isEmpty();
 	}
 	
 

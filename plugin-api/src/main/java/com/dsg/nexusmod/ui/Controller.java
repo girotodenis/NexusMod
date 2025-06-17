@@ -10,8 +10,5 @@ import javax.swing.JPanel;
  * 
  */
 public interface Controller<T extends JPanel> {
-
-
-	T getPanel();
 	
 }

@@ -29,16 +29,14 @@ public class CustomSideMenu extends JPanel {
     private final int collapsedWidth = 50; // Largura do menu encolhido
     private final List<MenuItem> menuItems = new ArrayList<>();
 
-    private final ContextMenu app; // Contêiner para os itens do menu
     private final JPanel menuContainer; // Contêiner para os itens do menu
     private final Color padrao; 
     private final Color menuContainerColor; 
     private final Color itemMenuColor; 
     private final Color toggleMenuColor; 
 
-    public CustomSideMenu(ContextMenu app) {
+    public CustomSideMenu() {
     	
-    	this.app = app;
     	this.padrao = getBackground();
     	this.menuContainerColor = UIUtils.ajustColor(padrao,-20);
     	this.itemMenuColor = UIUtils.ajustColor(this.padrao,-10);
@@ -91,16 +89,17 @@ public class CustomSideMenu extends JPanel {
     }
 
     // Método para adicionar um item de menu
-    public void addMenuItem(String id, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
+    public MenuItem addMenuItem(String id, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
         MenuItem item = new MenuItem(id, text, icon, action);
         menuItems.add(item);
         menuContainer.add(item);
         revalidate();
         repaint();
+        return item;
     }
 
     // Método para adicionar um item de menu com sub-itens
-    public void addMenuItemWithSubItems(String text, List<MenuItem> subItems) {
+    public MenuItem addMenuItemWithSubItems(String text, List<MenuItem> subItems) {
         MenuItem item = new MenuItem(text, text, UIManager.getIcon("Menu.arrowIcon"), null);
         item.setSubItems(subItems, item);
         menuItems.add(item);
@@ -113,6 +112,7 @@ public class CustomSideMenu extends JPanel {
         
         revalidate();
         repaint();
+        return item;
     }
 
     // Classe interna para representar um item de menu
@@ -133,7 +133,6 @@ public class CustomSideMenu extends JPanel {
         
         public MenuItem(String id, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
         	this.id = id;
-        	System.out.println("MenuItem ID: " + id);
         	this.text = text;
         	this.icon = icon;
         	this.action = action;
@@ -160,17 +159,21 @@ public class CustomSideMenu extends JPanel {
                 addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent e) {
-                    	for (MenuItem menuItem : menuItems) {
-                    		menuItem.setBackground( itemMenuColor );
-						}
-                    	((MenuItem)e.getSource()).setBackground(padrao);
-                        action.accept(CustomSideMenu.MenuItem.this);
-                        CustomSideMenu.this.app.lastItemMenu(CustomSideMenu.MenuItem.this.getText());
+                    	action.accept(CustomSideMenu.MenuItem.this);
+                    	select((MenuItem)e.getSource());
                     }
+
                 });
             }
         }
 
+        public void select( MenuItem item) {
+        	for (MenuItem menuItem : menuItems) {
+        		menuItem.setBackground( itemMenuColor );
+        	}
+        	item.setBackground(padrao);
+        }
+        
         // Atualiza a visualização do item com base no estado do menu
         public void updateView(boolean expanded) {
         	label.setText(expanded ? text : "");

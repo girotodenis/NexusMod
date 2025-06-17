@@ -10,8 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
+import com.dsg.nexusmod.ui.Controller;
 import com.dsg.ui.AppUtilities;
 import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 public class MainApp {
 	
@@ -23,7 +26,7 @@ public class MainApp {
 //           });
            // Adicionar um item com sub-itens
     	
-    	AppUtilities.builder()
+    	var controlerApp = AppUtilities.builder()
     		.title("teste")
     		.size(1024, 768)
     		.lookAndFeel(FlatDarculaLaf.class)
@@ -44,7 +47,22 @@ public class MainApp {
 //	    	.addMenuItem("Menu 3","SubItem 3.2 FlatDarculaLaf", UIManager.getIcon("FileChooser.homeFolderIcon"), (itemMenu) -> mainPanel.updateAll(FlatDarculaLaf.class))
 //	    	.addMenuItem("Menu 3","SubItem 3.3 FlatIntelliJLaf", UIManager.getIcon("HelpButton.icon"), (itemMenu) -> mainPanel.updateAll(FlatIntelliJLaf.class))
 //	    	.addMenuItem("Menu 3","SubItem 3.4 FlatMacLightLaf", UIManager.getIcon("Tree.leafIcon"), (itemMenu) -> mainPanel.updateAll(FlatMacLightLaf.class))
-    	.build();
+    	.build().getMain();
+    	
+//    	controlerApp.addMenuItem("Menu 1 Tela Icons", UIManager.getIcon("FileView.directoryIcon"), new Controller<JPanel) implements JPanel {
+//			@Override
+//			public void onInit(JPanel content) {
+//				content.setLayout(new BorderLayout()); // Usar BorderLayout para adicionar título e tabela
+//		        content.add(createSubItemPanel("Menu 1"), BorderLayout.CENTER);
+//			}
+//		});
+//
+//			
+//		});
+    	controlerApp.addMenuItem("Menu 1 Tela FlatDarculaLaf", UIManager.getIcon("FileView.directoryIcon"), ()-> controlerApp.updateAll(FlatDarculaLaf.class));
+    	controlerApp.addMenuItem("Menu 1 Tela FlatMacDarkLaf", UIManager.getIcon("FileView.directoryIcon"), ()-> controlerApp.updateAll(FlatMacDarkLaf.class));
+    	controlerApp.addMenuItem("Menu 1 Tela FlatMacLightLaf", UIManager.getIcon("FileView.directoryIcon"), ()-> controlerApp.updateAll(FlatMacLightLaf.class));
+    	controlerApp.getPanel().loadMenu();
     }
     
     

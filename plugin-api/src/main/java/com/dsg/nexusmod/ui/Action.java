@@ -1,4 +1,4 @@
-package com.dsg.ui.controller;
+package com.dsg.nexusmod.ui;
 
 public interface Action {
 

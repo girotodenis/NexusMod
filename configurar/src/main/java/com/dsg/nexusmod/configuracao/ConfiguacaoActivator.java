@@ -10,11 +10,13 @@ import org.pf4j.PluginWrapper;
 import com.dsg.nexusmod.configuracao.ui.ControllerTeste;
 import com.dsg.nexusmod.plugin.ItemMenu;
 import com.dsg.nexusmod.ui.MenuPlugin;
+import com.formdev.flatlaf.FlatDarculaLaf;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 public class ConfiguacaoActivator extends Plugin {
 
 	public static String PLUGIN_MENU_ID;
-	public static ControllerTeste controller = new ControllerTeste();
+	public static String PLUGIN_MENU2_ID;
 	
     public ConfiguacaoActivator(PluginWrapper wrapper) {
         super(wrapper);
@@ -30,7 +32,7 @@ public class ConfiguacaoActivator extends Plugin {
     @Override
     public void stop() {
         System.out.println("Plugin " + getWrapper().getPluginId() + " está sendo parado!");
-        controller.stop(PLUGIN_MENU_ID);
+//        controller.stop(PLUGIN_MENU_ID);
     }
     
     @Extension
@@ -38,7 +40,10 @@ public class ConfiguacaoActivator extends Plugin {
 
 		@Override
 		public void addItemMenu(MenuPlugin menu) {
-			PLUGIN_MENU_ID = menu.addMenuItem("Configuração", UIManager.getIcon("FileView.directoryIcon"), controller );
+			PLUGIN_MENU_ID = menu.addMenuItem("Configuração", UIManager.getIcon("FileView.directoryIcon"), new ControllerTeste() );
+			PLUGIN_MENU2_ID = menu.addMenuItem("Configuração Look FlatMacDarkLaf", UIManager.getIcon("FileView.directoryIcon"), () -> menu.updateAll(FlatMacDarkLaf.class)  );
+			PLUGIN_MENU2_ID = menu.addMenuItem("Configuração Look FlatDarculaLaf", UIManager.getIcon("FileView.directoryIcon"), () -> menu.updateAll(FlatDarculaLaf.class)  );
+			PLUGIN_MENU2_ID = menu.addMenuItem("Configuração Look FlatMacDarkLaf", UIManager.getIcon("FileView.directoryIcon"), () -> menu.updateAll(FlatMacDarkLaf.class)  );
 		}
 
 

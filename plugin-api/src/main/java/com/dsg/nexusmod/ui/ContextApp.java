@@ -35,6 +35,8 @@ public interface ContextApp {
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	<T> void registerEvent(String event, AbstractEventListener<T> eventListener);
+
+	boolean contens(String string);
 	
 
 }
