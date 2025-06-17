@@ -30,7 +30,7 @@ import com.dsg.ui.componente.CustomSideMenu.MenuItem;
 import com.dsg.ui.componente.ItemMenu;
 import com.dsg.ui.util.UIUtils;
 
-public class JPanelApp extends JPanel implements ContextMenu{
+public class JPanelApp extends JPanel {
 
 	private static final long serialVersionUID = 8898685804729074138L;
 
@@ -132,10 +132,14 @@ public class JPanelApp extends JPanel implements ContextMenu{
 		if( !context.contens(id+".badgeNumber")){
 			System.out.println("Registra evento badgeNumber: " + id+".badgeNumber");
 			context.registerEvent(id+".badgeNumber", (date)-> {
-				System.out.println("Registra evento badgeNumber: " + id+".badgeNumber " + date);
-				itemMenu.setBadgeNumber((int)date);
-				itemMenu.revalidate();
-				itemMenu.repaint();
+				Timer timer = new Timer(10, e -> {
+					System.out.println("Registra evento badgeNumber: " + id+".badgeNumber " + date);
+					itemMenu.setBadgeNumber((int)date);
+					sideMenu.revalidate();
+					sideMenu.repaint();
+				});
+				timer.setRepeats(false); // Garantir que o Timer execute apenas uma vez
+				timer.start();
 			});
 		}
 		if( !context.contens(id+".visible")){
