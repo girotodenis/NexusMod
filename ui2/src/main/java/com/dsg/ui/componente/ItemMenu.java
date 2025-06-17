@@ -6,9 +6,12 @@ import java.util.function.Consumer;
 
 import javax.swing.Icon;
 
+import com.dsg.ui.componente.CustomSideMenu.MenuItem;
+
 
 public class ItemMenu {
 	
+	private String id;
 	private String text;
 	private Icon icon;
 	private Consumer<CustomSideMenu.MenuItem> action;
@@ -16,6 +19,7 @@ public class ItemMenu {
 	
 	public ItemMenu(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> consumer, List<ItemMenu> subItems) {
 		super();
+		this.id =  String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));
 		this.text = text;
 		this.icon = icon;
 		this.action = consumer;
@@ -38,12 +42,17 @@ public class ItemMenu {
 		return subItems;
 	}
 	
-	public ItemMenu addSubItems(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> consumer) {
+	public String getId() {
+		return id;
+	}
+
+	public String addSubItems(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> consumer) {
 		if(subItems==null) {
 			subItems = new ArrayList<ItemMenu>();
 		}
-		subItems.add(new ItemMenu(text, icon, consumer, null));
-		return this;
+		ItemMenu itemMenuGroup = new ItemMenu(text, icon, consumer, null);
+		subItems.add(itemMenuGroup);
+		return itemMenuGroup.getId();
 	}
 	
 	

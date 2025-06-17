@@ -1,5 +1,6 @@
-package com.dsg.nexusmod.osgi;
+package com.dsg.nexusmod.pf4j;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public interface OSGiFramework {
@@ -13,6 +14,12 @@ public interface OSGiFramework {
      * Para o framework OSGi.
      */
     void stop();
+    
+    /**
+     * Lista plugins instalados
+     * @return
+     */
+    List<Plugin> getPlugins();
 
     /**
      *  instalar um plugin  automaticamente.

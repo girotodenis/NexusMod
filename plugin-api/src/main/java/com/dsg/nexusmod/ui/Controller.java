@@ -1,4 +1,4 @@
-package com.dsg.nexusmod.controller;
+package com.dsg.nexusmod.ui;
 
 import javax.swing.JPanel;
 

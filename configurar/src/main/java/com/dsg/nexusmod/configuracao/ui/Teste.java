@@ -13,7 +13,8 @@ import javax.swing.UIManager;
 
 public class Teste extends JPanel {
 	
-	public JButton button = new JButton("Teste");
+	public JButton buttonBadgeNumber = new JButton("Teste badgeNumber");
+	public JButton buttonMenu = new JButton("Teste Menu visible");
 	
 	public Teste() {
 		setLayout(new BorderLayout()); // Usar BorderLayout para adicionar título e tabela
@@ -26,7 +27,8 @@ public class Teste extends JPanel {
         // Criar um painel para os ícones
         JPanel iconPanel = new JPanel();
         iconPanel.setLayout(new GridLayout(0, 3)); // 0 linhas e 5 colunas
-        iconPanel.add(button);
+        iconPanel.add(buttonBadgeNumber);
+        iconPanel.add(buttonMenu);
 
         // Adicionar ícones ao painel
         Enumeration<Object> keys = UIManager.getDefaults().keys();

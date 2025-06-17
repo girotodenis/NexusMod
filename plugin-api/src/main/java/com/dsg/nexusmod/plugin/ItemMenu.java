@@ -1,8 +1,8 @@
-package com.dsg.nexusmod.ui;
+package com.dsg.nexusmod.plugin;
 
 import org.pf4j.ExtensionPoint;
 
-import com.dsg.nexusmod.controller.MenuPlugin;
+import com.dsg.nexusmod.ui.MenuPlugin;
 
 
 public interface ItemMenu extends ExtensionPoint{

@@ -8,8 +8,10 @@ import java.util.function.Consumer;
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
+import org.pf4j.PluginWrapper;
 
-import com.dsg.nexusmod.osgi.OSGiFramework;
+import com.dsg.nexusmod.pf4j.OSGiFramework;
+import com.dsg.nexusmod.pf4j.Plugin;
 
 public class Pf4jOSGiAdapter implements OSGiFramework {
 
@@ -96,5 +98,18 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             putter.accept(listener);
         }
 		
+	}
+
+	@Override
+	public List<Plugin> getPlugins() {
+		List<Plugin> plugins = pluginManager.getPlugins().stream()
+				.map(pluginWrapper -> {
+					Plugin plugin = new Plugin();
+					plugin.setId(pluginWrapper.getPluginId());
+					plugin.setVersion(pluginWrapper.getDescriptor().getVersion());
+					plugin.setState(pluginWrapper.getPluginState().toString());
+					return plugin;
+				}).toList();
+		return plugins;
 	}
 }

@@ -69,11 +69,13 @@ public class JPanelApp extends JPanel implements ContextMenu{
         return headerPanel;
     }
     
-    public void addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
-    	itens.add(new ItemMenu(text, icon, action, null));
+    public String addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
+    	ItemMenu itemMenu = new ItemMenu(text, icon, action, null);
+		itens.add(itemMenu);
+    	return itemMenu.getId();
     }
     
-    public void addMenuItem(String group, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
+    public String addMenuItem(String group, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
     	
     	ItemMenu item = null;
     	var op = itens.stream().filter(m->m.getText().equals(group)).findFirst();
@@ -84,8 +86,8 @@ public class JPanelApp extends JPanel implements ContextMenu{
     		item = new ItemMenu(group, UIManager.getIcon("Menu.arrowIcon"), null, null);
     		itens.add(item);
     	}
-		item.addSubItems(text,icon,action);
-    
+		
+		return item.addSubItems(text,icon,action);
     }
     
 
@@ -106,11 +108,11 @@ public class JPanelApp extends JPanel implements ContextMenu{
 		
     	itens.forEach(item->{
     		if(item.getAction() != null) {
-    			sideMenu.addMenuItem(item.getText(), item.getIcon(), item.getAction());
+    			sideMenu.addMenuItem(item.getId(), item.getText(), item.getIcon(), item.getAction());
     		}else {
     			List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
     			item.getSubItems().forEach(subitem->{
-    				subItems.add(sideMenu.new MenuItem(subitem.getText(), subitem.getIcon(), subitem.getAction() ));
+    				subItems.add(sideMenu.new MenuItem(subitem.getId(), subitem.getText(), subitem.getIcon(), subitem.getAction() ));
     			});
     			sideMenu.addMenuItemWithSubItems(item.getText(), subItems);
     		}

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.dsg.nexusmod.controller.AbstractEventListener;
-import com.dsg.nexusmod.controller.ContextApp;
+import com.dsg.nexusmod.ui.AbstractEventListener;
+import com.dsg.nexusmod.ui.ContextApp;
 
 public class ContextAppImp implements ContextApp {
 	
@@ -45,6 +45,7 @@ public class ContextAppImp implements ContextApp {
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	public <T> void registerEvent(Class<T> eventClass, AbstractEventListener<T> eventListener) {
+		System.out.println("Registering event: " + eventClass.getName());
 		registerEvent(eventClass.getName(), eventListener);
 	}
 	
@@ -56,6 +57,7 @@ public class ContextAppImp implements ContextApp {
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
+		System.out.println("Registering event: " + event);
 		List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 		if (listenersForEvent == null) {
 			listenersForEvent = new ArrayList<AbstractEventListener<?>>();
