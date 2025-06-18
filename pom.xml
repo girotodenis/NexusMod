@@ -9,7 +9,6 @@
 	<modules>
 		<module>osgi</module>
 		<module>plugin-api</module>
-		<module>ui</module>
 		<module>configurar</module>
 		<module>ui2</module>
 	</modules>

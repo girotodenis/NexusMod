@@ -1,6 +1,7 @@
 package com.dsg.nexusmod.configuracao;
 
 
+import javax.swing.Icon;
 import javax.swing.UIManager;
 
 import org.pf4j.Extension;
@@ -43,7 +44,9 @@ public class ConfiguacaoActivator extends Plugin {
 		@Override
 		public void addItemMenu(MenuPlugin menu) {
 			System.out.println("addItemMenu "+this.getClass().getName());
-			menu.addMenuItem("Configuração", UIManager.getIcon("FileView.directoryIcon"), configuracaoController);
+			javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/imagem/setting-configure.png"));
+	        icon = new javax.swing.ImageIcon(icon.getImage().getScaledInstance(16, 16,  java.awt.Image.SCALE_SMOOTH));
+			menu.addMenuItem("Configuração", icon, configuracaoController);
 		}
     }
     
