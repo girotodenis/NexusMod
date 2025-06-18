@@ -38,6 +38,8 @@ public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, On
 		this.contextApp = contextApp;
 		contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração.visible", true);
 		
+		listaPlugin.clear();
+		
 		osgiService.bundles().forEach(p->{
 			PluginModel pluginModel = new PluginModel(p);
 			pluginModel.addObserver(this);

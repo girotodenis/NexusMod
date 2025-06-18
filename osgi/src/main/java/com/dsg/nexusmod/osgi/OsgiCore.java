@@ -51,4 +51,9 @@ public class OsgiCore implements OSGiFramework {
 		return this.osgi.bundles();
 	}
 
+	@Override
+	public void loadBundles(String directoryPath) {
+		 this.osgi.loadBundles(directoryPath);
+	}
+
 }

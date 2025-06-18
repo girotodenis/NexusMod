@@ -56,5 +56,10 @@ public interface OSGiFramework {
      */
     List<Plugin> bundles();
 
+    /**
+     * Carrega todos os bundles de um diretório específico.
+     * @param directoryPath
+     */
+    void loadBundles(String directoryPath);
 
 }

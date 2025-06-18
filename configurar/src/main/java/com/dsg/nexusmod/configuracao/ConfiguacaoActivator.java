@@ -1,9 +1,6 @@
 package com.dsg.nexusmod.configuracao;
 
 
-import javax.swing.Icon;
-import javax.swing.UIManager;
-
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;

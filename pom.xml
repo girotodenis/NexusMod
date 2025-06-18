@@ -11,6 +11,7 @@
 		<module>plugin-api</module>
 		<module>configurar</module>
 		<module>ui2</module>
+		<module>plugin-teste</module>
 	</modules>
 
 	<properties>
