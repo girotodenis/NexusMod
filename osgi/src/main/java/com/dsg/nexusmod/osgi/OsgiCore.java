@@ -1,5 +1,6 @@
 package com.dsg.nexusmod.osgi;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class OsgiCore implements OSGiFramework {
@@ -43,6 +44,11 @@ public class OsgiCore implements OSGiFramework {
 	@Override
 	public <T> void registerPlugin(Class<T> classPlugin, Consumer<T> putter) {
 		this.osgi.registerPlugin(classPlugin, putter);
+	}
+
+	@Override
+	public List<Plugin> bundles() {
+		return this.osgi.bundles();
 	}
 
 }

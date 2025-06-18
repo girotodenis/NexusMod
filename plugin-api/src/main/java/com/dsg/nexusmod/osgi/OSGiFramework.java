@@ -1,5 +1,6 @@
 package com.dsg.nexusmod.osgi;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public interface OSGiFramework {
@@ -49,5 +50,11 @@ public interface OSGiFramework {
      * @param bundleId ID do bundle a ser desinstalado.
      */
     void uninstallBundle(String bundleId);
+    
+    /**
+     * @return
+     */
+    List<Plugin> bundles();
+
 
 }

@@ -10,6 +10,7 @@ import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
 
 import com.dsg.nexusmod.osgi.OSGiFramework;
+import com.dsg.nexusmod.osgi.Plugin;
 
 public class Pf4jOSGiAdapter implements OSGiFramework {
 
@@ -96,5 +97,14 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             putter.accept(listener);
         }
 		
+	}
+
+	@Override
+	public List<Plugin> bundles() {
+		// TODO Auto-generated method stub
+		return pluginManager.getPlugins()
+				.stream()
+				.map(e -> new Plugin(e.getPluginId(), e.getDescriptor().getVersion() , e.getPluginState().name(), e.getDescriptor().getPluginDescription()) )
+				.toList();
 	}
 }
