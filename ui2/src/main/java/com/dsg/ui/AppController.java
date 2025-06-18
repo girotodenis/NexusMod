@@ -4,8 +4,8 @@ import javax.swing.Icon;
 import javax.swing.JPanel;
 
 import com.dsg.nexusmod.controller.Controller;
-import com.dsg.nexusmod.controller.MenuPlugin;
-import com.dsg.nexusmod.controller.OnInit;
+import com.dsg.nexusmod.ui.MenuPlugin;
+import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.ui.componente.CustomSideMenu;
 
 public class AppController implements MenuPlugin, Controller<JPanelApp> {

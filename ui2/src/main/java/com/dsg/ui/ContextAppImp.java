@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.dsg.nexusmod.controller.AbstractEventListener;
-import com.dsg.nexusmod.controller.ContextApp;
+import com.dsg.nexusmod.ui.ContextApp;
 
 public class ContextAppImp implements ContextApp {
 	

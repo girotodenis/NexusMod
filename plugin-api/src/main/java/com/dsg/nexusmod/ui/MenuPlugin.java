@@ -1,6 +1,8 @@
-package com.dsg.nexusmod.controller;
+package com.dsg.nexusmod.ui;
 
 import javax.swing.Icon;
+
+import com.dsg.nexusmod.controller.Controller;
 
 public interface MenuPlugin {
 	

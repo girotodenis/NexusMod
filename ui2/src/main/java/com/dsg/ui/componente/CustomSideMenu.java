@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
@@ -27,7 +28,7 @@ public class CustomSideMenu extends JPanel {
     
 	private boolean expanded = true; // Indica se o menu está expandido
     private final int expandedWidth = 300; // Largura do menu expandido
-    private final int collapsedWidth = 50; // Largura do menu encolhido
+    private final int collapsedWidth = 65; // Largura do menu encolhido
     private final List<MenuItem> menuItems = new ArrayList<>();
 
 //    private final ContextMenu app; // Contêiner para os itens do menu
@@ -49,12 +50,15 @@ public class CustomSideMenu extends JPanel {
         setBackground( this.itemMenuColor );
 
         // Botão para expandir/encolher o menu
-        JButton toggleButton = new JButton("☰");
-        toggleButton.setFont(new Font("Arial", Font.BOLD, 16));
+        JButton toggleButton = new JButton("☰ ");
+        toggleButton.setFont(new Font("Arial", Font.BOLD, 26));
         toggleButton.setFocusPainted(false);
         toggleButton.setBackground( this.toggleMenuColor );
         toggleButton.setBorderPainted(false);
         toggleButton.setPreferredSize(new Dimension(50, 50));
+        
+        toggleButton.setHorizontalTextPosition(SwingConstants.LEFT); // Texto à esquerda
+        toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
         toggleButton.addActionListener(e -> toggleMenu());
 

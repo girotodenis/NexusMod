@@ -1,4 +1,6 @@
-package com.dsg.nexusmod.controller;
+package com.dsg.nexusmod.ui;
+
+import com.dsg.nexusmod.controller.AbstractEventListener;
 
 public interface ContextApp {
 	

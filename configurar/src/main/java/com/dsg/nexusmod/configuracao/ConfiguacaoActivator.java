@@ -7,15 +7,17 @@ import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
 
-import com.dsg.nexusmod.configuracao.ui.ControllerTeste;
-import com.dsg.nexusmod.controller.MenuPlugin;
+import com.dsg.nexusmod.configuracao.controller.ConfiguracaoController;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiPlugin;
 import com.dsg.nexusmod.ui.ItemMenu;
+import com.dsg.nexusmod.ui.MenuPlugin;
+import com.dsg.nexusmod.ui.OnInit;
 
 public class ConfiguacaoActivator extends Plugin {
 
 	private static OSGiFramework osgiService;
+	private static ConfiguracaoController configuracaoController;
 	
     public ConfiguacaoActivator(PluginWrapper wrapper) {
         super(wrapper);
@@ -23,10 +25,16 @@ public class ConfiguacaoActivator extends Plugin {
     
     public void start() {
     	System.out.println("start "+this.getClass().getName());
+    	if (configuracaoController != null && configuracaoController instanceof OnInit) {
+    		configuracaoController.start();
+		}
     }
 
     public void stop() {
     	System.out.println("stop "+this.getClass().getName());
+    	if (configuracaoController != null) {
+			configuracaoController.stop();
+		}
     }
 
     @Extension
@@ -35,7 +43,7 @@ public class ConfiguacaoActivator extends Plugin {
 		@Override
 		public void addItemMenu(MenuPlugin menu) {
 			System.out.println("addItemMenu "+this.getClass().getName());
-			menu.addMenuItem("Configuração", UIManager.getIcon("FileView.directoryIcon"), new ControllerTeste(osgiService));
+			menu.addMenuItem("Configuração", UIManager.getIcon("FileView.directoryIcon"), configuracaoController);
 		}
     }
     
@@ -44,6 +52,7 @@ public class ConfiguacaoActivator extends Plugin {
 		@Override
 		public void load(OSGiFramework osgi) {
 			osgiService = osgi;
+			configuracaoController = new ConfiguracaoController(osgiService);
 		}
     }
    
