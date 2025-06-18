@@ -9,6 +9,7 @@ public class ControllerTeste implements Controller<Teste>, OnInit {
 	Teste panel = new Teste();
 	ContextApp contextApp;
 	int count = 0;
+	boolean visible = true;
 	@Override
 	public Teste getPanel() {
 		return panel;
@@ -22,6 +23,10 @@ public class ControllerTeste implements Controller<Teste>, OnInit {
 		
 		panel.button.addActionListener(e -> {
 			contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração.badgeNumber", ++count);
+		});
+		
+		panel.button2.addActionListener(e -> {
+			contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração.visible", visible = !visible);
 		});
 		
 	}
