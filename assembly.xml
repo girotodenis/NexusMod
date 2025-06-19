@@ -1,0 +1,48 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 https://maven.apache.org/xsd/assembly-1.1.3.xsd">
+    <id>aplicativo-estrutura</id>
+    <formats>
+        <!-- Formato do pacote final (pode ser dir, zip, tar.gz, etc.) -->
+        <format>dir</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <!-- Configuração para os módulos principais -->
+    <moduleSets>
+        <moduleSet>
+            <!-- Inclui apenas módulos que NÃO sejam plugins (excluímos os que têm "plugin-" no artifactId) -->
+            <includes>
+                <include>core:osgi*</include>
+            </includes>
+            <excludes>
+                <exclude>meu-projeto:plugin-*</exclude>
+            </excludes>
+            <binaries>
+                <outputDirectory>bin</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+
+        <!-- Configuração para os módulos de plugins -->
+        <moduleSet>
+            <!-- Inclui apenas os módulos de plugins (os que têm "plugin-" no artifactId) -->
+            <includes>
+                <include>core:plugin-*</include>
+            </includes>
+            <binaries>
+                <outputDirectory>plugins</outputDirectory>
+                <unpack>false</unpack>
+            </binaries>
+        </moduleSet>
+    </moduleSets>
+
+    <!-- Adiciona todas as dependências na pasta lib -->
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory>lib</outputDirectory>
+            <scope>runtime</scope>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+</assembly>

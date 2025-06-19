@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.dsg.nexusmod</groupId>
 		<artifactId>core</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 	<artifactId>ui2</artifactId>
 

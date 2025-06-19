@@ -21,6 +21,14 @@ public interface ContextApp {
 	<T> void fireEvent(String event, T date );
 	
 	/**
+	 * Aciona o <code>AbstractEventListener</code> relacionado ao
+	 * <code>AbstractEvent</code> para que o <code>listener</code> trate o evento.
+	 * 
+	 * @param event referÃªncia do evento gerado
+	 */
+	<T> void menuEvent(String menu, String event, T date );
+	
+	/**
 	 * Registra um <code>listener</code> que deve ser acionado de acordo com o tipo
 	 * do <code>evento</code>.
 	 * 

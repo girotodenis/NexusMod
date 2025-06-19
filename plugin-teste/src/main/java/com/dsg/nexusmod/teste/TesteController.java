@@ -1,6 +1,7 @@
 package com.dsg.nexusmod.teste;
 
 import com.dsg.nexusmod.controller.Controller;
+import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.ui.ContextApp;
 import com.dsg.nexusmod.ui.OnInit;
 
@@ -28,24 +29,27 @@ public class TesteController implements Controller<Teste>, OnInit {
 		
 		this.panel = new Teste();
 		
-		contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Tela_de_Teste.visible", visible = true);
-		
+		contextApp.menuEvent("Tela_de_Teste", "visible", visible = true);
+		System.out.println("TesteController onInit"+visible);
 		panel.button.addActionListener(e -> {
-			contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Tela_de_Teste.badgeNumber", ++count);
+			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", ++count);
 		});
 		
 		panel.button2.addActionListener(e -> {
-			contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Tela_de_Teste.visible", visible = !visible);
+			contextApp.menuEvent("Tela_de_Teste", "visible", visible = !visible);
 		});
 		
 	}
 
 	public void stop() {
 		System.out.println("TesteController stop");
-		contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Tela_de_Teste.visible", visible = false);
+		
+		if(contextApp != null) {
+			contextApp.menuEvent("Tela_de_Teste", "visible", visible = false);
+			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", count = 0);
+		}
+		
 		panel.removeAll();
-		count = 0;
-		contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Tela_de_Teste.badgeNumber", count);
 	}
 
 	public void start() {
@@ -53,6 +57,14 @@ public class TesteController implements Controller<Teste>, OnInit {
 			System.out.println("TesteController start");
 			onInit(contextApp);
 		}
+	}
+
+	public void alertaConfiguracao(Plugin plugin) {
+		System.out.println("TesteController alertaConfiguracao2: " + plugin.getPluginId() + " - " + plugin.getState());
+		contextApp.fireEvent("ConfiguracaoController.notificacao", plugin.getPluginId());
+		if("CREATED".equals(plugin.getState())) {
+		}
+		
 	}
 
 

@@ -21,6 +21,19 @@ public class ListaPlugin extends ModelAbstract<List<PluginModel>> implements Plu
 		notifyObservers();
 	}
 	
+	public void add(List<PluginModel> plugins) {
+		this.plugins.clear();
+		this.plugins.forEach(p -> p.removeObserver(this));
+		
+		plugins.forEach(p ->{
+			p.removeObserver(this);
+			this.plugins.add(p);
+		});
+		
+		notifyObservers();
+	}
+
+	
 	public void remove(Plugin plugin) {
 		this.plugins = this.plugins.stream()
 			.filter(p -> !p.getPlugin().getPluginId().equals(plugin.getPluginId()))

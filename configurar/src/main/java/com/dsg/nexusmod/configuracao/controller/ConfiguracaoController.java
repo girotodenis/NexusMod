@@ -10,9 +10,10 @@ import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.ui.ContextApp;
+import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
 
-public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, OnInit, PluginlObserver {
+public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, OnInit,OnChange, PluginlObserver {
 
 	ConfiguracaoPanel panel;
 	ContextApp contextApp;
@@ -34,23 +35,51 @@ public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, On
 
 	@Override
 	public void onInit(ContextApp contextApp) {
-		
+		System.out.println("ConfiguracaoController onInit");
 		this.contextApp = contextApp;
-		contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração.visible", true);
 		
-		listaPlugin.clear();
+		if(this.contextApp==null) {
+			System.out.println("ContextApp não pode ser nulo. Certifique-se de que o ContextApp foi inicializado antes de chamar onInit.");
+			return ;
+		}
 		
-		osgiService.bundles().forEach(p->{
-			PluginModel pluginModel = new PluginModel(p);
-			pluginModel.addObserver(this);
-			listaPlugin.add(pluginModel);
+		contextApp.registerEvent("ConfiguracaoController.notificacao", (data)->{
+			System.out.println("ConfiguracaoController notificacao: " + data);
+			count = 0;
+			carregarListaPlugins();
+			listaPlugin.getModel().forEach(p -> {
+				if(p.getPluginId().equals(data)) {
+					p.setNotificacao(true);
+					count++;
+				}else if(p.isNotificacao()) {
+					count++;
+				}
+			});
+			contextApp.menuEvent("Configuração", "badgeNumber", count);
+			listaPlugin.notifyObservers();
 		});
+	}
+	
+	@Override
+	public void onChage(ContextApp contextApp) {
+		System.out.println("ConfiguracaoController onChage");
+		carregarListaPlugins();
+	}
+
+	private void carregarListaPlugins() {
+		var list = osgiService.bundles().stream().map(p->{
+			PluginModel pluginModel = new PluginModel(p);
+			pluginModel.setDisable(p.getPluginId().equals("configurar-plugin"));
+			pluginModel.addObserver(this);
+			return pluginModel;
+		}).toList();
+		listaPlugin.add(list);
 	}
 
 	public void stop() {
 		System.out.println("ConfiguracaoController stop");
 		listaPlugin.clear();
-		contextApp.fireEvent("com.dsg.ui.componente.CustomSideMenu$MenuItem.Configuração.visible", false);
+		contextApp.menuEvent("Configuração","visible", false);
 		
 	}
 
@@ -67,10 +96,12 @@ public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, On
 		System.out.println("Plugin atualizado: " + plugin.getPluginId() + " - " + plugin.getState());
 		if("STOPED".equals(plugin.getState())) {
 			this.osgiService.stopBundle(plugin.getPluginId());
-		}
-		if("STARTED".equals(plugin.getState())) {
+		}else {
 			this.osgiService.restartBundle(plugin.getPluginId());
-		}		
+		}
+		contextApp.fireEvent("ConfiguracaoController.notificacao", null);
 	}
+
+	
 
 }

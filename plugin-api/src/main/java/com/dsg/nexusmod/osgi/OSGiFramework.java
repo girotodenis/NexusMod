@@ -1,7 +1,7 @@
 package com.dsg.nexusmod.osgi;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public interface OSGiFramework {
 	
@@ -28,7 +28,7 @@ public interface OSGiFramework {
      * @param classPlugin
      * @param putter
      */
-    <T> void registerPlugin(Class<T> classPlugin, Consumer<T> putter );
+    <T,P> void registerPlugin(Class<T> classPlugin, BiConsumer<T, P> putter );
 
     /**
      * Para um bundle específico.
@@ -56,10 +56,10 @@ public interface OSGiFramework {
      */
     List<Plugin> bundles();
 
-    /**
-     * Carrega todos os bundles de um diretório específico.
-     * @param directoryPath
-     */
-    void loadBundles(String directoryPath);
+//    /**
+//     * Carrega todos os bundles de um diretório específico.
+//     * @param directoryPath
+//     */
+//    void loadBundles(String directoryPath);
 
 }

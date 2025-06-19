@@ -28,7 +28,7 @@ public abstract class ModelAbstract<T> {
     }
 
     // Notifica os observadores sobre mudanças na lista de usuários
-    protected void notifyObservers() {
+    public void notifyObservers() {
         for (ModelObserver<T> observer : observers) {
             observer.update(model);
         }

@@ -1,11 +1,11 @@
 package com.dsg.nexusmod.osgi.pf4j;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.pf4j.DefaultPluginManager;
@@ -15,13 +15,12 @@ import org.pf4j.PluginState;
 
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.Plugin;
-import com.dsg.nexusmod.osgi.PluginLoader;
 
 public class Pf4jOSGiAdapter implements OSGiFramework {
 
 	private final PluginManager pluginManager;
-	private static  String PLUGIN_DIRECTORY = "../plugins"; // Diretório padrão para plugins
-	Map<Class<ExtensionPoint>, Consumer<ExtensionPoint>> pluginPaths = new HashMap<>();
+	
+	Map<Class<ExtensionPoint>, BiConsumer<ExtensionPoint, Plugin>> pluginPaths = new LinkedHashMap<>();
     
 	public Pf4jOSGiAdapter() {
         // Inicializa o gerenciador de plugins do PF4J
@@ -43,20 +42,20 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
         System.out.println("PF4J Framework parado. Todos os plugins foram desativados.");
     }
     
-    public void loadBundles(String directoryPath) {
-    
-    	try {
-    		File dir = new File(directoryPath);
-    		if(dir.exists()) {
-    			dir.mkdirs();
-    		}
-    		PLUGIN_DIRECTORY = dir.getCanonicalPath();
-    		
-    		new PluginLoader(this).startMonitoring(PLUGIN_DIRECTORY);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//    public void loadBundles(String directoryPath) {
+//    
+//    	try {
+//    		File dir = new File(directoryPath);
+//    		if(dir.exists()) {
+//    			dir.mkdirs();
+//    		}
+//    		PLUGIN_DIRECTORY = dir.getCanonicalPath();
+//    		
+//    		new PluginLoader(this).startMonitoring(PLUGIN_DIRECTORY);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
     @Override
     public void installBundle(String directoryPath) {
@@ -75,15 +74,21 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             System.out.println("Falha ao carregar o plugin.");
         }
 
-        // Opcional: listar plugins carregados
+//        // Opcional: listar plugins carregados
         pluginManager.getPlugins().forEach(plugin -> {
-            System.out.println("Plugin carregado: " + plugin.getPluginId());
+        	if(plugin!=null)
+        		System.out.println("Plugin carregado: " + plugin.getPluginId());
         });
         
+        var e = pluginManager.getPlugin(pluginId);
+        var plugin = new Plugin(e.getPluginId(), e.getDescriptor().getVersion() , e.getPluginState().name(), e.getDescriptor().getPluginDescription());
+        
         pluginPaths.forEach((classPlugin, putter) -> {
+        	System.out.println("Registrando plugin: " + classPlugin.getName());
 			List<ExtensionPoint> listeners = pluginManager.getExtensions(classPlugin, pluginId);
+			
 			for (ExtensionPoint listener : listeners) {
-				putter.accept(listener);
+				putter.accept(listener, plugin);
 			}
 		});
        
@@ -91,19 +96,25 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 
     @Override
     public void stopBundle(String pluginId) {
+    	System.out.println("Plugin " + pluginId + " parando.");
         PluginState state = pluginManager.stopPlugin(pluginId);
         if (state == PluginState.STOPPED) {
             System.out.println("Plugin " + pluginId + " parado com sucesso.");
         } else {
             System.out.println("Falha ao parar o plugin " + pluginId);
         }
+        pluginManager.getPlugins()
+				.forEach(plugin -> System.out.println("Plugin atual: " + plugin.getPluginId() + " - Estado: " + plugin.getPluginState()));
     }
 
     @Override
     public void restartBundle(String pluginId) {
         PluginState state = pluginManager.stopPlugin(pluginId);
-        if (state == PluginState.STOPPED) {
+        System.out.println("Plugin " + pluginId + " iniciando.");
+        if (state != PluginState.STARTED && state != PluginState.DISABLED) {
             pluginManager.startPlugin(pluginId);
+            
+            pluginManager.loadPlugins();
             System.out.println("Plugin " + pluginId + " reiniciado com sucesso.");
         } else {
             System.out.println("Falha ao reiniciar o plugin " + pluginId);
@@ -121,8 +132,8 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     }
 
 	@Override
-	public <T> void registerPlugin(Class<T> classPlugin, Consumer<T> putter ) {
-		pluginPaths.put((Class<ExtensionPoint>)classPlugin, (Consumer<ExtensionPoint>)putter);
+	public <T,P> void registerPlugin(Class<T> classPlugin, BiConsumer<T, P> putter ) {
+		pluginPaths.put((Class<ExtensionPoint>)classPlugin, (BiConsumer<ExtensionPoint, Plugin>)putter);
 //		List<T> listeners = pluginManager.getExtensions(classPlugin);
 //        for (T listener : listeners) {
 //            putter.accept(listener);

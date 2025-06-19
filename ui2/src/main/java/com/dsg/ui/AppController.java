@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.ui.MenuPlugin;
+import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.ui.componente.CustomSideMenu;
 
@@ -19,8 +20,12 @@ public class AppController implements MenuPlugin, Controller<JPanelApp> {
 	
 	private void show(CustomSideMenu.MenuItem itemMenu, Controller<? extends JPanel> controller) {
 		
-		if(controller instanceof OnInit) {
-			((OnInit)controller).onInit(ContextAppImp.getInstance());
+		if(controller == null) {
+			return;
+		}
+		
+		if(controller instanceof OnChange) {
+			((OnChange)controller).onChage(ContextAppImp.getInstance());
 		}
 		getPanel().showContent( controller.getPanel() );
 	}
@@ -34,12 +39,18 @@ public class AppController implements MenuPlugin, Controller<JPanelApp> {
 	public void addMenuItem(String text, Icon icon, Controller<?> controller) {
 		getPanel().addMenuItem(text, icon, (item) -> show(item, controller) );
 		
+		if(controller instanceof OnInit) {
+			((OnInit)controller).onInit(ContextAppImp.getInstance());
+		}
 	}
 
 	@Override
 	public void addMenuItem(String goup, String text, Icon icon, Controller<?> controller) {
 		getPanel().addMenuItem(goup, text, icon, (item) -> show(item, controller));
 		
+		if(controller instanceof OnInit) {
+			((OnInit)controller).onInit(ContextAppImp.getInstance());
+		}
 	}
 
 }

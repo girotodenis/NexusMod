@@ -1,7 +1,7 @@
 package com.dsg.nexusmod.osgi;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class OsgiCore implements OSGiFramework {
 	
@@ -42,7 +42,7 @@ public class OsgiCore implements OSGiFramework {
 	}
 
 	@Override
-	public <T> void registerPlugin(Class<T> classPlugin, Consumer<T> putter) {
+	public <T,P> void registerPlugin(Class<T> classPlugin, BiConsumer<T,P> putter) {
 		this.osgi.registerPlugin(classPlugin, putter);
 	}
 
@@ -51,9 +51,9 @@ public class OsgiCore implements OSGiFramework {
 		return this.osgi.bundles();
 	}
 
-	@Override
-	public void loadBundles(String directoryPath) {
-		 this.osgi.loadBundles(directoryPath);
-	}
+//	@Override
+//	public void loadBundles(String directoryPath) {
+//		 this.osgi.loadBundles(directoryPath);
+//	}
 
 }

@@ -96,7 +96,12 @@ public class CustomSideMenu extends JPanel {
 
     // Método para adicionar um item de menu
     public void addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
-        MenuItem item = new MenuItem(text, icon, action);
+       
+    	if(menuItems.stream().anyMatch(item -> item.getText().equals(text) )) {
+    		return;
+    	}
+    	
+    	MenuItem item = new MenuItem(text, icon, action);
         menuItems.add(item);
         menuContainer.add(item);
         revalidate();
@@ -105,6 +110,10 @@ public class CustomSideMenu extends JPanel {
 
     // Método para adicionar um item de menu com sub-itens
     public void addMenuItemWithSubItems(String text, List<MenuItem> subItems) {
+    	
+    	if(menuItems.stream().anyMatch(item -> item.getText().equals(text) )) {
+    		return;
+    	}
         MenuItem item = new MenuItem(text, UIManager.getIcon("Menu.arrowIcon"), null);
         item.setSubItems(subItems, item);
         menuItems.add(item);
@@ -137,7 +146,7 @@ public class CustomSideMenu extends JPanel {
         
         public MenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
         	this.id = String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));;
-        	System.out.println("MenuItem ID: " + id);
+        	//System.out.println("MenuItem ID: " + id);
         	this.text = text;
         	this.icon = icon;
         	this.action = action;

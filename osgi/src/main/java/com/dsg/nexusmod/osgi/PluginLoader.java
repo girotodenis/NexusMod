@@ -19,11 +19,11 @@ public class PluginLoader {
 		this.pluginManager = pluginManager;
 	}
 
-	public void startMonitoring(String directoryPath) {
+	public void startMonitoring(String directoryPath, Consumer<String> consumer) {
 		ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 		Runnable task = () -> {
-			System.out.println("Verificando novos plugins na pasta: " + directoryPath);
+			//System.out.println("Verificando novos plugins na pasta: " + directoryPath);
 			File pluginsDir = new File(directoryPath);
 
 			if (pluginsDir.exists() && pluginsDir.isDirectory()) {
@@ -44,6 +44,8 @@ public class PluginLoader {
 						if (!loadedPlugins.contains(canonicalPath)) {
 							System.out.println("Novo plugin encontrado: " + file.getName());
 							pluginManager.installBundle(canonicalPath);
+							loadedPlugins.add(canonicalPath); // Marca o plugin como carregado
+							consumer.accept(canonicalPath); // Notifica o consumidor, se fornecido
 						}
 					}
 				}
@@ -52,7 +54,12 @@ public class PluginLoader {
 			}
 		};
 
-		// Agendar a execução do monitoramento a cada 30 segundos
+		// Agendar a execução do monitoramento a cada 10 segundos
 		scheduler.scheduleAtFixedRate(task, 0, 30, TimeUnit.SECONDS);
+	}
+
+	public void startMonitoring(String pLUGIN_DIRECTORY, Object object) {
+		// TODO Auto-generated method stub
+		
 	}
 }

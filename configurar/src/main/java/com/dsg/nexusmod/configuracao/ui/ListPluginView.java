@@ -55,10 +55,14 @@ public class ListPluginView extends JPanel implements PluginlObserver{
         gbc.anchor = GridBagConstraints.EAST;
         JToggleButton toggleButton = new JToggleButton(plugin.getState().equals("STARTED") ? "Desativar" : "Ativar");
         toggleButton.setSelected("STARTED".equals(plugin.getState())); // Define estado inicial do botão
+        toggleButton.setEnabled(!plugin.isDisable()); // Define visibilidade do botão com base no estado do plugin
         toggleButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	plugin.setState("STARTED".equals(plugin.getState())? "STOPED": "STARTED");
+            	if(plugin.isNotificacao()) {
+            		plugin.setNotificacao(false);
+            	}
+            	plugin.setState( toggleButton.isSelected() ? "STARTED": "STOPED");
             }
         });
         add(toggleButton, gbc);

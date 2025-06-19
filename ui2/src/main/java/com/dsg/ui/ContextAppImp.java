@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
 import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.nexusmod.ui.ContextApp;
 
@@ -39,9 +41,13 @@ public class ContextAppImp implements ContextApp {
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date ) {
+		System.out.println("Firing event: " + event + " with data: " + date);
 		if (eventListeners.get(event) != null) {
+			System.out.println("Found listeners for event: " + event);
 			for (AbstractEventListener eventListener : eventListeners.get(event)) {
-				eventListener.handleEvent(date);
+				//SwingUtilities.invokeLater(() -> {
+					eventListener.handleEvent(date);
+				//});
 			}
 		}
 	}
@@ -65,12 +71,21 @@ public class ContextAppImp implements ContextApp {
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
+		System.out.println("Registering event listener for event: " + event);
 		List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 		if (listenersForEvent == null) {
 			listenersForEvent = new ArrayList<AbstractEventListener<?>>();
 		}
+		listenersForEvent.clear();
 		listenersForEvent.add(eventListener);
 		eventListeners.put(event, listenersForEvent);
+		System.out.println("Registered event listener for event: " + event + " with listener: " + listenersForEvent.size());
+	}
+
+	@Override
+	public <T> void menuEvent(String menu, String event, T date) {
+		// TODO Auto-generated method stub
+		fireEvent(String.format("com.dsg.ui.componente.CustomSideMenu$MenuItem.%s.%s", menu, event), date);
 	}
 	
 
