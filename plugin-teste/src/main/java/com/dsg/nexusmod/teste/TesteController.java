@@ -13,6 +13,7 @@ public class TesteController implements Controller<TesteView>, OnInit {
 	int count = 0;
 	boolean visible = true;
 	
+	TesteColorController proximaTela = new TesteColorController(this, 25);
 	
 	@Override
 	public TesteView getPanel() {
@@ -40,8 +41,10 @@ public class TesteController implements Controller<TesteView>, OnInit {
 		panel.button2.addActionListener(e -> {
 			contextApp.menuEvent("Tela_de_Teste", "visible", visible = !visible);
 		});
+		
 		panel.button3.addActionListener(e -> {
-			contextApp.showContent(new TesteColorController(this, 25));
+			
+			contextApp.showContent(proximaTela);
 		});
 		
 	}
