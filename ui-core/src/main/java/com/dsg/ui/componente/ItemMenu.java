@@ -6,6 +6,8 @@ import java.util.function.Consumer;
 
 import javax.swing.Icon;
 
+import com.dsg.ui.componente.CustomSideMenu.MenuItem;
+
 
 public class ItemMenu {
 	
@@ -23,6 +25,7 @@ public class ItemMenu {
 		this.icon = icon;
 		this.action = consumer;
 		this.subItems = subItems;
+		this.id = String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));
 	}
 
 	public String getText() {
@@ -72,6 +75,5 @@ public class ItemMenu {
 		subItems.add(new ItemMenu(text, icon, consumer, null));
 		return this;
 	}
-	
-	
+
 }

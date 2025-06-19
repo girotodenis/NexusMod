@@ -96,7 +96,7 @@ public class CustomSideMenu extends JPanel {
     }
 
     // Método para adicionar um item de menu
-    public void addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
+    private void addMenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
        
     	if(menuItems.stream().anyMatch(item -> item.getText().equals(text) )) {
     		return;
@@ -110,7 +110,7 @@ public class CustomSideMenu extends JPanel {
     }
 
     // Método para adicionar um item de menu com sub-itens
-    public void addMenuItemWithSubItems(String text, List<MenuItem> subItems) {
+    private void addMenuItemWithSubItems(String text, List<MenuItem> subItems) {
     	
     	if(menuItems.stream().anyMatch(item -> item.getText().equals(text) )) {
     		return;
@@ -139,7 +139,6 @@ public class CustomSideMenu extends JPanel {
 			});
 			addMenuItemWithSubItems(item.getText(), subItems);
 		}
-		
 	}
 
     // Classe interna para representar um item de menu
@@ -148,69 +147,16 @@ public class CustomSideMenu extends JPanel {
     	private static final long serialVersionUID = 5652164465879606302L;
 		
     	private final ItemMenu item;
-//    	private final String text;
-//    	private final String id;
     	private final LabelWithBadge labelIcon;
 		private final JLabel label;
         private boolean isExpanded = false;
         private Color padrao = null;
         protected MenuItem root;
         private List<CustomSideMenu.MenuItem> filhos = new ArrayList<CustomSideMenu.MenuItem>();
-//        protected Icon icon;
-//        Consumer<CustomSideMenu.MenuItem> action;
-        
-//        public MenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
-//        	this.id = String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));;
-//        	//System.out.println("MenuItem ID: " + id);
-//        	this.text = text;
-//        	this.icon = icon;
-//        	this.action = action;
-//        	this.padrao = getBackground();
-//        	setLayout(new BorderLayout());
-//        	setBackground( itemMenuColor );
-//        	setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
-//        	setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
-//        	setBorder(new EmptyBorder(5, 10, 5, 5));
-//        	
-//        	labelIcon = new LabelWithBadge(icon, 0);
-//        	labelIcon.setFont(new Font("Arial", Font.PLAIN, 14));
-//        	
-//        	label = new JLabel(text, JLabel.LEFT);
-//        	label.setFont(new Font("Arial", Font.PLAIN, 14));
-//        	label.setText(expanded ? text : "");
-//        	
-//        	
-//        	add(labelIcon, BorderLayout.WEST);
-//        	add(label, BorderLayout.CENTER);
-//        	
-//        	ContextApp.getInstance().registerEvent(this.id+".badgeNumber", (date)-> this.setBadgeNumber((int)date) );
-//        	ContextApp.getInstance().registerEvent(this.id+".visible", (date)-> this.setEnabled((boolean)date) );
-//        	
-//        	// Configura ação ao clicar no item principal
-//        	if (action != null) {
-//        		addMouseListener(new java.awt.event.MouseAdapter() {
-//        			@Override
-//        			public void mouseClicked(java.awt.event.MouseEvent e) {
-//        				for (MenuItem menuItem : menuItems) {
-//        					menuItem.setBackground( itemMenuColor );
-//        				}
-//        				((MenuItem)e.getSource()).setBackground(padrao);
-//        				action.accept(CustomSideMenu.MenuItem.this);
-//        			}
-//        		});
-//        	}
-//        }
+
         public MenuItem(ItemMenu item) {
         	this.item = item;
         	
-        	String id = String.format("%s.%s", MenuItem.class.getName(), item.getText().trim().replaceAll(" ", "_"));;
-        	
-        	this.item.setId(id);
-        	
-        	//System.out.println("MenuItem ID: " + id);
-//        	this.text = text;
-//        	this.icon = icon;
-//        	this.action = action;
         	this.padrao = getBackground();
             setLayout(new BorderLayout());
             setBackground( itemMenuColor );

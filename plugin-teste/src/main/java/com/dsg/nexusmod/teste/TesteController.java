@@ -3,23 +3,24 @@ package com.dsg.nexusmod.teste;
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.osgi.Plugin;
+import com.dsg.nexusmod.teste2.TesteColorController;
 import com.dsg.nexusmod.ui.OnInit;
 
-public class TesteController implements Controller<Teste>, OnInit {
+public class TesteController implements Controller<TesteView>, OnInit {
 
-	Teste panel;
+	TesteView panel;
 	ControllerRoot contextApp;
 	int count = 0;
 	boolean visible = true;
 	
 	
 	@Override
-	public Teste getPanel() {
+	public TesteView getPanel() {
 		return panel;
 	}
 
 	public TesteController() {
-		this.panel = new Teste();
+		this.panel = new TesteView();
 	}
 
 	@Override
@@ -27,7 +28,7 @@ public class TesteController implements Controller<Teste>, OnInit {
 		
 		System.out.println("TesteController onInit"+visible);
 		this.contextApp = contextApp;
-		this.panel = new Teste();
+		this.panel = new TesteView();
 		
 		contextApp.menuEvent("Tela_de_Teste", "visible", visible = true);
 		
@@ -38,6 +39,9 @@ public class TesteController implements Controller<Teste>, OnInit {
 		
 		panel.button2.addActionListener(e -> {
 			contextApp.menuEvent("Tela_de_Teste", "visible", visible = !visible);
+		});
+		panel.button3.addActionListener(e -> {
+			contextApp.showContent(new TesteColorController(this, 25));
 		});
 		
 	}

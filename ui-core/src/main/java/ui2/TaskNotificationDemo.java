@@ -181,11 +181,11 @@ class TaskNotification extends JPanel {
     private Color getBackgroundColor(TaskNotificationType type) {
         switch (type) {
             case INFO:
-                return Color.GREEN;
+                return new Color(125, 255, 125);
             case WARN:
-                return Color.YELLOW;
+                return new Color(255, 255, 200);
             case ERROR:
-                return Color.RED;
+                return new Color(255, 110, 110);
             default:
                 return Color.GREEN;
         }

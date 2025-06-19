@@ -1,6 +1,7 @@
 package com.dsg.nexusmod.controller;
 
 import javax.swing.Icon;
+import javax.swing.JPanel;
 
 public interface ControllerRoot  {
 	
@@ -51,5 +52,7 @@ public interface ControllerRoot  {
 	 * @param menuItem
 	 */
 	void addMenuItem(MenuItem menuItem);
+	
+	 void showContent(Controller<? extends JPanel> controller);
 
 }

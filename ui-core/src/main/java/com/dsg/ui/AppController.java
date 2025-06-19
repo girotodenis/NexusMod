@@ -1,5 +1,8 @@
 package com.dsg.ui;
 
+import java.util.Map;
+import java.util.Set;
+
 import javax.swing.JPanel;
 
 import com.dsg.nexusmod.controller.AbstractEventListener;
@@ -14,6 +17,7 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	
 	
 	private JPanelApp panel;
+	private Set<String> oninit = new java.util.HashSet<>();
 	
 	public AppController(JPanelApp panel) {
 		this.panel = panel;
@@ -33,22 +37,26 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	}
 	
 	
-//	private void showContent(Controller<? extends JPanel> controller) {
-//		
-//		if(controller == null) {
-//			return;
-//		}
-//		
-//		if(controller instanceof OnChange) {
-//			((OnInit)controller).onInit(this);
-//		}
-//		
-//		if(controller instanceof OnChange) {
-//			((OnChange)controller).onChage(this);
-//		}
-//		
-//		getPanel().showContent( controller.getPanel() );
-//	}
+	public void showContent(Controller<? extends JPanel> controller) {
+		
+		if(controller == null) {
+			return;
+		}
+		
+		String id = controller.getClass().getName()+controller.hashCode();
+		if(!oninit.contains(id)) {
+			if(controller instanceof OnChange) {
+				((OnInit)controller).onInit(this);
+			}
+			oninit.add(id);
+		}
+		
+		getPanel().showContent( controller.getPanel() );
+		
+		if(controller instanceof OnChange) {
+			((OnChange)controller).onChage(this);
+		}
+	}
 
 	@Override
 	public JPanelApp getPanel() {
