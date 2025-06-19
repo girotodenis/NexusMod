@@ -1,0 +1,14 @@
+
+.project
+
+.settings/
+
+osgi/.classpath
+
+pf4j-common/.classpath
+
+plugin-configurar/.classpath
+
+ui-core/.classpath
+
+plugin-teste/.classpath
