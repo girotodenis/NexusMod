@@ -1,5 +1,8 @@
 package com.dsg.ui;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.util.function.Consumer;
 
 import javax.swing.Icon;
@@ -25,6 +28,17 @@ public class AppUtilities {
             frame.setSize(width, height);
             frame.setLocationRelativeTo(null);
             frame.setContentPane(mainPanel.getPanel());
+            
+         // Obtém o monitor principal
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice gd = ge.getDefaultScreenDevice(); // Monitor principal
+            Rectangle bounds = gd.getDefaultConfiguration().getBounds(); // Coordenadas do monitor principal
+
+            // Centraliza o JFrame no monitor principal
+            int x = bounds.x + (bounds.width - frame.getWidth()) / 2;
+            int y = bounds.y + (bounds.height - frame.getHeight()) / 2;
+            frame.setLocation(x, y);
+            
             frame.setVisible(true);
         });
 	}
