@@ -1,15 +1,16 @@
 package com.dsg.ui;
 
-import javax.swing.Icon;
 import javax.swing.JPanel;
 
+import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.nexusmod.controller.Controller;
-import com.dsg.nexusmod.ui.MenuPlugin;
+import com.dsg.nexusmod.controller.ControllerRoot;
+import com.dsg.nexusmod.controller.MenuItem;
 import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.ui.componente.CustomSideMenu;
 
-public class AppController implements MenuPlugin, Controller<JPanelApp> {
+public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	
 	
 	private JPanelApp panel;
@@ -24,11 +25,30 @@ public class AppController implements MenuPlugin, Controller<JPanelApp> {
 			return;
 		}
 		
-		if(controller instanceof OnChange) {
-			((OnChange)controller).onChage(ContextAppImp.getInstance());
-		}
 		getPanel().showContent( controller.getPanel() );
+		
+		if(controller instanceof OnChange) {
+			((OnChange)controller).onChage(this);
+		}
 	}
+	
+	
+//	private void showContent(Controller<? extends JPanel> controller) {
+//		
+//		if(controller == null) {
+//			return;
+//		}
+//		
+//		if(controller instanceof OnChange) {
+//			((OnInit)controller).onInit(this);
+//		}
+//		
+//		if(controller instanceof OnChange) {
+//			((OnChange)controller).onChage(this);
+//		}
+//		
+//		getPanel().showContent( controller.getPanel() );
+//	}
 
 	@Override
 	public JPanelApp getPanel() {
@@ -36,21 +56,39 @@ public class AppController implements MenuPlugin, Controller<JPanelApp> {
 	}
 
 	@Override
-	public void addMenuItem(String text, Icon icon, Controller<?> controller) {
-		getPanel().addMenuItem(text, icon, (item) -> show(item, controller) );
+	public void addMenuItem(MenuItem menuItem) {
+		getPanel().addMenuItem(menuItem.getGroup(), menuItem.getText(), menuItem.getIcon(), (item) -> show(item, menuItem.getController()));
 		
-		if(controller instanceof OnInit) {
-			((OnInit)controller).onInit(ContextAppImp.getInstance());
+		if(menuItem.getController() instanceof OnInit) {
+			((OnInit)menuItem.getController()).onInit(this);
 		}
 	}
 
 	@Override
-	public void addMenuItem(String goup, String text, Icon icon, Controller<?> controller) {
-		getPanel().addMenuItem(goup, text, icon, (item) -> show(item, controller));
+	public <T> void fireEvent(T event) {
+		ContextApp.getInstance().fireEvent(event.getClass().getName(), event);;
 		
-		if(controller instanceof OnInit) {
-			((OnInit)controller).onInit(ContextAppImp.getInstance());
-		}
+	}
+
+	@Override
+	public <T> void fireEvent(String event, T date) {
+		ContextApp.getInstance().fireEvent(event, date);
+	}
+
+	@Override
+	public <T> void menuEvent(String menu, String event, T date) {
+		ContextApp.getInstance().fireEvent(String.format("com.dsg.ui.componente.CustomSideMenu$MenuItem.%s.%s", menu, event), date);
+	}
+
+	@Override
+	public <T> void registerEvent(Class<T> eventClass, AbstractEventListener<T> eventListener) {
+		ContextApp.getInstance().registerEvent(eventClass.getName(), eventListener);;
+		
+	}
+
+	@Override
+	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
+		ContextApp.getInstance().registerEvent(event, eventListener);
 	}
 
 }

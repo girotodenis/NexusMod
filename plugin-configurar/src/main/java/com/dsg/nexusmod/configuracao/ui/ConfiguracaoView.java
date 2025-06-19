@@ -8,16 +8,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import com.dsg.nexusmod.configuracao.model.ListPluginObsever;
-import com.dsg.nexusmod.configuracao.model.ListaPlugin;
+import com.dsg.nexusmod.configuracao.model.ListaPluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginModel;
 
-public class ConfiguracaoPanel extends JPanel implements ListPluginObsever {
+public class ConfiguracaoView extends JPanel implements ListPluginObsever {
 
-	ListaPlugin model; // Modelo que contém a lista de plugins
+	ListaPluginModel model; // Modelo que contém a lista de plugins
 	JPanel listPanel; // Painel que contém os itens da lista
 //	Consumer<Plugin> consumer;
 	
-    public ConfiguracaoPanel( ListaPlugin model) {
+    public ConfiguracaoView( ListaPluginModel model) {
     	
     	this.model = model;
         // Configura o layout do painel principal

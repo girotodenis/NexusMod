@@ -5,12 +5,12 @@ import java.util.List;
 import com.dsg.nexusmod.model.ModelAbstract;
 import com.dsg.nexusmod.osgi.Plugin;
 
-public class ListaPlugin extends ModelAbstract<List<PluginModel>> implements PluginlObserver {
+public class ListaPluginModel extends ModelAbstract<List<PluginModel>> implements PluginlObserver {
 
 
 	List<PluginModel> plugins;
 	
-	public ListaPlugin(List<PluginModel> plugins) {
+	public ListaPluginModel(List<PluginModel> plugins) {
 		super(plugins);
 		this.plugins = plugins;
 	}

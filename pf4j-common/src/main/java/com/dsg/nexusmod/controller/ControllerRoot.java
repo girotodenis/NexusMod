@@ -1,8 +1,8 @@
-package com.dsg.nexusmod.ui;
+package com.dsg.nexusmod.controller;
 
-import com.dsg.nexusmod.controller.AbstractEventListener;
+import javax.swing.Icon;
 
-public interface ContextApp {
+public interface ControllerRoot  {
 	
 	/**
 	 * Aciona o <code>AbstractEventListener</code> relacionado ao
@@ -46,5 +46,10 @@ public interface ContextApp {
 	 */
 	<T> void registerEvent(String event, AbstractEventListener<T> eventListener);
 	
+	
+	/**
+	 * @param menuItem
+	 */
+	void addMenuItem(MenuItem menuItem);
 
 }

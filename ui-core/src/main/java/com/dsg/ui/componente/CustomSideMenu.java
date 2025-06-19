@@ -19,7 +19,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import com.dsg.ui.ContextAppImp;
+import com.dsg.ui.ContextApp;
+import com.dsg.ui.componente.CustomSideMenu.MenuItem;
 import com.dsg.ui.util.UIUtils;
 
 // Classe para o menu lateral
@@ -101,7 +102,7 @@ public class CustomSideMenu extends JPanel {
     		return;
     	}
     	
-    	MenuItem item = new MenuItem(text, icon, action);
+    	MenuItem item = new MenuItem(new ItemMenu(text, icon, action, null));
         menuItems.add(item);
         menuContainer.add(item);
         revalidate();
@@ -114,7 +115,7 @@ public class CustomSideMenu extends JPanel {
     	if(menuItems.stream().anyMatch(item -> item.getText().equals(text) )) {
     		return;
     	}
-        MenuItem item = new MenuItem(text, UIManager.getIcon("Menu.arrowIcon"), null);
+        MenuItem item = new MenuItem(new ItemMenu(text, UIManager.getIcon("Menu.arrowIcon"), null, null));
         item.setSubItems(subItems, item);
         menuItems.add(item);
         menuContainer.add(item);
@@ -127,29 +128,89 @@ public class CustomSideMenu extends JPanel {
         revalidate();
         repaint();
     }
+    
+    public void addMenuItem(ItemMenu item) {
+    	if(item.getAction() != null) {
+			addMenuItem(item.getText(), item.getIcon(), item.getAction());
+		}else {
+			List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
+			item.getSubItems().forEach(subitem->{
+				subItems.add(new MenuItem(subitem));
+			});
+			addMenuItemWithSubItems(item.getText(), subItems);
+		}
+		
+	}
 
     // Classe interna para representar um item de menu
     public class MenuItem extends JPanel {
 		
     	private static final long serialVersionUID = 5652164465879606302L;
 		
-    	private final String id;
+    	private final ItemMenu item;
+//    	private final String text;
+//    	private final String id;
     	private final LabelWithBadge labelIcon;
 		private final JLabel label;
-        private final String text;
         private boolean isExpanded = false;
         private Color padrao = null;
         protected MenuItem root;
         private List<CustomSideMenu.MenuItem> filhos = new ArrayList<CustomSideMenu.MenuItem>();
-        protected Icon icon;
-        Consumer<CustomSideMenu.MenuItem> action;
+//        protected Icon icon;
+//        Consumer<CustomSideMenu.MenuItem> action;
         
-        public MenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
-        	this.id = String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));;
+//        public MenuItem(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
+//        	this.id = String.format("%s.%s", MenuItem.class.getName(), text.trim().replaceAll(" ", "_"));;
+//        	//System.out.println("MenuItem ID: " + id);
+//        	this.text = text;
+//        	this.icon = icon;
+//        	this.action = action;
+//        	this.padrao = getBackground();
+//        	setLayout(new BorderLayout());
+//        	setBackground( itemMenuColor );
+//        	setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+//        	setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
+//        	setBorder(new EmptyBorder(5, 10, 5, 5));
+//        	
+//        	labelIcon = new LabelWithBadge(icon, 0);
+//        	labelIcon.setFont(new Font("Arial", Font.PLAIN, 14));
+//        	
+//        	label = new JLabel(text, JLabel.LEFT);
+//        	label.setFont(new Font("Arial", Font.PLAIN, 14));
+//        	label.setText(expanded ? text : "");
+//        	
+//        	
+//        	add(labelIcon, BorderLayout.WEST);
+//        	add(label, BorderLayout.CENTER);
+//        	
+//        	ContextApp.getInstance().registerEvent(this.id+".badgeNumber", (date)-> this.setBadgeNumber((int)date) );
+//        	ContextApp.getInstance().registerEvent(this.id+".visible", (date)-> this.setEnabled((boolean)date) );
+//        	
+//        	// Configura ação ao clicar no item principal
+//        	if (action != null) {
+//        		addMouseListener(new java.awt.event.MouseAdapter() {
+//        			@Override
+//        			public void mouseClicked(java.awt.event.MouseEvent e) {
+//        				for (MenuItem menuItem : menuItems) {
+//        					menuItem.setBackground( itemMenuColor );
+//        				}
+//        				((MenuItem)e.getSource()).setBackground(padrao);
+//        				action.accept(CustomSideMenu.MenuItem.this);
+//        			}
+//        		});
+//        	}
+//        }
+        public MenuItem(ItemMenu item) {
+        	this.item = item;
+        	
+        	String id = String.format("%s.%s", MenuItem.class.getName(), item.getText().trim().replaceAll(" ", "_"));;
+        	
+        	this.item.setId(id);
+        	
         	//System.out.println("MenuItem ID: " + id);
-        	this.text = text;
-        	this.icon = icon;
-        	this.action = action;
+//        	this.text = text;
+//        	this.icon = icon;
+//        	this.action = action;
         	this.padrao = getBackground();
             setLayout(new BorderLayout());
             setBackground( itemMenuColor );
@@ -157,22 +218,26 @@ public class CustomSideMenu extends JPanel {
             setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
             setBorder(new EmptyBorder(5, 10, 5, 5));
 
-            labelIcon = new LabelWithBadge(icon, 0);
+            labelIcon = new LabelWithBadge(this.item.getIcon(), 0);
             labelIcon.setFont(new Font("Arial", Font.PLAIN, 14));
             
-            label = new JLabel(text, JLabel.LEFT);
+            label = new JLabel(this.item .getText(), JLabel.LEFT);
             label.setFont(new Font("Arial", Font.PLAIN, 14));
-            label.setText(expanded ? text : "");
+            label.setText(expanded ? this.item.getText() : "");
             
             	
             add(labelIcon, BorderLayout.WEST);
             add(label, BorderLayout.CENTER);
             
-            ContextAppImp.getInstance().registerEvent(this.id+".badgeNumber", (date)-> this.setBadgeNumber((int)date) );
-            ContextAppImp.getInstance().registerEvent(this.id+".visible", (date)-> this.setVisible((boolean)date) );
+            ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", (date)-> this.setBadgeNumber((int)date) );
+            ContextApp.getInstance().registerEvent(this.item.getId()+".visible", (date)-> {
+            	this.setEnabled((boolean)date); 
+            	this.setVisible((boolean)date) ;
+            	this.item.setEnabled((boolean)date);
+            });
 
             // Configura ação ao clicar no item principal
-            if (action != null) {
+            if (this.item.getAction() != null) {
                 addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -180,7 +245,7 @@ public class CustomSideMenu extends JPanel {
                     		menuItem.setBackground( itemMenuColor );
 						}
                     	((MenuItem)e.getSource()).setBackground(padrao);
-                        action.accept(CustomSideMenu.MenuItem.this);
+                    	item.getAction().accept(CustomSideMenu.MenuItem.this);
                     }
                 });
             }
@@ -188,7 +253,7 @@ public class CustomSideMenu extends JPanel {
 
         // Atualiza a visualização do item com base no estado do menu
         public void updateView(boolean expanded) {
-        	label.setText(expanded ? text : "");
+        	label.setText(expanded ? this.item.getText() : "");
         }
 
         // Define os sub-itens do menu
@@ -210,10 +275,10 @@ public class CustomSideMenu extends JPanel {
 		// Alterna a exibição dos sub-itens
         private void toggleSubMenu() {
             isExpanded = !isExpanded;
-            filhos.forEach(menu-> menu.setVisible(isExpanded));
+            filhos.forEach(menu->  menu.setVisible(isExpanded && menu.isEnabled()));
             ResizableIcon icon = new ResizableIcon(!isExpanded ? UIManager.getIcon("Menu.arrowIcon"): UIManager.getIcon("Table.descendingSortIcon"), 15, 15);
             labelIcon.setIcon(icon);
-            label.setText(expanded ? this.text : "");
+            label.setText(expanded ? this.item.getText() : "");
             revalidate();
             repaint();
         }
@@ -223,20 +288,22 @@ public class CustomSideMenu extends JPanel {
         }
 
 		public String getText() {
-			return text;
+			return this.item.getText();
 		}
 
 		public Icon getIcon() {
-			return icon;
+			return this.item.getIcon();
 		}
 
 		public Consumer<CustomSideMenu.MenuItem> getAction() {
-			return action;
+			return this.item.getAction();
 		}
 
 		public String getId() {
-			return id;
+			return this.item.getId();
 		}
 		
     }
+
+	
 }

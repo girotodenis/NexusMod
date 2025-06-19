@@ -75,6 +75,12 @@ public class JPanelApp extends JPanel {
     
     public void addMenuItem(String group, String text, Icon icon, Consumer<CustomSideMenu.MenuItem> action) {
     	
+    	
+    	if(group==null) {
+    		addMenuItem(text, icon, action);
+			return;
+    	}
+    	
     	ItemMenu item = null;
     	var op = itens.stream().filter(m->m.getText().equals(group)).findFirst();
     	if(op.isPresent()){
@@ -105,15 +111,16 @@ public class JPanelApp extends JPanel {
     	}
 		
     	itens.forEach(item->{
-    		if(item.getAction() != null) {
-    			sideMenu.addMenuItem(item.getText(), item.getIcon(), item.getAction());
-    		}else {
-    			List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
-    			item.getSubItems().forEach(subitem->{
-    				subItems.add(sideMenu.new MenuItem(subitem.getText(), subitem.getIcon(), subitem.getAction() ));
-    			});
-    			sideMenu.addMenuItemWithSubItems(item.getText(), subItems);
-    		}
+    		sideMenu.addMenuItem(item);
+//    		if(item.getAction() != null) {
+//    			sideMenu.addMenuItem(item.getText(), item.getIcon(), item.getAction());
+//    		}else {
+//    			List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
+//    			item.getSubItems().forEach(subitem->{
+//    				subItems.add(sideMenu.new MenuItem(subitem.getText(), subitem.getIcon(), subitem.getAction() ));
+//    			});
+//    			sideMenu.addMenuItemWithSubItems(item.getText(), subItems);
+//    		}
     	});
 	}
     

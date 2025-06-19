@@ -9,10 +9,13 @@ import javax.swing.Icon;
 
 public class ItemMenu {
 	
+	private int order;
+	private String id;
 	private String text;
 	private Icon icon;
 	private Consumer<CustomSideMenu.MenuItem> action;
 	private List<ItemMenu> subItems;
+	private Boolean enabled = true;
 	
 	public ItemMenu(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> consumer, List<ItemMenu> subItems) {
 		super();
@@ -38,6 +41,30 @@ public class ItemMenu {
 		return subItems;
 	}
 	
+	public Boolean getEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	public int getOrder() {
+		return order;
+	}
+
+	public void setOrder(int order) {
+		this.order = order;
+	}
+
 	public ItemMenu addSubItems(String text, Icon icon, Consumer<CustomSideMenu.MenuItem> consumer) {
 		if(subItems==null) {
 			subItems = new ArrayList<ItemMenu>();

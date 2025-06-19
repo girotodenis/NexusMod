@@ -2,39 +2,39 @@ package com.dsg.nexusmod.configuracao.controller;
 
 import java.util.ArrayList;
 
-import com.dsg.nexusmod.configuracao.model.ListaPlugin;
+import com.dsg.nexusmod.configuracao.model.ListaPluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginlObserver;
-import com.dsg.nexusmod.configuracao.ui.ConfiguracaoPanel;
+import com.dsg.nexusmod.configuracao.ui.ConfiguracaoView;
 import com.dsg.nexusmod.controller.Controller;
+import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.Plugin;
-import com.dsg.nexusmod.ui.ContextApp;
 import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
 
-public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, OnInit,OnChange, PluginlObserver {
+public class ConfiguracaoController implements Controller<ConfiguracaoView>, OnInit,OnChange, PluginlObserver {
 
-	ConfiguracaoPanel panel;
-	ContextApp contextApp;
+	ConfiguracaoView panel;
+	ControllerRoot contextApp;
 	int count = 0;
 	boolean visible = true;
 	OSGiFramework osgiService;
 	
-	ListaPlugin listaPlugin = new ListaPlugin(new ArrayList<>());
+	ListaPluginModel listaPlugin = new ListaPluginModel(new ArrayList<>());
 	
 	@Override
-	public ConfiguracaoPanel getPanel() {
+	public ConfiguracaoView getPanel() {
 		return panel;
 	}
 
 	public ConfiguracaoController(OSGiFramework osgiService) {
 		this.osgiService = osgiService;
-		this.panel = new ConfiguracaoPanel(listaPlugin);
+		this.panel = new ConfiguracaoView(listaPlugin);
 	}
 
 	@Override
-	public void onInit(ContextApp contextApp) {
+	public void onInit(ControllerRoot contextApp) {
 		System.out.println("ConfiguracaoController onInit");
 		this.contextApp = contextApp;
 		
@@ -61,7 +61,7 @@ public class ConfiguracaoController implements Controller<ConfiguracaoPanel>, On
 	}
 	
 	@Override
-	public void onChage(ContextApp contextApp) {
+	public void onChage(ControllerRoot contextApp) {
 		System.out.println("ConfiguracaoController onChage");
 		carregarListaPlugins();
 	}

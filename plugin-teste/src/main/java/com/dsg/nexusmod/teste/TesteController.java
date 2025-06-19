@@ -1,14 +1,14 @@
 package com.dsg.nexusmod.teste;
 
 import com.dsg.nexusmod.controller.Controller;
+import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.osgi.Plugin;
-import com.dsg.nexusmod.ui.ContextApp;
 import com.dsg.nexusmod.ui.OnInit;
 
 public class TesteController implements Controller<Teste>, OnInit {
 
 	Teste panel;
-	ContextApp contextApp;
+	ControllerRoot contextApp;
 	int count = 0;
 	boolean visible = true;
 	
@@ -23,14 +23,15 @@ public class TesteController implements Controller<Teste>, OnInit {
 	}
 
 	@Override
-	public void onInit(ContextApp contextApp) {
+	public void onInit(ControllerRoot contextApp) {
 		
+		System.out.println("TesteController onInit"+visible);
 		this.contextApp = contextApp;
-		
 		this.panel = new Teste();
 		
 		contextApp.menuEvent("Tela_de_Teste", "visible", visible = true);
-		System.out.println("TesteController onInit"+visible);
+		
+		
 		panel.button.addActionListener(e -> {
 			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", ++count);
 		});
@@ -60,9 +61,8 @@ public class TesteController implements Controller<Teste>, OnInit {
 	}
 
 	public void alertaConfiguracao(Plugin plugin) {
-		System.out.println("TesteController alertaConfiguracao2: " + plugin.getPluginId() + " - " + plugin.getState());
-		contextApp.fireEvent("ConfiguracaoController.notificacao", plugin.getPluginId());
-		if("CREATED".equals(plugin.getState())) {
+		if(!"STARTED".equals(plugin.getState())) {
+			contextApp.fireEvent("ConfiguracaoController.notificacao", plugin.getPluginId());
 		}
 		
 	}

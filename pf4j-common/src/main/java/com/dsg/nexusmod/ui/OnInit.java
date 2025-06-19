@@ -1,7 +1,9 @@
 package com.dsg.nexusmod.ui;
 
+import com.dsg.nexusmod.controller.ControllerRoot;
+
 public interface OnInit {
 	
-	void onInit(ContextApp contextApp);
+	void onInit(ControllerRoot contextApp);
 
 }

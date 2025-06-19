@@ -5,11 +5,12 @@ import org.pf4j.Extension;
 import org.pf4j.PluginWrapper;
 
 import com.dsg.nexusmod.configuracao.controller.ConfiguracaoController;
+import com.dsg.nexusmod.controller.ControllerRoot;
+import com.dsg.nexusmod.controller.MenuItem;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiPlugin;
 import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.ui.ItemMenu;
-import com.dsg.nexusmod.ui.MenuPlugin;
 import com.dsg.nexusmod.ui.OnInit;
 
 public class ConfiguacaoActivator extends org.pf4j.Plugin {
@@ -39,7 +40,7 @@ public class ConfiguacaoActivator extends org.pf4j.Plugin {
     public static class ItemMenuImpl implements ItemMenu {
 
 		@Override
-		public void addItemMenu(MenuPlugin menu, Plugin plugin) {
+		public void addItemMenu(ControllerRoot menu, Plugin plugin) {
 			
 			if(configuracaoController == null) {
 				configuracaoController = new ConfiguracaoController(osgiService);
@@ -48,7 +49,12 @@ public class ConfiguacaoActivator extends org.pf4j.Plugin {
 			System.out.println("addItemMenu "+this.getClass().getName());
 			javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/imagem/setting-configure.png"));
 	        icon = new javax.swing.ImageIcon(icon.getImage().getScaledInstance(16, 16,  java.awt.Image.SCALE_SMOOTH));
-			menu.addMenuItem("Configuração", icon, configuracaoController);
+			
+	        menu.addMenuItem(MenuItem.builder()
+							.text("Configuração")
+							.icon(icon)
+							.controller(configuracaoController)
+					.build() );
 			
 		}
     }
