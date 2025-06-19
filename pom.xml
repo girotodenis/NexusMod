@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.dsg.nexusmod</groupId>
-	<artifactId>core</artifactId>
+	<artifactId>NexusMod</artifactId>
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	<modules>
 		<module>osgi</module>
-		<module>plugin-api</module>
-		<module>configurar</module>
-		<module>ui2</module>
+		<module>pf4j-common</module>
+		<module>ui-core</module>
+		<module>plugin-configurar</module>
 		<module>plugin-teste</module>
 	</modules>
 
@@ -23,7 +23,6 @@
 
 	<build>
 		<plugins>
-			 Plugin para criar a estrutura do aplicativo 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
@@ -36,11 +35,8 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							 Nome do arquivo de saída 
-							<finalName>${project.artifactId}-${project.version}</finalName>
-							 Estratégia de montagem 
+							<finalName>${project.artifactId}</finalName>
 							<descriptors>
-								 Caminho para o descriptor personalizado 
 								<descriptor>assembly.xml</descriptor>
 							</descriptors>
 						</configuration>

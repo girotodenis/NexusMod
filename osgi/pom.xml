@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dsg.nexusmod</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>NexusMod</artifactId>
 		<version>0.0.1</version>
 	</parent>
 	<artifactId>osgi</artifactId>
@@ -13,14 +13,14 @@
 		
 		<dependency>
 			<groupId>com.dsg.nexusmod</groupId>
-			<artifactId>ui2</artifactId>
+			<artifactId>ui-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		
 		<!-- Plugin API -->
 		<dependency>
 			<groupId>com.dsg.nexusmod</groupId>
-			<artifactId>plugin-api</artifactId>
+			<artifactId>pf4j-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		

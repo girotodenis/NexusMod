@@ -4,19 +4,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.dsg.nexusmod</groupId>
-		<artifactId>core</artifactId>
+		<artifactId>NexusMod</artifactId>
 		<version>0.0.1</version>
 	</parent>
-	<artifactId>configurar</artifactId>
+	<artifactId>plugin-configurar</artifactId>
 
 	<dependencies>
 
 		<!-- Plugin API -->
 		<dependency>
 			<groupId>com.dsg.nexusmod</groupId>
-			<artifactId>plugin-api</artifactId>
+			<artifactId>pf4j-common</artifactId>
 			<version>${project.version}</version>
-			<scope>provided</scope>
 		</dependency>
 
 

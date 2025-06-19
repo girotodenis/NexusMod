@@ -13,10 +13,10 @@
         <moduleSet>
             <!-- Inclui apenas módulos que NÃO sejam plugins (excluímos os que têm "plugin-" no artifactId) -->
             <includes>
-                <include>core:osgi*</include>
+                <include>NexusMod:osgi*</include>
             </includes>
             <excludes>
-                <exclude>meu-projeto:plugin-*</exclude>
+                <exclude>NexusMod:plugin-*</exclude>
             </excludes>
             <binaries>
                 <outputDirectory>bin</outputDirectory>
@@ -28,7 +28,7 @@
         <moduleSet>
             <!-- Inclui apenas os módulos de plugins (os que têm "plugin-" no artifactId) -->
             <includes>
-                <include>core:plugin-*</include>
+                <include>NexusMod:plugin-*</include>
             </includes>
             <binaries>
                 <outputDirectory>plugins</outputDirectory>
