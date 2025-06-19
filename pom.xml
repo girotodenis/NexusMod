@@ -12,6 +12,7 @@
 		<module>ui-core</module>
 		<module>plugin-configurar</module>
 		<module>plugin-teste</module>
+		<module>dist</module>
 	</modules>
 
 	<properties>
@@ -21,28 +22,5 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.5.0</version>
-				<executions>
-					<execution>
-						<id>montar-aplicativo</id>
-						<phase>package</phase>
-						<goals>
-							<goal>single</goal>
-						</goals>
-						<configuration>
-							<finalName>${project.artifactId}</finalName>
-							<descriptors>
-								<descriptor>assembly.xml</descriptor>
-							</descriptors>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+
 </project>

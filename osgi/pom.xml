@@ -8,6 +8,10 @@
 		<version>0.0.1</version>
 	</parent>
 	<artifactId>osgi</artifactId>
+	
+	<properties>
+        <mainClass>com.dsg.nexusmod.Main</mainClass> <!-- Classe principal -->
+    </properties>
 
 	<dependencies>
 		
@@ -15,6 +19,7 @@
 			<groupId>com.dsg.nexusmod</groupId>
 			<artifactId>ui-core</artifactId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 		<!-- Plugin API -->
@@ -22,8 +27,56 @@
 			<groupId>com.dsg.nexusmod</groupId>
 			<artifactId>pf4j-common</artifactId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 
 	</dependencies>
+	
+	
+	   <build>
+        <plugins>
+            <!-- Plugin para criar o JAR executável -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- Define o manifesto do JAR -->
+                            <addClasspath>true</addClasspath>
+                            <mainClass>${mainClass}</mainClass>
+                            <classpathPrefix>../lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin para copiar as dependências para a pasta lib -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/../lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+	
 </project>

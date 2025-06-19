@@ -12,3 +12,7 @@ plugin-configurar/.classpath
 ui-core/.classpath
 
 plugin-teste/.classpath
+
+dist/.classpath
+
+osgi/lib/

@@ -16,7 +16,7 @@ import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class Main {
 
-	private static  String PLUGIN_DIRECTORY = "../plugins"; // Diretório padrão para plugins
+	private static  String PLUGIN_DIRECTORY = "./plugins"; // Diretório padrão para plugins
 	
 	public static void main(String[] args) {
 
@@ -35,15 +35,15 @@ public class Main {
 			System.exit(0);
 		});
 		
-		// Configurar o diretório de bundles
-		try {
-			File plugin = new File("../configurar/target/configurar-0.0.1.jar");
-			System.out.println(plugin.isFile());
-			osgiCore.installBundle(plugin.getCanonicalPath());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		// Configurar o diretório de bundles
+//		try {
+//			File plugin = new File("../configurar/target/configurar-0.0.1.jar");
+//			System.out.println(plugin.isFile());
+//			osgiCore.installBundle(plugin.getCanonicalPath());
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		loadPlugin(osgiCore, app);
 		
