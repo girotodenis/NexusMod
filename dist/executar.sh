@@ -20,4 +20,4 @@ done
 
 # Executa o programa Java
 #java -cp "$CLASSPATH" -Dconfig.dir="$CONFIG_DIR" -Dlog.dir="$LOG_DIR" com.exemplo.Main "$@"
-/opt/sdk/jdk-21.0.5/bin/java -jar ./bin/osgi-0.0.1.jar
+$JAVA_HOME/bin/java -jar ./bin/osgi-0.0.1.jar

@@ -5,6 +5,7 @@ import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.teste2.TesteColorController;
 import com.dsg.nexusmod.ui.OnInit;
+import com.dsg.nexusmod.ui.TaskNotificationType;
 
 public class TesteController implements Controller<TesteView>, OnInit {
 
@@ -45,6 +46,19 @@ public class TesteController implements Controller<TesteView>, OnInit {
 		panel.button3.addActionListener(e -> {
 			
 			contextApp.showContent(proximaTela);
+		});
+		
+		panel.button4.addActionListener(e -> {
+			
+			contextApp.addNotification("Esta é uma mensagem muito longa que precisa quebrar a linha e ajustar o tamanho do card para baixo.", TaskNotificationType.INFO);
+		});
+		panel.button5.addActionListener(e -> {
+			
+			contextApp.addNotification("Isso é uma notificação de informação", TaskNotificationType.WARN);
+		});
+		panel.button6.addActionListener(e -> {
+			
+			contextApp.addNotification("Isso é uma notificação de Erro", TaskNotificationType.ERROR);
 		});
 		
 	}

@@ -1,6 +1,5 @@
 package com.dsg.ui;
 
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JPanel;
@@ -11,7 +10,9 @@ import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.controller.MenuItem;
 import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
+import com.dsg.nexusmod.ui.TaskNotificationType;
 import com.dsg.ui.componente.CustomSideMenu;
+import com.dsg.ui.componente.NotificacaoEvent;
 
 public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	
@@ -97,6 +98,11 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	@Override
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
 		ContextApp.getInstance().registerEvent(event, eventListener);
+	}
+
+	@Override
+	public void addNotification(String message, TaskNotificationType type) {
+		ContextApp.getInstance().fireEvent(new NotificacaoEvent(message, type));
 	}
 
 }

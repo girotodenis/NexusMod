@@ -3,6 +3,8 @@ package com.dsg.nexusmod.controller;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
+import com.dsg.nexusmod.ui.TaskNotificationType;
+
 public interface ControllerRoot  {
 	
 	/**
@@ -53,6 +55,8 @@ public interface ControllerRoot  {
 	 */
 	void addMenuItem(MenuItem menuItem);
 	
-	 void showContent(Controller<? extends JPanel> controller);
+	void showContent(Controller<? extends JPanel> controller);
+	 
+	void addNotification(String message, TaskNotificationType type);
 
 }

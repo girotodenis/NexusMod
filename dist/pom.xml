@@ -12,6 +12,20 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>com.dsg.nexusmod</groupId>
+			<artifactId>ui-core</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Plugin API -->
+		<dependency>
+			<groupId>com.dsg.nexusmod</groupId>
+			<artifactId>pf4j-common</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
 		
 
 	</dependencies>

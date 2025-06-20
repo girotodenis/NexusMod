@@ -26,6 +26,10 @@ public class ContextApp {
 	 * 
 	 * @param event referÃªncia do evento gerado
 	 */
+	public <T> void fireEvent(T date) {
+		fireEvent(date.getClass().getName(), date);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date) {
 		System.out.println("Firing event: " + event + " with data: " + date);
@@ -46,6 +50,10 @@ public class ContextApp {
 	 * @param eventClass    tipo do evento
 	 * @param eventListener tratador (<code>listener</code>) do evento
 	 */
+	public <T> void registerEvent(Class<T> event, AbstractEventListener<T> eventListener) {
+		registerEvent(event.getName(), eventListener);
+	}
+	
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
 		System.out.println("Registering event listener for event: " + event);
 		List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
