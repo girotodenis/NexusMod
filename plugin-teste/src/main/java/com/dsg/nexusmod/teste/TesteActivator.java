@@ -24,7 +24,6 @@ public class TesteActivator extends Plugin {
     }
     
     public void start() {
-    	System.out.println("start "+this.getClass().getName());
     	if (testeController == null) {
     		testeController = new TesteController();
     	}
@@ -33,10 +32,17 @@ public class TesteActivator extends Plugin {
     }
 
     public void stop() {
-    	System.out.println("stop "+this.getClass().getName());
     	if (testeController != null) {
 			testeController.stop();
 		}
+    }
+    
+    public void delete() {
+    	System.out.println("delete");
+    	if (testeController != null) {
+    		testeController.stop();
+    		testeController = null;
+    	}
     }
 
     @Extension
@@ -49,8 +55,6 @@ public class TesteActivator extends Plugin {
 				testeController = new TesteController();
 			}
 			
-			System.out.println("addItemMenu "+this.getClass().getName());
-			
 			root.addMenuItem(MenuItem.builder()
 										.text("Tela de Teste")
 										.group("Teste")
@@ -59,7 +63,6 @@ public class TesteActivator extends Plugin {
 									.build()
 			);
 			
-			testeController.alertaConfiguracao(plugin);
 			
 		}
     }

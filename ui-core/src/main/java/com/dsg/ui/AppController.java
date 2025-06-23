@@ -71,6 +71,7 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 		if(menuItem.getController() instanceof OnInit) {
 			((OnInit)menuItem.getController()).onInit(this);
 		}
+		this.panel.loadMenu();
 	}
 
 	@Override
@@ -103,6 +104,12 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	@Override
 	public void addNotification(String message, TaskNotificationType type) {
 		ContextApp.getInstance().fireEvent(new NotificacaoEvent(message, type));
+	}
+
+	@Override
+	public void removeMenu(String itemMenu) {
+
+		getPanel().removeMenu(itemMenu);
 	}
 
 }

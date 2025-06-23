@@ -20,7 +20,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import com.dsg.ui.ContextApp;
-import com.dsg.ui.componente.CustomSideMenu.MenuItem;
 import com.dsg.ui.util.UIUtils;
 
 // Classe para o menu lateral
@@ -140,6 +139,25 @@ public class CustomSideMenu extends JPanel {
 			addMenuItemWithSubItems(item.getText(), subItems);
 		}
 	}
+    
+    public void removeMenu(ItemMenu itemMenu) {
+		itemMenu.setEnabled(false);
+		var delete = new ArrayList<MenuItem>();
+		for (MenuItem menuItem : menuItems) {
+			if(menuItem.getId().equals(itemMenu.getId())){
+				menuItem.setEnabled(false);
+				menuItem.setVisible(false);
+				menuItem.setBadgeNumber(0);
+				delete.add(menuItem);
+				ContextApp.getInstance().removeEvent(menuItem.getId()+".badgeNumber" );
+				ContextApp.getInstance().removeEvent(menuItem.getId()+".visible");
+			}
+		}
+		delete.forEach(menuItem->{
+			menuContainer.remove(menuItem);
+			menuItems.remove(menuItem);
+		});
+	}
 
     // Classe interna para representar um item de menu
     public class MenuItem extends JPanel {
@@ -251,5 +269,4 @@ public class CustomSideMenu extends JPanel {
 		
     }
 
-	
 }

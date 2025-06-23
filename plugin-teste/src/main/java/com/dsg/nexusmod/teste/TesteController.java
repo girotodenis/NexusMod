@@ -2,7 +2,6 @@ package com.dsg.nexusmod.teste;
 
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.controller.ControllerRoot;
-import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.teste2.TesteColorController;
 import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.nexusmod.ui.TaskNotificationType;
@@ -28,12 +27,10 @@ public class TesteController implements Controller<TesteView>, OnInit {
 	@Override
 	public void onInit(ControllerRoot contextApp) {
 		
-		System.out.println("TesteController onInit"+visible);
 		this.contextApp = contextApp;
 		this.panel = new TesteView();
 		
 		contextApp.menuEvent("Tela_de_Teste", "visible", visible = true);
-		
 		
 		panel.button.addActionListener(e -> {
 			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", ++count);
@@ -64,29 +61,25 @@ public class TesteController implements Controller<TesteView>, OnInit {
 	}
 
 	public void stop() {
-		System.out.println("TesteController stop");
-		
+		visible = false;
 		if(contextApp != null) {
-			contextApp.menuEvent("Tela_de_Teste", "visible", visible = false);
+			contextApp.fireEvent("ConfiguracaoController.notificacao","x");
+			contextApp.menuEvent("Tela_de_Teste", "visible", visible);
 			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", count = 0);
+			contextApp.removeMenu("Tela_de_Teste");
 		}
-		
 		panel.removeAll();
+		panel = null;
 	}
+	
+	
 
 	public void start() {
 		if(contextApp != null) {
-			System.out.println("TesteController start");
 			onInit(contextApp);
 		}
 	}
 
-	public void alertaConfiguracao(Plugin plugin) {
-		if(!"STARTED".equals(plugin.getState())) {
-			contextApp.fireEvent("ConfiguracaoController.notificacao", plugin.getPluginId());
-		}
-		
-	}
 
 
 

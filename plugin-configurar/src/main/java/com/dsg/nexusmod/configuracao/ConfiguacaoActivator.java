@@ -23,14 +23,12 @@ public class ConfiguacaoActivator extends org.pf4j.Plugin {
     }
     
     public void start() {
-    	System.out.println("start "+this.getClass().getName());
     	if (configuracaoController != null && configuracaoController instanceof OnInit) {
     		configuracaoController.start();
 		}
     }
 
     public void stop() {
-    	System.out.println("stop "+this.getClass().getName());
     	if (configuracaoController != null) {
 			configuracaoController.stop();
 		}
@@ -46,7 +44,6 @@ public class ConfiguacaoActivator extends org.pf4j.Plugin {
 				configuracaoController = new ConfiguracaoController(osgiService);
 			}
 			
-			System.out.println("addItemMenu "+this.getClass().getName());
 			javax.swing.ImageIcon icon = new javax.swing.ImageIcon(getClass().getResource("/imagem/setting-configure.png"));
 	        icon = new javax.swing.ImageIcon(icon.getImage().getScaledInstance(16, 16,  java.awt.Image.SCALE_SMOOTH));
 			

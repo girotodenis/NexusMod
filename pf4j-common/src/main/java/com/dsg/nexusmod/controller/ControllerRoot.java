@@ -59,4 +59,6 @@ public interface ControllerRoot  {
 	 
 	void addNotification(String message, TaskNotificationType type);
 
+	void removeMenu(String string);
+
 }

@@ -24,8 +24,6 @@ public class TesteColorController implements Controller<ColorGridPanelView>, OnI
 	@Override
 	public void onInit(ControllerRoot contextApp) {
 		
-		System.out.println(" onInit");
-		
 		panel.button.addActionListener(e -> {
 			contextApp.showContent(pai);
 		});
@@ -34,8 +32,6 @@ public class TesteColorController implements Controller<ColorGridPanelView>, OnI
 
 	@Override
 	public void onChage(ControllerRoot contextApp) {
-		System.out.println(" onChage");
-		
 	}
 
 

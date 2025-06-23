@@ -1,15 +1,17 @@
 package com.dsg.nexusmod;
 
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.UIManager;
 
+import com.dsg.nexusmod.osgi.LoadPlugin;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiCore;
+import com.dsg.nexusmod.osgi.OsgiPlugin;
 import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.osgi.PluginLoader;
 import com.dsg.nexusmod.osgi.pf4j.Pf4jOSGiAdapter;
+import com.dsg.nexusmod.ui.ItemMenu;
 import com.dsg.ui.AppController;
 import com.dsg.ui.AppUtilities;
 import com.formdev.flatlaf.FlatDarculaLaf;
@@ -27,23 +29,13 @@ public class Main {
 		var app = AppUtilities.builder().lookAndFeel(FlatDarculaLaf.class).size(1024, 768).title("Teste OSGi").build()
 				.getMain();
 
-		
+		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
 		registerPluginOrder(osgiCore, app);
 		
 		app.getPanel().addMenuItem("Sair", UIManager.getIcon("FileView.directoryIcon"), (item) -> {
 			osgiCore.stop();
 			System.exit(0);
 		});
-		
-//		// Configurar o diretório de bundles
-//		try {
-//			File plugin = new File("../configurar/target/configurar-0.0.1.jar");
-//			System.out.println(plugin.isFile());
-//			osgiCore.installBundle(plugin.getCanonicalPath());
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
 		loadPlugin(osgiCore, app);
 		
@@ -69,10 +61,22 @@ public class Main {
 	}
 
 	private static void registerPluginOrder(OsgiCore osgiCore, AppController app) {
-		osgiCore.registerPlugin(com.dsg.nexusmod.osgi.OsgiPlugin.class, (item, plugin) -> item.load(osgiCore));
-		osgiCore.registerPlugin(com.dsg.nexusmod.ui.ItemMenu.class, (item, plugin) -> {
-			item.addItemMenu(app, (Plugin) plugin);
-			
+		osgiCore.registerPlugin(LoadPlugin.class, (item, plugin) ->  {
+			Plugin pluginDTO = (Plugin) plugin;
+			if(!"STARTED".equals(pluginDTO.getState())) {
+				app.fireEvent("ConfiguracaoController.notificacao", pluginDTO.getPluginId());
+			}
+		});
+		osgiCore.registerPlugin(OsgiPlugin.class, (item, plugin) -> { 
+			if(item!= null) {
+				((OsgiPlugin)item).load(osgiCore);
+			}
+		});
+		osgiCore.registerPlugin(ItemMenu.class, (item, plugin) -> {
+			if(item!= null) {
+				Plugin pluginDTO = (Plugin) plugin;
+				((ItemMenu)item).addItemMenu(app, pluginDTO);
+			}
 		});
 	}
 

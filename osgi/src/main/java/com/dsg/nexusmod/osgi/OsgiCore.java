@@ -22,8 +22,8 @@ public class OsgiCore implements OSGiFramework {
 	}
 
 	@Override
-	public void installBundle(String directoryPath) {
-		this.osgi.installBundle(directoryPath);
+	public String installBundle(String directoryPath, boolean started) {
+		return this.osgi.installBundle(directoryPath, started);
 	}	
 
 	@Override
@@ -42,13 +42,23 @@ public class OsgiCore implements OSGiFramework {
 	}
 
 	@Override
-	public <T,P> void registerPlugin(Class<T> classPlugin, BiConsumer<T,P> putter) {
+	public void registerPlugin(Class classPlugin, BiConsumer putter) {
 		this.osgi.registerPlugin(classPlugin, putter);
 	}
 
 	@Override
 	public List<Plugin> bundles() {
 		return this.osgi.bundles();
+	}
+
+	@Override
+	public void loadPlugins() {
+		this.osgi.loadPlugins();
+	}
+
+	@Override
+	public void deleteBundle(String pluginId) {
+		this.osgi.deleteBundle(pluginId);
 	}
 
 //	@Override

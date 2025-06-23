@@ -10,18 +10,13 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import javax.swing.Icon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
-import com.dsg.ui.componente.CustomModal;
 import com.dsg.ui.componente.CustomSideMenu;
 import com.dsg.ui.componente.ItemMenu;
 import com.dsg.ui.util.UIUtils;
@@ -36,8 +31,6 @@ public class JPanelApp extends JPanel {
 	private JPanel contentPanel;
 	private JPanel footerPanel;
 	
-	private CustomModal modalPanel; // Painel que funciona como a modal
-
 	CustomSideMenu sideMenu;
 	List<ItemMenu> itens = new ArrayList<ItemMenu>();
 	ItemMenu lastItemMenu;
@@ -86,7 +79,6 @@ public class JPanelApp extends JPanel {
     	if(op.isPresent()){
     		item = op.get();
     	}else {
-    		System.out.println("criou item "+group);
     		item = new ItemMenu(group, UIManager.getIcon("Menu.arrowIcon"), null, null);
     		itens.add(item);
     	}
@@ -112,15 +104,6 @@ public class JPanelApp extends JPanel {
 		
     	itens.forEach(item->{
     		sideMenu.addMenuItem(item);
-//    		if(item.getAction() != null) {
-//    			sideMenu.addMenuItem(item.getText(), item.getIcon(), item.getAction());
-//    		}else {
-//    			List<CustomSideMenu.MenuItem> subItems = new ArrayList<>();
-//    			item.getSubItems().forEach(subitem->{
-//    				subItems.add(sideMenu.new MenuItem(subitem.getText(), subitem.getIcon(), subitem.getAction() ));
-//    			});
-//    			sideMenu.addMenuItemWithSubItems(item.getText(), subItems);
-//    		}
     	});
 	}
     
@@ -195,68 +178,6 @@ public class JPanelApp extends JPanel {
 			e.printStackTrace();
 		}
     }
-    
-    public void toast(String title, String content, Icon icon, Color color) {
-    	JPanel contentToast = new JPanel();
-    	contentToast.setLayout(new BorderLayout());
-    	JLabel comp = new JLabel(content, icon, SwingConstants.CENTER);
-    	comp.setFont(new Font("Arial", Font.BOLD, 14));
-    	comp.setForeground(Color.WHITE);
-		contentToast.add(comp, BorderLayout.CENTER);
-		contentToast.setBackground(color);
-    	openModal(title, contentToast, new Dimension(300, 180), null, "top-right", color);
-    	
-    	try {
-    		// Definir um Timer para remover o painel após 4 segundos
-    		Timer timer = new Timer(3000, e -> {
-    			closeModal();
-    		});
-    		timer.setRepeats(false); // Garantir que o Timer execute apenas uma vez
-    		timer.start();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-    }
-    
-    public void openModal(String title, JPanel content, Dimension size, JButton[] footerButtons, String positionn, Color color) {
-    	
-    	SwingUtilities.invokeLater(() -> {
-    		// Modal (escondido inicialmente)
-    		remove(this.headerPanel);
-    		remove(this.sideMenuPanel);
-    		remove(this.footerPanel);
-    		remove(this.contentPanel);
-    		modalPanel = createModalPanel(color);
-    		
-    		add(modalPanel, BorderLayout.CENTER); // Adiciona o modal ao painel principal
-    		
-    		add(this.contentPanel, BorderLayout.CENTER); // Adiciona o modal ao painel principal
-    		add(this.footerPanel, BorderLayout.SOUTH);
-    		add(this.sideMenuPanel, BorderLayout.WEST);
-    		add(this.headerPanel, BorderLayout.NORTH);
-    		
-    		
-    		modalPanel.openModal(title, content, size, footerButtons, positionn);
-    		revalidate();
-    		repaint();
-    	});
-    }
-    
-    public void closeModal() {
-    	modalPanel.removeAll();
-    	remove(modalPanel);
-    	modalPanel = null;
-    	add(contentPanel, BorderLayout.CENTER);
-    	revalidate();
-		repaint();
-    }
-    
-    private CustomModal createModalPanel(Color color) {
-		CustomModal customModal = new CustomModal(color);
-        customModal.setBounds(0, 0, getWidth(), getHeight()); // Ocupa toda a área da janela
-        customModal.setVisible(true); // Inicialmente invisível
-        return customModal;
-	}
 
 	public void lastItemMenu(String id) {
     	var op = itens.stream().filter(m->m.getText().equals(id)).findFirst();
@@ -264,7 +185,38 @@ public class JPanelApp extends JPanel {
     		lastItemMenu = op.get();
     	}
 	}
-	
+
+	public void removeMenu(String item) {
+		var delete = new ArrayList<ItemMenu>();
+		
+		for (ItemMenu itemMenu : itens) {
+			if(itemMenu.getId().contains(item)) {
+				itemMenu.setEnabled(false);
+				delete.add(itemMenu);
+			}
+			if(itemMenu.getSubItems()!=null) {
+				var deleteSub = new ArrayList<ItemMenu>();
+				for (ItemMenu subItemMenu : itemMenu.getSubItems()) {
+					if(subItemMenu.getId().contains(item)) {
+						if(itemMenu.getSubItems().size()<=1) {
+							delete.add(itemMenu);
+						}
+						deleteSub.add(subItemMenu);
+					}
+				}
+				deleteSub.forEach(subItemMenu->{
+					sideMenu.removeMenu(subItemMenu);
+					itemMenu.getSubItems().remove(subItemMenu);
+				});
+			}
+		}
+		delete.forEach(itemMenu->{
+			sideMenu.removeMenu(itemMenu);
+			itens.remove(itemMenu);
+		});
+		
+		loadMenu();
+	}
 	
 
 }

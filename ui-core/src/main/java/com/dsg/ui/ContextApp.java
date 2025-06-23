@@ -32,13 +32,9 @@ public class ContextApp {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date) {
-		System.out.println("Firing event: " + event + " with data: " + date);
 		if (eventListeners.get(event) != null) {
-			System.out.println("Found listeners for event: " + event);
 			for (AbstractEventListener eventListener : eventListeners.get(event)) {
-				// SwingUtilities.invokeLater(() -> {
 				eventListener.handleEvent(date);
-				// });
 			}
 		}
 	}
@@ -55,7 +51,6 @@ public class ContextApp {
 	}
 	
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
-		System.out.println("Registering event listener for event: " + event);
 		List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 		if (listenersForEvent == null) {
 			listenersForEvent = new ArrayList<AbstractEventListener<?>>();
@@ -63,8 +58,14 @@ public class ContextApp {
 		listenersForEvent.clear();
 		listenersForEvent.add(eventListener);
 		eventListeners.put(event, listenersForEvent);
-		System.out.println(
-				"Registered event listener for event: " + event + " with listener: " + listenersForEvent.size());
+	}
+
+	public void removeEvent(String event) {
+		if(eventListeners.containsKey(event)) {
+			List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
+			listenersForEvent.clear();
+			eventListeners.remove(event);
+		}
 	}
 
 }

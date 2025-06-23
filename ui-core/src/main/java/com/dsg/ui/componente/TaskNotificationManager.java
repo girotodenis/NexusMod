@@ -68,7 +68,8 @@ public class TaskNotificationManager {
 
 class TaskNotification extends JPanel {
 
-    private final Timer timer;
+    private static final long serialVersionUID = 8029345727070346688L;
+	private final Timer timer;
 
     public TaskNotification(String message, TaskNotificationType type) {
         setLayout(new BorderLayout());

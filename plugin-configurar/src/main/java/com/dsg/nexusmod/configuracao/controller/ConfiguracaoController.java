@@ -35,35 +35,35 @@ public class ConfiguracaoController implements Controller<ConfiguracaoView>, OnI
 
 	@Override
 	public void onInit(ControllerRoot contextApp) {
-		System.out.println("ConfiguracaoController onInit");
 		this.contextApp = contextApp;
 		
 		if(this.contextApp==null) {
-			System.out.println("ContextApp não pode ser nulo. Certifique-se de que o ContextApp foi inicializado antes de chamar onInit.");
 			return ;
 		}
 		
 		contextApp.registerEvent("ConfiguracaoController.notificacao", (data)->{
-			System.out.println("ConfiguracaoController notificacao: " + data);
-			count = 0;
 			carregarListaPlugins();
-			listaPlugin.getModel().forEach(p -> {
-				if(p.getPluginId().equals(data)) {
-					p.setNotificacao(true);
-					count++;
-				}else if(p.isNotificacao()) {
-					count++;
-				}
-			});
-			contextApp.menuEvent("Configuração", "badgeNumber", count);
-			listaPlugin.notifyObservers();
+			atualizarBadgeNumber(contextApp, data);
 		});
+	}
+
+	private void atualizarBadgeNumber(ControllerRoot contextApp, Object data) {
+		count = 0;
+		listaPlugin.getModel().forEach(p -> {
+			if(p.getPluginId().equals(data)) {
+				p.setNotificacao(true);
+				count++;
+			}else if(p.isNotificacao()) {
+				count++;
+			}
+		});
+		contextApp.menuEvent("Configuração", "badgeNumber", count);
 	}
 	
 	@Override
 	public void onChage(ControllerRoot contextApp) {
-		System.out.println("ConfiguracaoController onChage");
 		carregarListaPlugins();
+		atualizarBadgeNumber(contextApp, "");
 	}
 
 	private void carregarListaPlugins() {
@@ -74,18 +74,16 @@ public class ConfiguracaoController implements Controller<ConfiguracaoView>, OnI
 			return pluginModel;
 		}).toList();
 		listaPlugin.add(list);
+		listaPlugin.notifyObservers();
 	}
 
 	public void stop() {
-		System.out.println("ConfiguracaoController stop");
 		listaPlugin.clear();
 		contextApp.menuEvent("Configuração","visible", false);
-		
 	}
 
 	public void start() {
 		if(contextApp != null && osgiService != null) {
-			System.out.println("ConfiguracaoController start");
 			listaPlugin.clear();
 			onInit(contextApp);
 		}
@@ -93,7 +91,6 @@ public class ConfiguracaoController implements Controller<ConfiguracaoView>, OnI
 
 	@Override
 	public void update(Plugin plugin) {
-		System.out.println("Plugin atualizado: " + plugin.getPluginId() + " - " + plugin.getState());
 		if("STOPED".equals(plugin.getState())) {
 			this.osgiService.stopBundle(plugin.getPluginId());
 		}else {

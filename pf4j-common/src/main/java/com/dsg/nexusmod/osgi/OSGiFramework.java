@@ -20,7 +20,7 @@ public interface OSGiFramework {
      *
      * @param directoryPath Caminho do diretório.
      */
-    void installBundle(String directoryPath);
+    String installBundle(String directoryPath, boolean started);
   
     /**
      * Registra os plugins que implementam ClassT
@@ -28,7 +28,7 @@ public interface OSGiFramework {
      * @param classPlugin
      * @param putter
      */
-    <T,P> void registerPlugin(Class<T> classPlugin, BiConsumer<T, P> putter );
+    void registerPlugin(Class classPlugin, BiConsumer putter );
 
     /**
      * Para um bundle específico.
@@ -43,6 +43,12 @@ public interface OSGiFramework {
      * @param bundleId ID do bundle a ser reiniciado.
      */
     void restartBundle(String bundleId);
+    
+    /**
+     * deletar da pasta de plugins um bundle específico.
+     * @param pluginId
+     */
+    void deleteBundle(String pluginId);
 
     /**
      * Desinstala um bundle específico.
@@ -55,6 +61,8 @@ public interface OSGiFramework {
      * @return
      */
     List<Plugin> bundles();
+
+	void loadPlugins();
 
 //    /**
 //     * Carrega todos os bundles de um diretório específico.

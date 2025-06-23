@@ -49,7 +49,6 @@ public class ConfiguracaoView extends JPanel implements ListPluginObsever {
      */
     public void update(List<PluginModel> plugins) {
     	
-    	System.out.println("Atualizando lista de plugins: " + plugins.size() + " plugins encontrados.");
         // Remove todos os componentes existentes
         listPanel.removeAll();
 
