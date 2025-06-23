@@ -12,14 +12,14 @@ import com.dsg.nexusmod.configuracao.model.ListaPluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginlObserver;
 import com.dsg.nexusmod.configuracao.ui.ConfiguracaoView;
-import com.dsg.nexusmod.controller.Controller;
+import com.dsg.nexusmod.controller.ControllerContent;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
 
-public class ConfiguracaoController implements Controller<ConfiguracaoView>, OnInit,OnChange, PluginlObserver {
+public class ConfiguracaoController implements ControllerContent<ConfiguracaoView>, OnInit,OnChange, PluginlObserver {
 
 	ConfiguracaoView panel;
 	ControllerRoot contextApp;

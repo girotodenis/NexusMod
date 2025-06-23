@@ -1,8 +1,5 @@
 package com.dsg.nexusmod.controller;
 
-import java.awt.Component;
-
-import javax.swing.Icon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -58,12 +55,14 @@ public interface ControllerRoot  {
 	 */
 	void addMenuItem(MenuItem menuItem);
 	
-	void showContent(Controller<? extends JPanel> controller);
+	void showContent(ControllerContent<? extends JPanel> controller);
 	 
 	void addNotification(String message, TaskNotificationType type);
 
 	void removeMenu(String string);
 
 	JFrame getFrame();
+	
+	public void updateAll(Class lookAndFeel);
 
 }

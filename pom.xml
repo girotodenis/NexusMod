@@ -7,11 +7,12 @@
 	<version>0.0.1</version>
 	<packaging>pom</packaging>
 	<modules>
-		<module>osgi</module>
 		<module>pf4j-common</module>
+		<module>osgi</module>
 		<module>ui-core</module>
 		<module>plugin-configurar</module>
 		<module>plugin-teste</module>
+		<module>plugin-theme-mac-ligth</module>
 		<module>dist</module>
 	</modules>
 

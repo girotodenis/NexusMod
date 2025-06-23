@@ -1,12 +1,12 @@
 package com.dsg.nexusmod.teste;
 
-import com.dsg.nexusmod.controller.Controller;
+import com.dsg.nexusmod.controller.ControllerContent;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.teste2.TesteColorController;
 import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.nexusmod.ui.TaskNotificationType;
 
-public class TesteController implements Controller<TesteView>, OnInit {
+public class TesteController implements ControllerContent<TesteView>, OnInit {
 
 	TesteView panel;
 	ControllerRoot contextApp;

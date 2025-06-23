@@ -4,6 +4,7 @@ import java.io.File;
 
 import javax.swing.UIManager;
 
+import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.osgi.LoadPlugin;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiCore;
@@ -11,6 +12,7 @@ import com.dsg.nexusmod.osgi.OsgiPlugin;
 import com.dsg.nexusmod.osgi.Plugin;
 import com.dsg.nexusmod.osgi.PluginLoader;
 import com.dsg.nexusmod.osgi.pf4j.Pf4jOSGiAdapter;
+import com.dsg.nexusmod.ui.ControllerPlugin;
 import com.dsg.nexusmod.ui.ItemMenu;
 import com.dsg.ui.AppController;
 import com.dsg.ui.AppUtilities;
@@ -69,15 +71,22 @@ public class Main {
 				app.fireEvent("ConfiguracaoController.notificacao", pluginDTO.getPluginId());
 			}
 		});
-		osgiCore.registerPlugin(OsgiPlugin.class, (item, plugin) -> { 
-			if(item!= null) {
-				((OsgiPlugin)item).load(osgiCore);
+		osgiCore.registerPlugin(OsgiPlugin.class, (extensionPoint, plugin) -> { 
+			if(extensionPoint!= null) {
+				((OsgiPlugin)extensionPoint).load(osgiCore);
 			}
 		});
-		osgiCore.registerPlugin(ItemMenu.class, (item, plugin) -> {
-			if(item!= null) {
+		osgiCore.registerPlugin(ItemMenu.class, (extensionPoint, plugin) -> {
+			if(extensionPoint!= null) {
 				Plugin pluginDTO = (Plugin) plugin;
-				((ItemMenu)item).addItemMenu(app, pluginDTO);
+				((ItemMenu)extensionPoint).addItemMenu(app, pluginDTO);
+			}
+		});
+		osgiCore.registerPlugin(ControllerPlugin.class, (controllerPlugin, plugin) -> {
+			if(controllerPlugin!= null) {
+				Plugin pluginDTO = (Plugin) plugin;
+				Controller newController = ((ControllerPlugin)controllerPlugin).newController(app, pluginDTO);
+				app.addController(newController);
 			}
 		});
 	}

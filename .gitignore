@@ -16,3 +16,5 @@ plugin-teste/.classpath
 dist/.classpath
 
 osgi/lib/
+
+plugin-theme-mac-ligth/.classpath
