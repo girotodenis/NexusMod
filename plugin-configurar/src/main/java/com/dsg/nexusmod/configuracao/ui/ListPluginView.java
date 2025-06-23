@@ -1,5 +1,6 @@
 package com.dsg.nexusmod.configuracao.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
@@ -22,6 +24,7 @@ public class ListPluginView extends JPanel implements PluginlObserver{
 	PluginModel plugin;
 	JToggleButton toggleButton;
 	
+	
 	public ListPluginView(PluginModel plugin) {
 		this.plugin = plugin;
 		setLayout(new GridBagLayout());
@@ -30,6 +33,7 @@ public class ListPluginView extends JPanel implements PluginlObserver{
         setMaximumSize(new Dimension(Integer.MAX_VALUE, 70)); // Garante altura fixa
         setMinimumSize(new Dimension(600, 70)); // Garante tamanho mínimo
 
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5); // Espaçamento entre os componentes
 
@@ -52,8 +56,10 @@ public class ListPluginView extends JPanel implements PluginlObserver{
         gbc.gridx = 2;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
-        gbc.anchor = GridBagConstraints.EAST;
-        JToggleButton toggleButton = new JToggleButton(plugin.getState().equals("STARTED") ? "Desativar" : "Ativar");
+        gbc.anchor = GridBagConstraints.WEST;
+        
+        JButton deleteButton = new JButton("Deletar");
+        JToggleButton toggleButton = new JToggleButton(plugin.getState().equals("STARTED") ? "Desativar" : "Ativar   ");
         toggleButton.setSelected("STARTED".equals(plugin.getState())); // Define estado inicial do botão
         toggleButton.setEnabled(!plugin.isDisable()); // Define visibilidade do botão com base no estado do plugin
         toggleButton.addActionListener(new ActionListener() {
@@ -62,10 +68,29 @@ public class ListPluginView extends JPanel implements PluginlObserver{
             	if(plugin.isNotificacao()) {
             		plugin.setNotificacao(false);
             	}
-            	plugin.setState( toggleButton.isSelected() ? "STARTED": "STOPED");
+            	if(toggleButton.isSelected() ) {
+            		plugin.setState( "STARTED");
+            		deleteButton.setEnabled(false);
+            	}else {
+            		
+            		plugin.setState( "STOPED");
+            		deleteButton.setEnabled(true);
+            	}
             }
         });
-        add(toggleButton, gbc);
+        
+        deleteButton.setEnabled(plugin.getState().equals("STARTED") ? false : true); // Define visibilidade do botão com base no estado do plugin
+        deleteButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		plugin.setState( "DELETED" );
+        	}
+        });
+        JPanel panelButton = new JPanel();
+        panelButton.add(toggleButton);
+        panelButton.add(deleteButton);
+        
+        add(panelButton, gbc);
 
         // Linha inferior: Descrição (ocupa toda a largura)
         gbc.gridx = 0;

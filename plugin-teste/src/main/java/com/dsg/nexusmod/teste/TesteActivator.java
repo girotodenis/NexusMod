@@ -8,19 +8,16 @@ import org.pf4j.PluginWrapper;
 
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.controller.MenuItem;
-import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.ui.ItemMenu;
 
 public class TesteActivator extends Plugin {
 
 	private static TesteActivator testePlugin;
-	private static OSGiFramework osgiService;
 	
 	private static TesteController testeController;
 	
     public TesteActivator(PluginWrapper wrapper) {
         super(wrapper);
-        testePlugin = this;
     }
     
     public void start() {

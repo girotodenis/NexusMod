@@ -30,6 +30,8 @@ public class Main {
 				.getMain();
 
 		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
+		
+		
 		registerPluginOrder(osgiCore, app);
 		
 		app.getPanel().addMenuItem("Sair", UIManager.getIcon("FileView.directoryIcon"), (item) -> {

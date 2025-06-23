@@ -1,7 +1,11 @@
 package com.dsg.nexusmod.osgi.pf4j;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +60,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
         	if(started) {
         		pluginManager.startPlugin(pluginId);
         		var pluginStarted = pluginManager.getPlugin(pluginId);
+        		System.out.println(String.format("plugin %s started!", pluginStarted.getPluginId()));
         	}
         	loadgetExtensions(pluginId, plugin);
         } else {
@@ -153,5 +158,29 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 	@Override
 	public void loadPlugins() {
 		this.pluginManager.loadPlugins();
+	}
+
+	@Override
+	public void copyInstallBundle(String canonicalPath) {
+		Path sourceFile = Path.of(canonicalPath);
+		Path destinationDir = Path.of(System.getProperty("app.home.plugins"));
+        try {
+        	// Certifique-se de que o diretório de destino existe
+            File dir = destinationDir.toFile();
+            if (!dir.exists()) {
+                dir.mkdirs(); // Cria o diretório e subdiretórios se eles não existirem
+            }
+
+            // Caminho do arquivo dentro do diretório de destino
+            Path destinationFile = destinationDir.resolve(sourceFile.getFileName());
+
+            
+            // Copiar o arquivo
+            Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Arquivo copiado com sucesso para: " + destinationFile);
+        } catch (IOException e) {
+            System.err.println("Erro ao copiar o arquivo: " + e.getMessage());
+        }
+		
 	}
 }

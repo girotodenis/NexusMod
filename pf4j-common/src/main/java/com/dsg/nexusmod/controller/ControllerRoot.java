@@ -1,6 +1,9 @@
 package com.dsg.nexusmod.controller;
 
+import java.awt.Component;
+
 import javax.swing.Icon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.dsg.nexusmod.ui.TaskNotificationType;
@@ -60,5 +63,7 @@ public interface ControllerRoot  {
 	void addNotification(String message, TaskNotificationType type);
 
 	void removeMenu(String string);
+
+	JFrame getFrame();
 
 }

@@ -20,12 +20,12 @@ public class AppUtilities {
 	private AppController main;
 	private JFrame frame;
 	
-	private AppUtilities(String title, int width, int height, AppController mainPanel ) {
+	private AppUtilities(String title, int width, int height, AppController mainPanel, JFrame frame ) {
 		
 		this.main = mainPanel;
 		
 		SwingUtilities.invokeLater(() -> {
-            frame = new JFrame(title);
+			frame.setTitle(title);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(width, height);
             frame.setLocationRelativeTo(null);
@@ -65,9 +65,9 @@ public class AppUtilities {
 		private String title = "-";
 		private int frameWidth = 600; 
 		private int frameHeight = 400;
-		
+		private JFrame frame = new JFrame(title);
 		private JPanelApp main = new JPanelApp(FlatDarculaLaf.class);
-		private AppController controller = new AppController(main);
+		private AppController controller = new AppController(main,frame);
 		
 		
 		public CustomModalBuilder lookAndFeel(Class<? extends LookAndFeel> classLook) {
@@ -98,7 +98,7 @@ public class AppUtilities {
 		
 		public AppUtilities build() {
 //			this.main.loadMenu();
-			return new AppUtilities(this.title, this.frameWidth,this.frameHeight, this.controller);
+			return new AppUtilities(this.title, this.frameWidth,this.frameHeight, this.controller, this.frame);
 		}
 		
 	}

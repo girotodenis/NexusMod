@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.util.List;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -16,12 +17,18 @@ public class ConfiguracaoView extends JPanel implements ListPluginObsever {
 	ListaPluginModel model; // Modelo que contém a lista de plugins
 	JPanel listPanel; // Painel que contém os itens da lista
 //	Consumer<Plugin> consumer;
+	public JButton file = new JButton("novo plugin");
 	
     public ConfiguracaoView( ListaPluginModel model) {
     	
     	this.model = model;
         // Configura o layout do painel principal
         setLayout(new BorderLayout());
+        
+        JPanel top = new JPanel();
+        top.setLayout(new BorderLayout());
+        top.add(file, BorderLayout.EAST);
+        add(top, BorderLayout.NORTH);
 
         // Painel central para a lista de plugins
         listPanel = new JPanel();
@@ -31,6 +38,8 @@ public class ConfiguracaoView extends JPanel implements ListPluginObsever {
         // Carrega os itens iniciais
         update(model.getModel());
 
+     
+        
         // Adiciona o painel rolável ao painel principal
         add(scrollPane, BorderLayout.CENTER);
         

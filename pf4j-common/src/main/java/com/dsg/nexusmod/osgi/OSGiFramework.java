@@ -64,6 +64,8 @@ public interface OSGiFramework {
 
 	void loadPlugins();
 
+	void copyInstallBundle(String canonicalPath);
+
 //    /**
 //     * Carrega todos os bundles de um diretório específico.
 //     * @param directoryPath

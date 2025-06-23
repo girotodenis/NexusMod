@@ -68,8 +68,11 @@ public class TesteController implements Controller<TesteView>, OnInit {
 			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", count = 0);
 			contextApp.removeMenu("Tela_de_Teste");
 		}
-		panel.removeAll();
-		panel = null;
+		
+		if(panel!=null) {
+			panel.removeAll();
+			panel = null;
+		}
 	}
 	
 	

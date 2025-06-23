@@ -61,6 +61,11 @@ public class OsgiCore implements OSGiFramework {
 		this.osgi.deleteBundle(pluginId);
 	}
 
+	@Override
+	public void copyInstallBundle(String canonicalPath) {
+		this.osgi.copyInstallBundle(canonicalPath);
+	}
+
 //	@Override
 //	public void loadBundles(String directoryPath) {
 //		 this.osgi.loadBundles(directoryPath);

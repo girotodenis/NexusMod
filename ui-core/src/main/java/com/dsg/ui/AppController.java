@@ -2,6 +2,7 @@ package com.dsg.ui;
 
 import java.util.Set;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.dsg.nexusmod.controller.AbstractEventListener;
@@ -18,10 +19,12 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	
 	
 	private JPanelApp panel;
+	private JFrame frame;
 	private Set<String> oninit = new java.util.HashSet<>();
 	
-	public AppController(JPanelApp panel) {
+	public AppController(JPanelApp panel,JFrame frame) {
 		this.panel = panel;
+		this.frame = frame;
 	}
 	
 	private void show(CustomSideMenu.MenuItem itemMenu, Controller<? extends JPanel> controller) {
@@ -110,6 +113,11 @@ public class AppController implements ControllerRoot, Controller<JPanelApp> {
 	public void removeMenu(String itemMenu) {
 
 		getPanel().removeMenu(itemMenu);
+	}
+
+	@Override
+	public JFrame getFrame() {
+		return frame;
 	}
 
 }

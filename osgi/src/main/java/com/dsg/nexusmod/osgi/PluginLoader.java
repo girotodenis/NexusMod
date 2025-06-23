@@ -29,6 +29,12 @@ public class PluginLoader {
 
 			if (pluginsDir.exists() && pluginsDir.isDirectory()) {
 				
+				try {
+					System.setProperty("app.home.plugins", pluginsDir.getCanonicalPath());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				
 				File[] files = pluginsDir.listFiles((dir, name) -> name.endsWith(".jar"));
 				Set<String> findJar = new HashSet<String>();
 				
@@ -46,6 +52,7 @@ public class PluginLoader {
 
 						// Verifica se este plugin já foi carregado
 						if (!loadedPlugins.keySet().contains(canonicalPath)) {
+							System.out.println("inatall"+canonicalPath);
 							var id = pluginManager.installBundle(canonicalPath , started);
 							loadedPlugins.put(canonicalPath, id); // Marca o plugin como carregado
 							consumer.accept(canonicalPath); // Notifica o consumidor, se fornecido
@@ -61,19 +68,23 @@ public class PluginLoader {
 		};
 
 		// Agendar a execução do monitoramento a cada 10 segundos
-		scheduler.scheduleAtFixedRate(task, 0, 5, TimeUnit.SECONDS);
+		scheduler.scheduleAtFixedRate(task, 0, 2, TimeUnit.SECONDS);
 	}
 
 	private void removePlugins(Set<String> findJar) {
 		List<String> rm = new ArrayList<String>();
 		loadedPlugins.forEach((path, pluginId) -> {
 			if(!findJar.contains(path)) {
-				pluginManager.uninstallBundle(pluginId);
+				if(new File(path).isFile()) {
+					System.out.println("remover "+pluginId);
+					pluginManager.uninstallBundle(pluginId);
+				}
 				rm.add(path);
 			}
 		});
 		rm.forEach(p->{
-			loadedPlugins.remove(p);
+			System.out.println("remover "+p);
+			System.out.println(loadedPlugins.remove(p));
 		});
 	}
 
