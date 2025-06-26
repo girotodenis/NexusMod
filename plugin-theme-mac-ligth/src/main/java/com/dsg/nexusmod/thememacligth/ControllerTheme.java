@@ -11,14 +11,17 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 public class ControllerTheme implements Controller, OnInit {
 
 	ControllerRoot contextApp;
-	LookAndFeel padrao;
+	static LookAndFeel padrao;
 
 	@Override
 	public void onInit(ControllerRoot contextApp) {
+		System.out.println("getLookAndFeel: "+UIManager.getLookAndFeel());
 		this.contextApp = contextApp;
-		padrao = UIManager.getLookAndFeel();
+		if(padrao==null)
+			padrao = UIManager.getLookAndFeel();
 		System.out.println(padrao.getClass().getName());
 		contextApp.updateAll(FlatMacLightLaf.class);
+		System.out.println("padrao: "+padrao.getClass().getSimpleName());
 	}
 
 	public void start() {

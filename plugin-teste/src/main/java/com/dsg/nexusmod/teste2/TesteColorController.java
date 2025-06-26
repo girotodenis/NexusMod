@@ -17,13 +17,13 @@ public class TesteColorController implements ControllerContent<ColorGridPanelVie
 	}
 
 	public TesteColorController(ControllerContent<?> pai, int col) {
+		
 		this.panel = new ColorGridPanelView(col);
 		this.pai = pai;
 	}
 
 	@Override
 	public void onInit(ControllerRoot contextApp) {
-		
 		panel.button.addActionListener(e -> {
 			contextApp.showContent(pai);
 		});

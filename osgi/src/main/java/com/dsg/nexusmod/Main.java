@@ -45,7 +45,7 @@ public class Main {
 		
 		
 		app.getPanel().loadMenu();
-
+		
 	}
 
 	private static void loadPlugin(OsgiCore osgiCore, AppController app) {

@@ -34,11 +34,12 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 			return;
 		}
 		
-		getPanel().showContent( controller.getPanel() );
-		
 		if(controller instanceof OnChange) {
+			System.out.println("onChange: "+controller.getClass().getSimpleName());
 			((OnChange)controller).onChage(this);
 		}
+		
+		getPanel().showContent( controller.getPanel() );
 	}
 	
 	
@@ -51,16 +52,20 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		String id = controller.getClass().getName()+controller.hashCode();
 		if(!oninit.contains(id)) {
 			if(controller instanceof OnChange) {
+				System.out.println("onInit: "+controller.getClass().getSimpleName());
 				((OnInit)controller).onInit(this);
 			}
 			oninit.add(id);
 		}
 		
-		getPanel().showContent( controller.getPanel() );
 		
 		if(controller instanceof OnChange) {
+			System.out.println("onChange: "+controller.getClass().getSimpleName());
 			((OnChange)controller).onChage(this);
 		}
+		
+		getPanel().showContent( controller.getPanel() );
+		
 	}
 
 	@Override
@@ -74,7 +79,9 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		getPanel().addMenuItem(menuItem.getGroup(), menuItem.getText(), menuItem.getIcon(), (item) -> show(item, menuItem.getController()));
 		
 		if(menuItem.getController() instanceof OnInit) {
-			((OnInit)menuItem.getController()).onInit(this);
+			OnInit controller = (OnInit)menuItem.getController();
+			System.out.println("onInit: "+controller.getClass().getSimpleName());
+			controller.onInit(this);
 		}
 		this.panel.loadMenu();
 	}
@@ -82,6 +89,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	public void addController(Controller Controller) {
 		
 		if(Controller instanceof OnInit) {
+			System.out.println("onInit: "+Controller.getClass().getSimpleName());
 			((OnInit)Controller).onInit(this);
 		}
 	}

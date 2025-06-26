@@ -32,9 +32,13 @@ public class ContextApp {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date) {
+		System.out.println("####################################");
+		System.out.println("fire: "+event+" "+eventListeners.containsKey(event));
 		if (eventListeners.get(event) != null) {
 			for (AbstractEventListener eventListener : eventListeners.get(event)) {
+				System.out.println("listener : "+eventListener.getClass().getName());
 				eventListener.handleEvent(date);
+				System.out.println("####################################");
 			}
 		}
 	}
@@ -57,7 +61,9 @@ public class ContextApp {
 		}
 		listenersForEvent.clear();
 		listenersForEvent.add(eventListener);
+		
 		eventListeners.put(event, listenersForEvent);
+		System.out.println(" addEvent: "+event+" "+listenersForEvent.size());
 	}
 
 	public void removeEvent(String event) {
@@ -65,6 +71,7 @@ public class ContextApp {
 			List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 			listenersForEvent.clear();
 			eventListeners.remove(event);
+			System.out.println(" removeEvent: "+event);
 		}
 	}
 

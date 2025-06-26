@@ -47,7 +47,37 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 			return ;
 		}
 		
-		 this.panel.file.addActionListener(new ActionListener() {
+		contextApp.registerEvent("ConfiguracaoController.notificacao", (data)->{
+			carregarListaPlugins();
+			atualizarBadgeNumber(contextApp, data);
+		});
+	}
+	
+	@Override
+	public void onChage(ControllerRoot contextApp) {
+		createView(contextApp);
+		carregarListaPlugins();
+		atualizarBadgeNumber(contextApp, "");
+	}
+
+	private void atualizarBadgeNumber(ControllerRoot contextApp, Object data) {
+		count = 0;
+		listaPlugin.getModel().forEach(p -> {
+			if(p.getPluginId().equals(data)) {
+				p.setNotificacao(true);
+				count++;
+			}else if(p.isNotificacao()) {
+				count++;
+			}
+		});
+		contextApp.menuEvent("Configuração", "badgeNumber", count);
+	}
+	
+
+	private void createView(ControllerRoot contextApp) {
+		this.panel = new ConfiguracaoView(listaPlugin);
+		
+		this.panel.file.addActionListener(new ActionListener() {
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                // Criar um JFileChooser
@@ -74,30 +104,6 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 	                
 	            }
 	        });
-		
-		contextApp.registerEvent("ConfiguracaoController.notificacao", (data)->{
-			carregarListaPlugins();
-			atualizarBadgeNumber(contextApp, data);
-		});
-	}
-
-	private void atualizarBadgeNumber(ControllerRoot contextApp, Object data) {
-		count = 0;
-		listaPlugin.getModel().forEach(p -> {
-			if(p.getPluginId().equals(data)) {
-				p.setNotificacao(true);
-				count++;
-			}else if(p.isNotificacao()) {
-				count++;
-			}
-		});
-		contextApp.menuEvent("Configuração", "badgeNumber", count);
-	}
-	
-	@Override
-	public void onChage(ControllerRoot contextApp) {
-		carregarListaPlugins();
-		atualizarBadgeNumber(contextApp, "");
 	}
 
 	private void carregarListaPlugins() {

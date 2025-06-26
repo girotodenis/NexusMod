@@ -149,6 +149,8 @@ public class CustomSideMenu extends JPanel {
 				menuItem.setVisible(false);
 				menuItem.setBadgeNumber(0);
 				delete.add(menuItem);
+				System.out.println("menu removeEvent: "+menuItem.getId()+".badgeNumber");
+				System.out.println("menu removeEvent: "+menuItem.getId()+".visible");
 				ContextApp.getInstance().removeEvent(menuItem.getId()+".badgeNumber" );
 				ContextApp.getInstance().removeEvent(menuItem.getId()+".visible");
 			}
@@ -193,7 +195,11 @@ public class CustomSideMenu extends JPanel {
             add(labelIcon, BorderLayout.WEST);
             add(label, BorderLayout.CENTER);
             
-            ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", (date)-> this.setBadgeNumber((int)date) );
+            ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", (date)-> {
+            	this.setBadgeNumber((int)date) ;
+            	labelIcon.setVisible(true);
+            });
+            
             ContextApp.getInstance().registerEvent(this.item.getId()+".visible", (date)-> {
             	this.setEnabled((boolean)date); 
             	this.setVisible((boolean)date) ;
