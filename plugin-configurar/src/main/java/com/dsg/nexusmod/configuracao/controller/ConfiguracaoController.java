@@ -137,7 +137,9 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 			this.osgiService.deleteBundle(plugin.getPluginId());
 		}else {
 			this.osgiService.restartBundle(plugin.getPluginId());
+			contextApp.fireEvent("app.loadMenu", true);
 		}
+		
 		contextApp.fireEvent("ConfiguracaoController.notificacao", null);
 	}
 

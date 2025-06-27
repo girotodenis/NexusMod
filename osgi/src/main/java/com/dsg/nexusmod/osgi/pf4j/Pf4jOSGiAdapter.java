@@ -2,6 +2,7 @@ package com.dsg.nexusmod.osgi.pf4j;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -9,10 +10,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.function.BiConsumer;
+import java.util.jar.JarFile;
 
 import org.pf4j.DefaultPluginManager;
 import org.pf4j.ExtensionPoint;
+import org.pf4j.PluginDescriptor;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
 import org.pf4j.PluginWrapper;
@@ -48,26 +52,54 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     public String installBundle(String directoryPath, boolean started) {
         // Define o diretório de onde os plugins serão carregados
     	// Caminho para o arquivo JAR do plugin
-        Path pluginPath = Paths.get(directoryPath);
+			
+    		Path pluginPath = Paths.get(directoryPath);
+    		
+    		System.out.println("recebendo: "+directoryPath);
+    		// Carregar o plugin
+			Properties pluginProperties = getPluginProperties(pluginPath);
+			String newPluginId = pluginProperties.getProperty("plugin.id");
+            String newPluginVersion = pluginProperties.getProperty("plugin.version");
+            
+            var existingPlugin =  pluginManager.getPlugin(newPluginId);
+            if (existingPlugin != null) {
+                PluginDescriptor existingDescriptor = existingPlugin.getDescriptor();
+                System.out.println("Plugin Existente ID: " + existingDescriptor.getPluginId());
+                System.out.println("Versão do Plugin Existente: " + existingDescriptor.getVersion());
+                pluginManager.deletePlugin(newPluginId);
 
-        // Carregar o plugin
-        String pluginId = pluginManager.loadPlugin(pluginPath); 
-        
-        var plugin = pluginManager.getPlugin(pluginId);
-       
-        if (pluginId != null) {
-            // Inicializar o plugin
-        	if(started) {
-        		pluginManager.startPlugin(pluginId);
-        		var pluginStarted = pluginManager.getPlugin(pluginId);
-        		System.out.println(String.format("plugin %s started!", pluginStarted.getPluginId()));
-        	}
-        	loadgetExtensions(pluginId, plugin);
-        } else {
-            System.err.println("Falha ao carregar o plugin.");
-        }
-
-       return plugin.getPluginId();
+                // Compare as versões
+//                if (newPluginVersion.compareTo(existingDescriptor.getVersion()) > 0) {
+//                    System.out.println("A nova versão é mais recente. Atualizando...");
+//                    // Desative e desinstale o plugin existente
+//                    //pluginManager.disablePlugin(existingDescriptor.getPluginId());
+////                    pluginManager.unloadPlugin(existingDescriptor.getPluginId());
+//                    pluginManager.deletePlugin(newPluginId);
+//                    // Carregue e ative o novo plugin
+//                    //String loadedPluginId = pluginManager.loadPlugin(pluginPath);
+//                   // pluginManager.enablePlugin(loadedPluginId);
+//                    System.out.println("Plugin atualizado com sucesso!");
+//                } else {
+//                    System.out.println("O plugin existente já está atualizado ou é mais recente.");
+//                }
+            } 
+                
+    		
+    		String pluginId = pluginManager.loadPlugin(pluginPath); 
+    		var plugin =  pluginManager.getPlugin(pluginId);
+    		if (pluginId != null) {
+    			// Inicializar o plugin
+    			if(started) {
+    				pluginManager.startPlugin(pluginId);
+    				var pluginStarted = pluginManager.getPlugin(pluginId);
+    				System.out.println(String.format("plugin %s started!", pluginStarted.getPluginId()));
+    			}
+    			loadgetExtensions(pluginId, plugin);
+    		} else {
+    			System.err.println("Falha ao carregar o plugin.");
+    		}
+    		
+    		return plugin.getPluginId();
     }
 
 	private void loadgetExtensions(String pluginId, PluginWrapper plugin) {
@@ -93,11 +125,13 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     
     @Override
     public void deleteBundle(String pluginId) {
-    	
-    	boolean state = pluginManager.deletePlugin(pluginId);
-    	if (!state) {
-    		System.err.println("Falha ao parar deletar plugin " + pluginId);
-    	}
+    	var plugin = pluginManager.getPlugin(pluginId);
+        System.out.println(pluginId+": "+plugin.getPluginPath());
+		try {
+			Files.deleteIfExists(plugin.getPluginPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
     }
 
     @Override
@@ -113,19 +147,18 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     		pluginManager.startPlugin(pluginId);
     		var pluginStart = pluginManager.getPlugin(pluginId);
     		loadgetExtensions(pluginId, pluginStart);
-//    		if (state != PluginState.STARTED && state != PluginState.DISABLED) {
-//    			if(state.equals(PluginState.RESOLVED)) {
-//    				loadgetExtensions(pluginId, pluginStart);
-//    			}
-//    		} else {
-//    			System.err.println("Falha ao reiniciar o plugin " + pluginId);
-//    		}
     	}
     }
 
     @Override
     public void uninstallBundle(String pluginId) {
+    	
         boolean success = false;
+        
+        var plugin = pluginManager.getPlugin(pluginId);
+        
+        System.out.println(pluginId+": "+plugin.getPluginState());
+        
         System.out.println(
         		"uninstallBundle deletePlugin "+
         				(success = pluginManager.deletePlugin(pluginId))
@@ -183,4 +216,18 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
         }
 		
 	}
+	
+	public static Properties getPluginProperties(Path pluginPath)  {
+		try {
+			Properties properties = new Properties();
+			// Abra o JAR e leia o arquivo "plugin.properties"
+			try (JarFile jarFile = new JarFile(pluginPath.toFile())) {
+				InputStream inputStream = jarFile.getInputStream(jarFile.getEntry("plugin.properties"));
+				properties.load(inputStream);
+			}
+			return properties;
+		} catch (Exception e) {
+			throw new RuntimeException("não é um plugin");
+		}
+    }
 }

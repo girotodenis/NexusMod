@@ -28,7 +28,9 @@ public class Main {
 
 		OsgiCore osgiCore = new OsgiCore(osgiFramework);
 
-		var app = AppUtilities.builder().lookAndFeel(FlatDarculaLaf.class).size(1024, 768).title("Teste OSGi").build()
+		var app = AppUtilities.builder()
+				//.lookAndFeel(FlatDarculaLaf.class)
+				.size(1024, 768).title("Teste OSGi").build()
 				.getMain();
 
 		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
@@ -43,9 +45,6 @@ public class Main {
 		
 		loadPlugin(osgiCore, app);
 		
-		
-		app.getPanel().loadMenu();
-		
 	}
 
 	private static void loadPlugin(OsgiCore osgiCore, AppController app) {
@@ -55,8 +54,9 @@ public class Main {
     			dir.mkdirs();
     		}
     		PLUGIN_DIRECTORY = dir.getCanonicalPath();
-    		new PluginLoader(osgiCore).startMonitoring(PLUGIN_DIRECTORY, (pathJar)->{
-    			app.getPanel().loadMenu();
+    		new PluginLoader(osgiCore).startMonitoring(PLUGIN_DIRECTORY, (pathJar, started)->{
+				System.out.println("loadMenu started: "+started);
+				app.getPanel().loadMenu();
     		});
     		
 		} catch (Exception e) {
@@ -65,6 +65,11 @@ public class Main {
 	}
 
 	private static void registerPluginOrder(OsgiCore osgiCore, AppController app) {
+		
+		app.registerEvent("app.loadMenu", (valor)->{
+			app.getPanel().loadMenu();
+		});
+		
 		osgiCore.registerPlugin(LoadPlugin.class, (item, plugin) ->  {
 			Plugin pluginDTO = (Plugin) plugin;
 			if(!"STARTED".equals(pluginDTO.getState())) {
