@@ -184,7 +184,12 @@ public class CustomSideMenu extends JPanel {
             setPreferredSize(new Dimension(Integer.MAX_VALUE, 50));
             setBorder(new EmptyBorder(5, 10, 5, 5));
 
-            labelIcon = new LabelWithBadge(this.item.getIcon(), 0);
+            if(this.item.getAction()==null) {
+            	
+            	labelIcon = new LabelWithBadge(this.item.getIcon(), 0, 12,12);
+            }else {
+            	labelIcon = new LabelWithBadge(this.item.getIcon(), 0,32,32);
+            }
             labelIcon.setFont(new Font("Arial", Font.PLAIN, 14));
             
             label = new JLabel(this.item .getText(), JLabel.LEFT);

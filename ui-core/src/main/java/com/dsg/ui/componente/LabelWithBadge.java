@@ -9,12 +9,18 @@ public class LabelWithBadge extends JLabel {
 	private static final String TAB = "    ";
 	private int badgeNumber; // Número a ser exibido no "badge"
 
-    public LabelWithBadge(Icon icon, int badgeNumber) {
+    public LabelWithBadge(Icon icon, int badgeNumber, int width, int height) {
     	
-        super(new ResizableIcon(icon, 15, 15)); // Configura o ícone para o JLabel
+        super(new ResizableIcon(icon, width, height)); // Configura o ícone para o JLabel
         this.badgeNumber = badgeNumber;
         setText(TAB);
     }
+//    public LabelWithBadge(Icon icon, int badgeNumber) {
+//    	
+//    	super(new ResizableIcon(icon, 15, 15)); // Configura o ícone para o JLabel
+//    	this.badgeNumber = badgeNumber;
+//    	setText(TAB);
+//    }
 
     public void setBadgeNumber(int badgeNumber) {
         this.badgeNumber = badgeNumber;
