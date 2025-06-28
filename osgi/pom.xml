@@ -15,6 +15,18 @@
 
 	<dependencies>
 		
+		<!-- SQLite JDBC Driver -->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.42.0.0</version>
+        </dependency>
+        <dependency>
+		    <groupId>org.xerial</groupId>
+		    <artifactId>sqlite-jdbc</artifactId>
+		    <version>3.42.0.0</version>
+		</dependency>
+        
 		<dependency>
 			<groupId>com.dsg.nexusmod</groupId>
 			<artifactId>ui-core</artifactId>

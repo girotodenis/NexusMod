@@ -5,6 +5,9 @@ import java.io.File;
 import javax.swing.UIManager;
 
 import com.dsg.nexusmod.controller.Controller;
+import com.dsg.nexusmod.database.DatabaseManager;
+import com.dsg.nexusmod.database.DatabaseSession;
+import com.dsg.nexusmod.osgi.CoreResourses;
 import com.dsg.nexusmod.osgi.LoadPlugin;
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiCore;
@@ -16,26 +19,27 @@ import com.dsg.nexusmod.ui.ControllerPlugin;
 import com.dsg.nexusmod.ui.ItemMenu;
 import com.dsg.ui.AppController;
 import com.dsg.ui.AppUtilities;
-import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class Main {
 
+	private static  DatabaseSession SESSION ;
 	private static  String PLUGIN_DIRECTORY = "./plugins"; // Diretório padrão para plugins
+	private static  String DB_DIRECTORY = "./db"; // Diretório padrão banco
 	
 	public static void main(String[] args) {
 
-		OSGiFramework osgiFramework = new Pf4jOSGiAdapter();
+		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
-		OsgiCore osgiCore = new OsgiCore(osgiFramework);
-
+		//PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
+		//DB_DIRECTORY = "../dist/target/NexusMod-app/db";
+		
+		creatSessionDB();
+		
 		var app = AppUtilities.builder()
 				//.lookAndFeel(FlatDarculaLaf.class)
 				.size(1024, 768).title("Teste OSGi").build()
 				.getMain();
 
-		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
-		
-		
 		registerPluginOrder(osgiCore, app);
 		
 		app.getPanel().addMenuItem("Sair", UIManager.getIcon("FileView.directoryIcon"), (item) -> {
@@ -45,6 +49,21 @@ public class Main {
 		
 		loadPlugin(osgiCore, app);
 		
+	}
+
+	private static void creatSessionDB() {
+		try {
+			File dir = new File(DB_DIRECTORY);
+			if(!dir.exists()) {
+				dir.mkdirs();
+			}
+			DB_DIRECTORY = dir.getCanonicalPath();
+			String dbURL = String.format("jdbc:sqlite:%s/%s", DB_DIRECTORY, "app.db");
+			DatabaseManager.initialize(dbURL);
+			SESSION = new DatabaseSession();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void loadPlugin(OsgiCore osgiCore, AppController app) {
@@ -76,17 +95,19 @@ public class Main {
 				app.fireEvent("ConfiguracaoController.notificacao", pluginDTO.getPluginId());
 			}
 		});
+		
 		osgiCore.registerPlugin(OsgiPlugin.class, (extensionPoint, plugin) -> { 
 			if(extensionPoint!= null) {
-				((OsgiPlugin)extensionPoint).load(osgiCore);
+				((OsgiPlugin)extensionPoint).load(new CoreResourses(SESSION, osgiCore, (Plugin)plugin) );
 			}
 		});
+		
 		osgiCore.registerPlugin(ItemMenu.class, (extensionPoint, plugin) -> {
 			if(extensionPoint!= null) {
-				Plugin pluginDTO = (Plugin) plugin;
-				((ItemMenu)extensionPoint).addItemMenu(app, pluginDTO);
+				((ItemMenu)extensionPoint).addItemMenu(app);
 			}
 		});
+		
 		osgiCore.registerPlugin(ControllerPlugin.class, (controllerPlugin, plugin) -> {
 			if(controllerPlugin!= null) {
 				Plugin pluginDTO = (Plugin) plugin;

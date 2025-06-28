@@ -19,6 +19,13 @@
 			<scope>compile</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.dsg.nexusmod</groupId>
+			<artifactId>osgi</artifactId>
+			<version>${project.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		
 		<!-- Plugin API -->
 		<dependency>
 			<groupId>com.dsg.nexusmod</groupId>

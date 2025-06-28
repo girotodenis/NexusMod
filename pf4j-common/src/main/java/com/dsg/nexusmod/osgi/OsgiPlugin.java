@@ -4,5 +4,5 @@ import org.pf4j.ExtensionPoint;
 
 
 public interface OsgiPlugin extends ExtensionPoint{
-	void load(OSGiFramework osgi);
+	void load(CoreResourses resourses);
 }

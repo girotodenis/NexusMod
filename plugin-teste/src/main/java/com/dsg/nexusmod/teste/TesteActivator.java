@@ -13,7 +13,6 @@ import com.dsg.nexusmod.ui.ItemMenu;
 public class TesteActivator extends Plugin {
 
 	private static TesteActivator testePlugin;
-	
 	private static TesteController testeController;
 	
     public TesteActivator(PluginWrapper wrapper) {
@@ -46,7 +45,7 @@ public class TesteActivator extends Plugin {
     public static class ItemMenuImpl implements ItemMenu {
 
 		@Override
-		public void addItemMenu(ControllerRoot root, com.dsg.nexusmod.osgi.Plugin plugin) {
+		public void addItemMenu(ControllerRoot root) {
 			
 			if(testeController == null) {
 				testeController = new TesteController();
