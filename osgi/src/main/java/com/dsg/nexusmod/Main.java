@@ -30,8 +30,8 @@ public class Main {
 
 		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
-		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
-		DB_DIRECTORY = "../dist/target/NexusMod-app/db";
+//		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
+//		DB_DIRECTORY = "../dist/target/NexusMod-app/db";
 		
 		creatSessionDB();
 		
@@ -81,7 +81,6 @@ public class Main {
     		new PluginLoader(osgiCore).startMonitoring(PLUGIN_DIRECTORY, (pathJar, started)->{
 				System.out.println("loadMenu started: "+started);
 				app.getPanel().loadMenu();
-				app.fireEvent(new Progress(95,"Carregando plugin:ItemMenu ") );
     		});
     		
     		try {
