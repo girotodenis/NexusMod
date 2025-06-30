@@ -19,6 +19,7 @@ public class TesteView extends JPanel {
 	public JButton button4 = new JButton("Notificação info");
 	public JButton button5 = new JButton("Notificação warn");
 	public JButton button6 = new JButton("Notificação error");
+	public JButton button7 = new JButton("Progress teste");
 	
 	public TesteView() {
 		setLayout(new BorderLayout()); // Usar BorderLayout para adicionar título e tabela
@@ -37,6 +38,7 @@ public class TesteView extends JPanel {
         iconPanel.add(button4);
         iconPanel.add(button5);
         iconPanel.add(button6);
+        iconPanel.add(button7);
 
         // Adicionar ícones ao painel
         Enumeration<Object> keys = UIManager.getDefaults().keys();

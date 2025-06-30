@@ -96,6 +96,10 @@ public class TesteController implements ControllerContent<TesteView>, OnInit, On
 			System.out.println(((JButton)e.getSource()).getText()+" click");
 			contextApp.addNotification("Isso é uma notificação de Erro", TaskNotificationType.ERROR);
 		});
+		
+		panel.button7.addActionListener(e -> {
+			 new ProcessTask(contextApp).execute();
+		});
 	}
 
 

@@ -108,7 +108,9 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 			putter.accept(null, pluginDTO);
 			
 			List<ExtensionPoint> listeners = pluginManager.getExtensions(classPlugin, pluginId);
+			int i = 0;
 			for (ExtensionPoint listener : listeners) {
+				pluginDTO.setOrdem(i++);
 				putter.accept(listener, pluginDTO);
 			}
 		});

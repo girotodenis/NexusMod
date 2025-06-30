@@ -4,12 +4,15 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.controller.ControllerContent;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.controller.MenuItem;
+import com.dsg.nexusmod.model.Progress;
 import com.dsg.nexusmod.ui.OnChange;
 import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.nexusmod.ui.TaskNotificationType;
@@ -26,6 +29,14 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	public AppController(JPanelApp panel,JFrame frame) {
 		this.panel = panel;
 		this.frame = frame;
+		
+		registerEvent(Progress.class, (event) -> {
+//			new Timer(0, e -> {
+//				getPanel().updateProgress(event.getValue(), event.getMessage());
+//	        }).start();
+			
+				getPanel().updateProgress(event.getValue(), event.getMessage());
+		});
 	}
 	
 	private void show(CustomSideMenu.MenuItem itemMenu, ControllerContent<? extends JPanel> controller) {
@@ -72,27 +83,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		getPanel().showHeader(controller.getPanel());
 	}
 	
-//	public void footer(ControllerContent<? extends JPanel> controller) {
-//		if(controller == null) {
-//			return;
-//		}
-//		String id = controller.getClass().getName()+controller.hashCode();
-//		if(!oninit.contains(id)) {
-//			if(controller instanceof OnInit) {
-//				System.out.println("onInit: "+controller.getClass().getSimpleName());
-//				((OnInit)controller).onInit(this);
-//			}
-//			oninit.add(id);
-//		}
-//		
-//		if(controller instanceof OnChange) {
-//			System.out.println("onChange: "+controller.getClass().getSimpleName());
-//			((OnChange)controller).onChage(this);
-//		}
-//		getPanel().showFooter(controller.getPanel());
-//	}
-	
-	
+
 	public void showContent(ControllerContent<? extends JPanel> controller) {
 		
 		if(controller == null) {

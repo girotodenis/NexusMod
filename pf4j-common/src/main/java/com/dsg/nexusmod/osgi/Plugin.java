@@ -1,6 +1,7 @@
 package com.dsg.nexusmod.osgi;
 
 public class Plugin {
+	private int ordem = 0;
 	private String pluginId;
 	private String versao;
 	private String state;
@@ -33,6 +34,14 @@ public class Plugin {
 
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	public int getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(int ordem) {
+		this.ordem = ordem;
 	}
 
 	@Override

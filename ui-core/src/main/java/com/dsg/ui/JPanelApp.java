@@ -2,18 +2,36 @@ package com.dsg.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
@@ -30,6 +48,7 @@ public class JPanelApp extends JPanel {
 	private JPanel sideMenuPanel;
 	private JPanel contentPanel;
 	private JPanel footerPanel;
+	private JLabel infoLabel;
 	
 	CustomSideMenu sideMenu;
 	List<ItemMenu> itens = new ArrayList<ItemMenu>();
@@ -39,6 +58,8 @@ public class JPanelApp extends JPanel {
 		try {
 			System.out.println("constructio JPanelApp");
 			updateAll(classLook);
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,6 +68,7 @@ public class JPanelApp extends JPanel {
 	public JPanelApp(String classLook) {
 		try {
 			updateAll(classLook);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -120,13 +142,154 @@ public class JPanelApp extends JPanel {
    
     // Método para criar o rodapé
     private JPanel createFooterPanel() {
-        JPanel footerPanel = new JPanel();
+//        JPanel footerPanel = new JPanel();
+//        footerPanel.setPreferredSize(new Dimension(800, 30));
+//        footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+//        JLabel footerLabel = new JLabel("Rodapé do Aplicativo");
+//        footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+//        footerPanel.add(footerLabel);
+    	
+    	JPanel footerPanel = new JPanel();
         footerPanel.setPreferredSize(new Dimension(800, 30));
-        footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel footerLabel = new JLabel("Rodapé do Aplicativo");
-        footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-        footerPanel.add(footerLabel);
+        footerPanel.setLayout(new BorderLayout());
+        
+        // Progress Bar (só aparece quando o progresso > 0)
+        JProgressBar progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0); // Inicialmente sem progresso
+        progressBar.setStringPainted(true);
+        progressBar.setVisible(false); // Inicialmente invisível
+        footerPanel.add(progressBar, BorderLayout.NORTH);
+        
+        // Painel para as labels de informação e versão
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        // Label de informações (80% da largura)
+        infoLabel = new JLabel();
+        infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0.8;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(0, 10, 0, 0);
+        infoPanel.add(infoLabel, gbc);
+        
+        // Label de versão com link (20% da largura)
+        JLabel versionLabel = new JLabel("Versão 1.0");
+        versionLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        versionLabel.setForeground(Color.BLUE);
+        versionLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        versionLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+        
+        // Adiciona o efeito de link sublinhado
+        Font underlinedFont = versionLabel.getFont().deriveFont(
+                Collections.singletonMap(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON));
+        versionLabel.setFont(underlinedFont);
+        
+        gbc.gridx = 1;
+        gbc.weightx = 0.2;
+        gbc.anchor = GridBagConstraints.EAST;
+        infoPanel.add(versionLabel, gbc);
+        
+        footerPanel.add(infoPanel, BorderLayout.CENTER);
+        
+        // Método para atualizar o progresso
+        //updateProgress(0); // Inicializa com progresso zero
+        
+        // Adiciona evento de clique para abrir o modal
+        versionLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showVersionModal();
+            }
+        });
+        // Inicializa com progresso zero
         return footerPanel;
+    }
+    
+ // Método para atualizar o progresso
+    public void updateProgress(int value, String message) {
+    	infoLabel.setText(message);
+        JProgressBar progressBar = (JProgressBar) ((BorderLayout) footerPanel.getLayout())
+                .getLayoutComponent(BorderLayout.NORTH);
+        
+        if (value > 0) {
+            progressBar.setValue(value);
+            progressBar.setVisible(true);
+        } else {
+            progressBar.setVisible(false);
+        }
+        footerPanel.revalidate();
+        footerPanel.repaint();
+    }
+    
+ // Método para mostrar o modal com informações da versão
+    private void showVersionModal() {
+    	 // Obtém a referência ao JFrame principal
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(footerPanel);
+        
+        // Cria o diálogo modal vinculado ao frame principal
+        JDialog modal = new JDialog(parentFrame, "Informações da Versão", true);
+        modal.setSize(800, 600);
+        modal.setLocationRelativeTo(parentFrame); // Centraliza em relação ao frame principal
+        modal.setLayout(new BorderLayout());
+        modal.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        
+        // Header do modal
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JLabel titleLabel = new JLabel("Informações da Versão");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        headerPanel.add(titleLabel);
+        modal.add(headerPanel, BorderLayout.NORTH);
+        
+        // Conteúdo principal do modal
+        JPanel contentPanel = new JPanel();
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        contentPanel.setLayout(new BorderLayout());
+        
+        // Aqui você pode adicionar o conteúdo que desejar
+        JTextArea infoArea = new JTextArea();
+        infoArea.setEditable(false);
+        infoArea.setLineWrap(true);
+        infoArea.setWrapStyleWord(true);
+        infoArea.setText("Versão 1.0\n\n" +
+                "Desenvolvido por: Sua Empresa\n" +
+                "Data de lançamento: 01/01/2023\n\n" +
+                "Descrição:\n" +
+                "Este é um aplicativo Java Swing desenvolvido para...\n\n" +
+                "Novidades desta versão:\n" +
+                "- Recurso 1\n" +
+                "- Recurso 2\n" +
+                "- Correção de bugs");
+        
+        JScrollPane scrollPane = new JScrollPane(infoArea);
+        contentPanel.add(scrollPane, BorderLayout.CENTER);
+        modal.add(contentPanel, BorderLayout.CENTER);
+        
+        // Footer do modal com botão de fechar
+        JPanel footerPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton closeButton = new JButton("Fechar");
+        closeButton.addActionListener(e -> modal.dispose());
+        footerPanel.add(closeButton);
+        modal.add(footerPanel, BorderLayout.SOUTH);
+        
+        // Impede redimensionamento (opcional)
+        modal.setResizable(false);
+        
+        // Adiciona tratamento de tecla Escape para fechar o diálogo
+        modal.getRootPane().registerKeyboardAction(
+                e -> modal.dispose(),
+                KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+        
+        // Define o botão de fechar como default (responde ao Enter)
+        modal.getRootPane().setDefaultButton(closeButton);
+        
+        // Exibe o modal
+        modal.setVisible(true);
     }
     
     // Método para mostrar um JPanel como conteúdo do header
@@ -193,8 +356,6 @@ public class JPanelApp extends JPanel {
     		// Conteúdo principal
     		contentPanel = createContentPanel(); // Inicializa o painel de conteúdo
     		add(contentPanel, BorderLayout.CENTER);
-    		
-    		
 
     		// Rodapé
     		footerPanel = createFooterPanel();

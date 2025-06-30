@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.database.DatabaseManager;
 import com.dsg.nexusmod.database.DatabaseSession;
+import com.dsg.nexusmod.model.Progress;
 import com.dsg.nexusmod.osgi.CoreResourses;
 import com.dsg.nexusmod.osgi.LoadPlugin;
 import com.dsg.nexusmod.osgi.OsgiCore;
@@ -42,8 +43,13 @@ public class Main {
 		registerPluginOrder(osgiCore, app);
 		
 		app.getPanel().addMenuItem("Sair", UIManager.getIcon("FileView.directoryIcon"), (item) -> {
-			osgiCore.stop();
-			System.exit(0);
+			try {
+				osgiCore.stop();
+			} catch (Exception e) {
+				System.err.println("Erro ao parar o OSGi: " + e.getMessage());
+			}finally {
+				System.exit(0);
+			}
 		});
 		
 		loadPlugin(osgiCore, app);
@@ -75,7 +81,16 @@ public class Main {
     		new PluginLoader(osgiCore).startMonitoring(PLUGIN_DIRECTORY, (pathJar, started)->{
 				System.out.println("loadMenu started: "+started);
 				app.getPanel().loadMenu();
+				app.fireEvent(new Progress(95,"Carregando plugin:ItemMenu ") );
     		});
+    		
+    		try {
+    			Thread.sleep(50);
+    			app.fireEvent(new Progress(0,"Bem vindo! ") );
+    		} catch (InterruptedException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
     		
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,6 +129,7 @@ public class Main {
 				app.addController(newController);
 			}
 		});
+		
 	}
 
 }
