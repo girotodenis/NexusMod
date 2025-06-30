@@ -9,7 +9,6 @@ import com.dsg.nexusmod.database.DatabaseManager;
 import com.dsg.nexusmod.database.DatabaseSession;
 import com.dsg.nexusmod.osgi.CoreResourses;
 import com.dsg.nexusmod.osgi.LoadPlugin;
-import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiCore;
 import com.dsg.nexusmod.osgi.OsgiPlugin;
 import com.dsg.nexusmod.osgi.Plugin;
@@ -30,8 +29,8 @@ public class Main {
 
 		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
-		//PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
-		//DB_DIRECTORY = "../dist/target/NexusMod-app/db";
+		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
+		DB_DIRECTORY = "../dist/target/NexusMod-app/db";
 		
 		creatSessionDB();
 		

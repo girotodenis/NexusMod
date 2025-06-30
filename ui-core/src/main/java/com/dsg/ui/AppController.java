@@ -52,6 +52,47 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	}
 	
 	
+	public void header(ControllerContent<? extends JPanel> controller) {
+		if(controller == null) {
+			return;
+		}
+		String id = controller.getClass().getName()+controller.hashCode();
+		if(!oninit.contains(id)) {
+			if(controller instanceof OnInit) {
+				System.out.println("onInit: "+controller.getClass().getSimpleName());
+				((OnInit)controller).onInit(this);
+			}
+			oninit.add(id);
+		}
+		
+		if(controller instanceof OnChange) {
+			System.out.println("onChange: "+controller.getClass().getSimpleName());
+			((OnChange)controller).onChage(this);
+		}
+		getPanel().showHeader(controller.getPanel());
+	}
+	
+//	public void footer(ControllerContent<? extends JPanel> controller) {
+//		if(controller == null) {
+//			return;
+//		}
+//		String id = controller.getClass().getName()+controller.hashCode();
+//		if(!oninit.contains(id)) {
+//			if(controller instanceof OnInit) {
+//				System.out.println("onInit: "+controller.getClass().getSimpleName());
+//				((OnInit)controller).onInit(this);
+//			}
+//			oninit.add(id);
+//		}
+//		
+//		if(controller instanceof OnChange) {
+//			System.out.println("onChange: "+controller.getClass().getSimpleName());
+//			((OnChange)controller).onChage(this);
+//		}
+//		getPanel().showFooter(controller.getPanel());
+//	}
+	
+	
 	public void showContent(ControllerContent<? extends JPanel> controller) {
 		
 		if(controller == null) {

@@ -129,6 +129,33 @@ public class JPanelApp extends JPanel {
         return footerPanel;
     }
     
+    // Método para mostrar um JPanel como conteúdo do header
+    public void showHeader(JPanel panel) {
+    	// Limpar o painel de conteúdo existente
+    	headerPanel.removeAll();
+    	headerPanel.setPreferredSize(new Dimension(800, 50));
+        headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+    	
+        headerPanel.add(panel);
+    	
+    	// Atualizar o painel
+        headerPanel.revalidate();
+        headerPanel.repaint();
+    }
+//    // Método para mostrar um JPanel como conteúdo do footer
+//    public void showFooter(JPanel panel) {
+//    	// Limpar o painel de conteúdo existente
+//    	footerPanel.removeAll();
+//    	footerPanel.setPreferredSize(new Dimension(800, 30));
+//        footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+//        
+//        footerPanel.add(panel);
+//        
+//    	// Atualizar o painel
+//        footerPanel.revalidate();
+//        footerPanel.repaint();
+//    }
+    
     // Método para mostrar um JPanel como conteúdo
     public void showContent(JPanel panel) {
     	// Limpar o painel de conteúdo existente
