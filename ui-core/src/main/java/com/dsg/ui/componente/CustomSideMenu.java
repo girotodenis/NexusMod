@@ -149,8 +149,6 @@ public class CustomSideMenu extends JPanel {
 				menuItem.setVisible(false);
 				menuItem.setBadgeNumber(0);
 				delete.add(menuItem);
-				System.out.println("menu removeEvent: "+menuItem.getId()+".badgeNumber");
-				System.out.println("menu removeEvent: "+menuItem.getId()+".visible");
 				ContextApp.getInstance().removeEvent(menuItem.getId()+".badgeNumber" );
 				ContextApp.getInstance().removeEvent(menuItem.getId()+".visible");
 			}

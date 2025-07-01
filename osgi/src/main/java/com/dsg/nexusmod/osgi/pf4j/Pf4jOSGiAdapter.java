@@ -20,12 +20,16 @@ import org.pf4j.PluginDescriptor;
 import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
 import org.pf4j.PluginWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.Plugin;
 
 public class Pf4jOSGiAdapter implements OSGiFramework {
 
+	private static final Logger log = LoggerFactory.getLogger(Pf4jOSGiAdapter.class);
+	
 	private final PluginManager pluginManager;
 	
 	Map<Class<ExtensionPoint>, BiConsumer<ExtensionPoint, Plugin>> pluginPaths = new LinkedHashMap<>();
@@ -55,7 +59,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 			
     		Path pluginPath = Paths.get(directoryPath);
     		
-    		System.out.println("recebendo: "+directoryPath);
+    		log.info("recebendo: {}", directoryPath);
     		// Carregar o plugin
 			Properties pluginProperties = getPluginProperties(pluginPath);
 			String newPluginId = pluginProperties.getProperty("plugin.id");
@@ -64,8 +68,8 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             var existingPlugin =  pluginManager.getPlugin(newPluginId);
             if (existingPlugin != null) {
                 PluginDescriptor existingDescriptor = existingPlugin.getDescriptor();
-                System.out.println("Plugin Existente ID: " + existingDescriptor.getPluginId());
-                System.out.println("Versão do Plugin Existente: " + existingDescriptor.getVersion());
+                log.info("Plugin Existente ID: {}" , existingDescriptor.getPluginId());
+                log.info("Versão do Plugin Existente: {}", existingDescriptor.getVersion());
                 pluginManager.deletePlugin(newPluginId);
 
                 // Compare as versões
@@ -92,11 +96,11 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     			if(started) {
     				pluginManager.startPlugin(pluginId);
     				var pluginStarted = pluginManager.getPlugin(pluginId);
-    				System.out.println(String.format("plugin %s started!", pluginStarted.getPluginId()));
+    				log.info(String.format("plugin %s started!", pluginStarted.getPluginId()));
     			}
     			loadgetExtensions(pluginId, plugin);
     		} else {
-    			System.err.println("Falha ao carregar o plugin.");
+    			log.error("Falha ao carregar o plugin.");
     		}
     		
     		return plugin.getPluginId();
@@ -128,7 +132,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     @Override
     public void deleteBundle(String pluginId) {
     	var plugin = pluginManager.getPlugin(pluginId);
-        System.out.println(pluginId+": "+plugin.getPluginPath());
+    	log.info("{}: {}",pluginId,plugin.getPluginPath());
 		try {
 			Files.deleteIfExists(plugin.getPluginPath());
 		} catch (IOException e) {
@@ -159,20 +163,20 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
         
         var plugin = pluginManager.getPlugin(pluginId);
         
-        System.out.println(pluginId+": "+plugin.getPluginState());
+        log.info("{}: {}", pluginId,plugin.getPluginState());
         
-        System.out.println(
+        log.info(
         		"uninstallBundle deletePlugin "+
         				(success = pluginManager.deletePlugin(pluginId))
         		)	;
-        System.out.println(
+        log.info(
         		"uninstallBundle unloadPlugin "+
         				(success = pluginManager.unloadPlugin(pluginId))
         		)	;
 
         
         if (!success) {
-            System.err.println("Falha ao desinstalar o plugin " + pluginId);
+        	log.info("Falha ao desinstalar o plugin {}", pluginId);
         }
     }
 
@@ -212,9 +216,9 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             
             // Copiar o arquivo
             Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-            System.out.println("Arquivo copiado com sucesso para: " + destinationFile);
+            log.info("Arquivo copiado com sucesso para: " + destinationFile);
         } catch (IOException e) {
-            System.err.println("Erro ao copiar o arquivo: " + e.getMessage());
+        	log.error("Erro ao copiar o arquivo: {}" , e.getMessage());
         }
 		
 	}

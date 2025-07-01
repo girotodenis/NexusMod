@@ -18,3 +18,5 @@ dist/.classpath
 osgi/lib/
 
 plugin-theme-mac-ligth/.classpath
+
+osgi/logs/

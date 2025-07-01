@@ -35,6 +35,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dsg.ui.componente.CustomSideMenu;
 import com.dsg.ui.componente.ItemMenu;
 import com.dsg.ui.util.UIUtils;
@@ -43,6 +46,7 @@ public class JPanelApp extends JPanel {
 
 	private static final long serialVersionUID = 8898685804729074138L;
 
+	private static final Logger log = LoggerFactory.getLogger(JPanelApp.class);
 	
 	private JPanel headerPanel;
 	private JPanel sideMenuPanel;
@@ -56,7 +60,7 @@ public class JPanelApp extends JPanel {
 	
 	public JPanelApp(Class<?> classLook) {
 		try {
-			System.out.println("constructio JPanelApp");
+			log.info("constructio JPanelApp");
 			updateAll(classLook);
 			
 			
@@ -120,7 +124,7 @@ public class JPanelApp extends JPanel {
     }
 
 	public void loadMenu() {
-		System.out.println("loadMenu");
+		log.info("loadMenu");
 		if(sideMenu==null) {
 			sideMenu = new CustomSideMenu();
     	}
@@ -170,7 +174,7 @@ public class JPanelApp extends JPanel {
         infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.weightx = 0.8;
+        gbc.weightx = 0.9;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(0, 10, 0, 0);
@@ -189,7 +193,7 @@ public class JPanelApp extends JPanel {
         versionLabel.setFont(underlinedFont);
         
         gbc.gridx = 1;
-        gbc.weightx = 0.2;
+        gbc.weightx = 0.1;
         gbc.anchor = GridBagConstraints.EAST;
         infoPanel.add(versionLabel, gbc);
         
@@ -305,20 +309,7 @@ public class JPanelApp extends JPanel {
         headerPanel.revalidate();
         headerPanel.repaint();
     }
-//    // Método para mostrar um JPanel como conteúdo do footer
-//    public void showFooter(JPanel panel) {
-//    	// Limpar o painel de conteúdo existente
-//    	footerPanel.removeAll();
-//    	footerPanel.setPreferredSize(new Dimension(800, 30));
-//        footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-//        
-//        footerPanel.add(panel);
-//        
-//    	// Atualizar o painel
-//        footerPanel.revalidate();
-//        footerPanel.repaint();
-//    }
-    
+
     // Método para mostrar um JPanel como conteúdo
     public void showContent(JPanel panel) {
     	// Limpar o painel de conteúdo existente
@@ -341,7 +332,7 @@ public class JPanelApp extends JPanel {
     
     public void updateAll(String classLook) {
     	try {
-    		System.out.println("updateAll: "+classLook);
+    		log.info("updateAll: "+classLook);
     		UIManager.setLookAndFeel(classLook);
     		this.removeAll();
     		setLayout(new BorderLayout());
@@ -377,7 +368,7 @@ public class JPanelApp extends JPanel {
 	}
 
 	public void removeMenu(String item) {
-		System.out.println("removeMenu: "+item);
+		log.info("removeMenu: {}", item);
 		var delete = new ArrayList<ItemMenu>();
 		
 		for (ItemMenu itemMenu : itens) {

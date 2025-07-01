@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dsg.nexusmod.configuracao.model.ListaPluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginlObserver;
@@ -21,6 +24,8 @@ import com.dsg.nexusmod.ui.OnInit;
 
 public class ConfiguracaoController implements ControllerContent<ConfiguracaoView>, OnInit,OnChange, PluginlObserver {
 
+	private static final Logger log = LoggerFactory.getLogger(ConfiguracaoController.class);
+	
 	ConfiguracaoView panel;
 	ControllerRoot contextApp;
 	int count = 0;
@@ -81,7 +86,7 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                // Criar um JFileChooser
-	            	System.out.println("abrir");
+	            	log.info("abrir");
 	                JFileChooser fileChooser = new JFileChooser();
 	                fileChooser.setDialogTitle("Selecione um plugin");
 	                File defaultDirectory = new File("../");

@@ -12,8 +12,13 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 
-public class PluginLoader {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class PluginLoader {
+	
+	private static final Logger log = LoggerFactory.getLogger(PluginLoader.class);
+	
 	private final OSGiFramework pluginManager;
 	private final Map<String, String> loadedPlugins = new LinkedHashMap<>(); // Para rastrear quais plugins já foram carregados
 	String atualizacao = null;
@@ -56,14 +61,14 @@ public class PluginLoader {
 						canonicalPath = file.getCanonicalPath();
 						findJar.add(canonicalPath);
 					} catch (Exception e) {
-						System.err.println("Erro ao obter o caminho do arquivo: " + file.getName());
+						log.error("Erro ao obter o caminho do arquivo: {}" , file.getName());
 						e.printStackTrace();
 						continue;
 					}
 
 					// Verifica se este plugin já foi carregado
 					if (!loadedPlugins.keySet().contains(canonicalPath)) {
-						System.out.println("install:"+canonicalPath);
+						log.info("install: {}", canonicalPath);
 						var id = pluginManager.installBundle(canonicalPath , started);
 						
 						
@@ -97,17 +102,17 @@ public class PluginLoader {
 				if(new File(path).isFile()) {
 				}
 				rm.add(path);
-				System.out.println("remover: "+pluginId);
+				log.info("remover: {}", pluginId);
 				pluginManager.uninstallBundle(pluginId);
 				consumer.accept(System.getProperty("app.home.plugins"), false);
 			}
 		});
 		rm.forEach(p->{
-			System.out.println("remover:: "+p);
-			System.out.println(loadedPlugins.remove(p));
+			log.info("remover: {}", p);
+			log.info(loadedPlugins.remove(p));
 		});
 		if(rm.size()>0) {
-			loadedPlugins.keySet().forEach( p ->System.out.println("mantidos: "+p));
+			loadedPlugins.keySet().forEach( p ->log.info("mantidos: {}", p));
 		}
 	}
 

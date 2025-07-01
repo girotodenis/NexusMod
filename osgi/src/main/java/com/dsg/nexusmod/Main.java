@@ -4,6 +4,9 @@ import java.io.File;
 
 import javax.swing.UIManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.database.DatabaseManager;
 import com.dsg.nexusmod.database.DatabaseSession;
@@ -21,7 +24,9 @@ import com.dsg.ui.AppController;
 import com.dsg.ui.AppUtilities;
 
 public class Main {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(Main.class);
+	
 	private static  DatabaseSession SESSION ;
 	private static  String PLUGIN_DIRECTORY = "./plugins"; // Diretório padrão para plugins
 	private static  String DB_DIRECTORY = "./db"; // Diretório padrão banco
@@ -30,8 +35,8 @@ public class Main {
 
 		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
-//		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
-//		DB_DIRECTORY = "../dist/target/NexusMod-app/db";
+		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
+		DB_DIRECTORY = "../dist/target/NexusMod-app/db";
 		
 		creatSessionDB();
 		
@@ -79,7 +84,7 @@ public class Main {
     		}
     		PLUGIN_DIRECTORY = dir.getCanonicalPath();
     		new PluginLoader(osgiCore).startMonitoring(PLUGIN_DIRECTORY, (pathJar, started)->{
-				System.out.println("loadMenu started: "+started);
+    			log.info("loadMenu started: {}", started);
 				app.getPanel().loadMenu();
     		});
     		

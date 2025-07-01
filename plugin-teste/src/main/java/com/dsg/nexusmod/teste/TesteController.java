@@ -2,6 +2,9 @@ package com.dsg.nexusmod.teste;
 
 import javax.swing.JButton;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dsg.nexusmod.controller.ControllerContent;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.teste2.TesteColorController;
@@ -11,6 +14,8 @@ import com.dsg.nexusmod.ui.TaskNotificationType;
 
 public class TesteController implements ControllerContent<TesteView>, OnInit, OnChange {
 
+	private static final Logger log = LoggerFactory.getLogger(TesteController.class);
+	
 	TesteView panel;
 	ControllerRoot contextApp;
 	int count = 0;
@@ -68,37 +73,38 @@ public class TesteController implements ControllerContent<TesteView>, OnInit, On
 		this.panel = new TesteView();
 		
 		panel.button.addActionListener(e -> {
-			System.out.println(((JButton)e.getSource()).getText()+" click");
+			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", ++count);
 		});
 		
 		panel.button2.addActionListener(e -> {
-			System.out.println(((JButton)e.getSource()).getText()+" click");
+			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.menuEvent("Tela_de_Teste", "visible", visible = !visible);
 		});
 		
 		panel.button3.addActionListener(e -> {
-			System.out.println(((JButton)e.getSource()).getText()+" click");
+			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.showContent(new TesteColorController(this, 25));
 		});
 		
 		panel.button4.addActionListener(e -> {
-			System.out.println(((JButton)e.getSource()).getText()+" click");
+			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.addNotification("Esta é uma mensagem muito longa que precisa quebrar a linha e ajustar o tamanho do card para baixo.", TaskNotificationType.INFO);
 		});
 		
 		panel.button5.addActionListener(e -> {
-			System.out.println(((JButton)e.getSource()).getText()+" click");
+			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.addNotification("Isso é uma notificação de informação", TaskNotificationType.WARN);
 		});
 		
 		panel.button6.addActionListener(e -> {
-			System.out.println(((JButton)e.getSource()).getText()+" click");
+			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.addNotification("Isso é uma notificação de Erro", TaskNotificationType.ERROR);
 		});
 		
 		panel.button7.addActionListener(e -> {
-			 new ProcessTask(contextApp).execute();
+			log.info("{} click",((JButton)e.getSource()).getText());
+			new ProcessTask(contextApp).execute();
 		});
 	}
 

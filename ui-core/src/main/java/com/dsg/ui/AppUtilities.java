@@ -10,12 +10,17 @@ import javax.swing.JFrame;
 import javax.swing.LookAndFeel;
 import javax.swing.SwingUtilities;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dsg.ui.componente.CustomSideMenu;
 import com.dsg.ui.componente.NotificacaoEvent;
 import com.dsg.ui.componente.TaskNotificationManager;
 import com.formdev.flatlaf.FlatDarculaLaf;
 
 public class AppUtilities {
+	
+	private static final Logger log = LoggerFactory.getLogger(AppUtilities.class);
 	
 	private AppController main;
 	private JFrame frame;
@@ -71,7 +76,7 @@ public class AppUtilities {
 		
 		
 		public CustomModalBuilder lookAndFeel(Class<? extends LookAndFeel> classLook) {
-			System.out.println("lookAndFeel");
+			log.info("lookAndFeel");
 			main.updateAll(classLook);
 			return this;
 		}

@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.dsg.nexusmod.controller.AbstractEventListener;
 
 public class ContextApp {
 
+	private static final Logger log = LoggerFactory.getLogger(ContextApp.class);
+	
 	private Map<String, List<AbstractEventListener<?>>> eventListeners = new HashMap<String, List<AbstractEventListener<?>>>();
 
 	private static ContextApp instance = new ContextApp();
@@ -32,13 +37,13 @@ public class ContextApp {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date) {
-		System.out.println("####################################");
-		System.out.println("fire: "+event+" "+eventListeners.containsKey(event));
+		log.info("####################################");
+		log.info("fire: {} {}", event, eventListeners.containsKey(event));
 		if (eventListeners.get(event) != null) {
 			for (AbstractEventListener eventListener : eventListeners.get(event)) {
-				System.out.println("listener : "+eventListener.getClass().getName());
+				log.info("listener : {}", eventListener.getClass().getName());
 				eventListener.handleEvent(date);
-				System.out.println("####################################");
+				log.info("####################################");
 			}
 		}
 	}
@@ -63,7 +68,7 @@ public class ContextApp {
 		listenersForEvent.add(eventListener);
 		
 		eventListeners.put(event, listenersForEvent);
-		System.out.println(" addEvent: "+event+" "+listenersForEvent.size());
+		log.info(" addEvent: {} {} ", event, listenersForEvent.size());
 	}
 
 	public void removeEvent(String event) {
@@ -71,7 +76,7 @@ public class ContextApp {
 			List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 			listenersForEvent.clear();
 			eventListeners.remove(event);
-			System.out.println(" removeEvent: "+event);
+			log.info(" removeEvent: {}", event);
 		}
 	}
 

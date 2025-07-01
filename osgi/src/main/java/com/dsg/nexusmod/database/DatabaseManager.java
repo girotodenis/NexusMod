@@ -4,8 +4,13 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class DatabaseManager {
 
+	private static final Logger log = LoggerFactory.getLogger(DatabaseManager.class);
+	
     private static Connection connection;
 
     /**
@@ -15,7 +20,7 @@ public class DatabaseManager {
     public static void initialize(String dbUrl) {
         try {
             connection = DriverManager.getConnection(dbUrl);
-            System.out.println("Conexão com o banco de dados SQLite estabelecida.");
+            log.info("Conexão com o banco de dados SQLite estabelecida.");
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao conectar ao banco de dados: " + e.getMessage(), e);
         }
@@ -39,7 +44,7 @@ public class DatabaseManager {
         if (connection != null) {
             try {
                 connection.close();
-                System.out.println("Conexão com o banco de dados SQLite fechada.");
+                log.info("Conexão com o banco de dados SQLite fechada.");
             } catch (SQLException e) {
                 System.err.println("Erro ao fechar o banco de dados: " + e.getMessage());
             }

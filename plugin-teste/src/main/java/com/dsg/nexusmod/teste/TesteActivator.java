@@ -5,6 +5,8 @@ import javax.swing.UIManager;
 import org.pf4j.Extension;
 import org.pf4j.Plugin;
 import org.pf4j.PluginWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.controller.MenuItem;
@@ -12,6 +14,8 @@ import com.dsg.nexusmod.ui.ItemMenu;
 
 public class TesteActivator extends Plugin {
 
+	private static final Logger log = LoggerFactory.getLogger(TesteActivator.class);
+	
 	private static TesteActivator testePlugin;
 	private static TesteController testeController;
 	
@@ -34,7 +38,7 @@ public class TesteActivator extends Plugin {
     }
     
     public void delete() {
-    	System.out.println("delete");
+    	log.info("delete");
     	if (testeController != null) {
     		testeController.stop();
     		testeController = null;
