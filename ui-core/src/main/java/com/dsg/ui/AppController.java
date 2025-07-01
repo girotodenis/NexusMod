@@ -53,7 +53,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		}
 		
 		if(controller instanceof OnChange) {
-			log.info("onChange: {}"+controller.getClass().getSimpleName());
+			log.info("onChange: {}",controller.getClass().getSimpleName());
 			((OnChange)controller).onChage(this);
 		}
 		

@@ -12,15 +12,21 @@ import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -29,11 +35,17 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -146,12 +158,6 @@ public class JPanelApp extends JPanel {
    
     // Método para criar o rodapé
     private JPanel createFooterPanel() {
-//        JPanel footerPanel = new JPanel();
-//        footerPanel.setPreferredSize(new Dimension(800, 30));
-//        footerPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
-//        JLabel footerLabel = new JLabel("Rodapé do Aplicativo");
-//        footerLabel.setFont(new Font("Arial", Font.PLAIN, 12));
-//        footerPanel.add(footerLabel);
     	
     	JPanel footerPanel = new JPanel();
         footerPanel.setPreferredSize(new Dimension(800, 30));
@@ -162,6 +168,7 @@ public class JPanelApp extends JPanel {
         progressBar.setValue(0); // Inicialmente sem progresso
         progressBar.setStringPainted(true);
         progressBar.setVisible(false); // Inicialmente invisível
+        progressBar.setPreferredSize(new Dimension(800, 10)); // Altura reduzida para 10px
         footerPanel.add(progressBar, BorderLayout.NORTH);
         
         // Painel para as labels de informação e versão
@@ -169,7 +176,6 @@ public class JPanelApp extends JPanel {
         infoPanel.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         
-        // Label de informações (80% da largura)
         infoLabel = new JLabel();
         infoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         gbc.gridx = 0;
@@ -180,25 +186,37 @@ public class JPanelApp extends JPanel {
         gbc.insets = new Insets(0, 10, 0, 0);
         infoPanel.add(infoLabel, gbc);
         
-        // Label de versão com link (20% da largura)
         JLabel versionLabel = new JLabel("Versão 1.0");
         versionLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         versionLabel.setForeground(Color.BLUE);
         versionLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
         versionLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
         
-        // Adiciona o efeito de link sublinhado
         Font underlinedFont = versionLabel.getFont().deriveFont(
                 Collections.singletonMap(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON));
         versionLabel.setFont(underlinedFont);
         
         gbc.gridx = 1;
-        gbc.weightx = 0.1;
+        gbc.weightx = 0.01;
         gbc.anchor = GridBagConstraints.EAST;
         infoPanel.add(versionLabel, gbc);
         
-        footerPanel.add(infoPanel, BorderLayout.CENTER);
+     // Novo link (15% da largura)
+        JLabel logLabel = new JLabel("log");
+        logLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+        logLabel.setForeground(Color.BLUE);
+        logLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        logLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+        logLabel.setFont(underlinedFont);
         
+        gbc.gridx = 2;
+        gbc.weightx = 0.01;
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.insets = new Insets(0, 0, 0, 10);
+        infoPanel.add(logLabel, gbc);
+        
+        footerPanel.add(infoPanel, BorderLayout.CENTER);
+        //
         // Método para atualizar o progresso
         //updateProgress(0); // Inicializa com progresso zero
         
@@ -209,6 +227,15 @@ public class JPanelApp extends JPanel {
                 showVersionModal();
             }
         });
+        
+        logLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+//            	showLogModal();
+            	LogViewerDialog.showLogViewer(infoPanel);
+            }
+        });
+        
         // Inicializa com progresso zero
         return footerPanel;
     }
@@ -296,6 +323,8 @@ public class JPanelApp extends JPanel {
         modal.setVisible(true);
     }
     
+ 
+    
     // Método para mostrar um JPanel como conteúdo do header
     public void showHeader(JPanel panel) {
     	// Limpar o painel de conteúdo existente
@@ -309,6 +338,8 @@ public class JPanelApp extends JPanel {
         headerPanel.revalidate();
         headerPanel.repaint();
     }
+    
+ 
 
     // Método para mostrar um JPanel como conteúdo
     public void showContent(JPanel panel) {

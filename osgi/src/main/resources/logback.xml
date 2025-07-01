@@ -10,6 +10,10 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
   </appender>
+  <appender name="SWING" class="com.dsg.ui.SwingLogAppender">
+    <!-- Não precisa de encoder, usaremos o formato personalizado -->
+  </appender>
+  
   <root level="INFO">
     <appender-ref ref="CONSOLE" />
     <appender-ref ref="FILE" />
