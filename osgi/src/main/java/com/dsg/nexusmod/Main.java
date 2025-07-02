@@ -32,7 +32,7 @@ public class Main {
 	private static  String DB_DIRECTORY = "./db"; // Diretório padrão banco
 	
 	public static void main(String[] args) {
-
+		LoggingConfigurator.configureSwingLogAppender();
 		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
 		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
@@ -84,7 +84,7 @@ public class Main {
     		}
     		PLUGIN_DIRECTORY = dir.getCanonicalPath();
     		new PluginLoader(osgiCore).startMonitoring(PLUGIN_DIRECTORY, (pathJar, started)->{
-    			log.info("loadMenu started: {}", started);
+    			log.trace("loadMenu started: {}", started);
 				app.getPanel().loadMenu();
     		});
     		
@@ -135,5 +135,4 @@ public class Main {
 		});
 		
 	}
-
 }

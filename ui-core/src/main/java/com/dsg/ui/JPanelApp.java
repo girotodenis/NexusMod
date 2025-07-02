@@ -72,7 +72,7 @@ public class JPanelApp extends JPanel {
 	
 	public JPanelApp(Class<?> classLook) {
 		try {
-			log.info("constructio JPanelApp");
+			log.trace("constructio JPanelApp");
 			updateAll(classLook);
 			
 			
@@ -136,7 +136,7 @@ public class JPanelApp extends JPanel {
     }
 
 	public void loadMenu() {
-		log.info("loadMenu");
+		log.trace("loadMenu");
 		if(sideMenu==null) {
 			sideMenu = new CustomSideMenu();
     	}
@@ -363,7 +363,7 @@ public class JPanelApp extends JPanel {
     
     public void updateAll(String classLook) {
     	try {
-    		log.info("updateAll: "+classLook);
+    		log.trace("updateAll: "+classLook);
     		UIManager.setLookAndFeel(classLook);
     		this.removeAll();
     		setLayout(new BorderLayout());
@@ -399,7 +399,7 @@ public class JPanelApp extends JPanel {
 	}
 
 	public void removeMenu(String item) {
-		log.info("removeMenu: {}", item);
+		log.trace("removeMenu: {}", item);
 		var delete = new ArrayList<ItemMenu>();
 		
 		for (ItemMenu itemMenu : itens) {

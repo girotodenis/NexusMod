@@ -97,7 +97,7 @@ public class LogViewerDialog extends JDialog implements SwingLogAppender.LogList
         // Botão de teste
         JButton testButton = new JButton("Gerar Log Teste");
         testButton.addActionListener(e -> generateTestLogs());
-        
+        testButton.setVisible(false);
         // Adiciona componentes ao painel de controle
         controlPanel.add(new JLabel("Filtro:"));
         controlPanel.add(logLevelFilter);

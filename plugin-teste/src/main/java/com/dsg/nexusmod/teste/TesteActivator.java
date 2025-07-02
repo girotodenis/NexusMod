@@ -38,7 +38,7 @@ public class TesteActivator extends Plugin {
     }
     
     public void delete() {
-    	log.info("delete");
+    	log.trace("delete");
     	if (testeController != null) {
     		testeController.stop();
     		testeController = null;

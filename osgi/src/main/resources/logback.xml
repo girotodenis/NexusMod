@@ -14,8 +14,9 @@
     <!-- Não precisa de encoder, usaremos o formato personalizado -->
   </appender>
   
-  <root level="INFO">
+  <root level="TRACE">
     <appender-ref ref="CONSOLE" />
     <appender-ref ref="FILE" />
+    <appender-ref ref="SWING" />
   </root>
 </configuration>

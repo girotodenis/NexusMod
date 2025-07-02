@@ -20,7 +20,7 @@ public class DatabaseManager {
     public static void initialize(String dbUrl) {
         try {
             connection = DriverManager.getConnection(dbUrl);
-            log.info("Conexão com o banco de dados SQLite estabelecida.");
+            log.trace("Conexão com o banco de dados SQLite estabelecida.");
         } catch (SQLException e) {
             throw new RuntimeException("Erro ao conectar ao banco de dados: " + e.getMessage(), e);
         }
@@ -44,7 +44,7 @@ public class DatabaseManager {
         if (connection != null) {
             try {
                 connection.close();
-                log.info("Conexão com o banco de dados SQLite fechada.");
+                log.trace("Conexão com o banco de dados SQLite fechada.");
             } catch (SQLException e) {
                 System.err.println("Erro ao fechar o banco de dados: " + e.getMessage());
             }

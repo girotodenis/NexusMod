@@ -21,13 +21,13 @@ public class ControllerTheme implements Controller, OnInit {
 
 	@Override
 	public void onInit(ControllerRoot contextApp) {
-		log.info("getLookAndFeel: {}", UIManager.getLookAndFeel());
+		log.trace("getLookAndFeel: {}", UIManager.getLookAndFeel());
 		this.contextApp = contextApp;
 		if(padrao==null)
 			padrao = UIManager.getLookAndFeel();
-		log.info(padrao.getClass().getName());
+		log.trace(padrao.getClass().getName());
 		contextApp.updateAll(FlatMacLightLaf.class);
-		log.info("padrao: "+padrao.getClass().getSimpleName());
+		log.trace("padrao: "+padrao.getClass().getSimpleName());
 	}
 
 	public void start() {

@@ -59,7 +59,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 			
     		Path pluginPath = Paths.get(directoryPath);
     		
-    		log.info("recebendo: {}", directoryPath);
+    		log.trace("recebendo: {}", directoryPath);
     		// Carregar o plugin
 			Properties pluginProperties = getPluginProperties(pluginPath);
 			String newPluginId = pluginProperties.getProperty("plugin.id");
@@ -68,8 +68,8 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             var existingPlugin =  pluginManager.getPlugin(newPluginId);
             if (existingPlugin != null) {
                 PluginDescriptor existingDescriptor = existingPlugin.getDescriptor();
-                log.info("Plugin Existente ID: {}" , existingDescriptor.getPluginId());
-                log.info("Versão do Plugin Existente: {}", existingDescriptor.getVersion());
+                log.trace("Plugin Existente ID: {}" , existingDescriptor.getPluginId());
+                log.trace("Versão do Plugin Existente: {}", existingDescriptor.getVersion());
                 pluginManager.deletePlugin(newPluginId);
 
                 // Compare as versões
@@ -96,7 +96,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     			if(started) {
     				pluginManager.startPlugin(pluginId);
     				var pluginStarted = pluginManager.getPlugin(pluginId);
-    				log.info(String.format("plugin %s started!", pluginStarted.getPluginId()));
+    				log.trace(String.format("plugin %s started!", pluginStarted.getPluginId()));
     			}
     			loadgetExtensions(pluginId, plugin);
     		} else {
@@ -132,7 +132,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
     @Override
     public void deleteBundle(String pluginId) {
     	var plugin = pluginManager.getPlugin(pluginId);
-    	log.info("{}: {}",pluginId,plugin.getPluginPath());
+    	log.trace("{}: {}",pluginId,plugin.getPluginPath());
 		try {
 			Files.deleteIfExists(plugin.getPluginPath());
 		} catch (IOException e) {
@@ -163,20 +163,20 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
         
         var plugin = pluginManager.getPlugin(pluginId);
         
-        log.info("{}: {}", pluginId,plugin.getPluginState());
+        log.trace("{}: {}", pluginId,plugin.getPluginState());
         
-        log.info(
+        log.trace(
         		"uninstallBundle deletePlugin "+
         				(success = pluginManager.deletePlugin(pluginId))
         		)	;
-        log.info(
+        log.trace(
         		"uninstallBundle unloadPlugin "+
         				(success = pluginManager.unloadPlugin(pluginId))
         		)	;
 
         
         if (!success) {
-        	log.info("Falha ao desinstalar o plugin {}", pluginId);
+        	log.trace("Falha ao desinstalar o plugin {}", pluginId);
         }
     }
 
@@ -216,7 +216,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
             
             // Copiar o arquivo
             Files.copy(sourceFile, destinationFile, StandardCopyOption.REPLACE_EXISTING);
-            log.info("Arquivo copiado com sucesso para: " + destinationFile);
+            log.trace("Arquivo copiado com sucesso para: " + destinationFile);
         } catch (IOException e) {
         	log.error("Erro ao copiar o arquivo: {}" , e.getMessage());
         }

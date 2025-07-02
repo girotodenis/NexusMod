@@ -86,7 +86,7 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 	            @Override
 	            public void actionPerformed(ActionEvent e) {
 	                // Criar um JFileChooser
-	            	log.info("abrir");
+	            	log.trace("abrir");
 	                JFileChooser fileChooser = new JFileChooser();
 	                fileChooser.setDialogTitle("Selecione um plugin");
 	                File defaultDirectory = new File("../");

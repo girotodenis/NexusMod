@@ -37,13 +37,13 @@ public class ContextApp {
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T> void fireEvent(String event, T date) {
-		log.info("####################################");
-		log.info("fire: {} {}", event, eventListeners.containsKey(event));
+		log.trace("####################################");
+		log.trace("fire: {} {}", event, eventListeners.containsKey(event));
 		if (eventListeners.get(event) != null) {
 			for (AbstractEventListener eventListener : eventListeners.get(event)) {
-				log.info("listener : {}", eventListener.getClass().getName());
+				log.trace("listener : {}", eventListener.getClass().getName());
 				eventListener.handleEvent(date);
-				log.info("####################################");
+				log.trace("####################################");
 			}
 		}
 	}
@@ -68,7 +68,7 @@ public class ContextApp {
 		listenersForEvent.add(eventListener);
 		
 		eventListeners.put(event, listenersForEvent);
-		log.info(" addEvent: {} {} ", event, listenersForEvent.size());
+		log.trace(" addEvent: {} {} ", event, listenersForEvent.size());
 	}
 
 	public void removeEvent(String event) {
@@ -76,7 +76,7 @@ public class ContextApp {
 			List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
 			listenersForEvent.clear();
 			eventListeners.remove(event);
-			log.info(" removeEvent: {}", event);
+			log.trace(" removeEvent: {}", event);
 		}
 	}
 

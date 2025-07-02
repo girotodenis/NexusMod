@@ -76,7 +76,7 @@ public class AppUtilities {
 		
 		
 		public CustomModalBuilder lookAndFeel(Class<? extends LookAndFeel> classLook) {
-			log.info("lookAndFeel");
+			log.trace("lookAndFeel");
 			main.updateAll(classLook);
 			return this;
 		}

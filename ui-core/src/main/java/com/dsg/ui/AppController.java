@@ -46,14 +46,14 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		String id = controller.getClass().getName()+controller.hashCode();
 		if(!oninit.contains(id)) {
 			if(controller instanceof OnInit) {
-				log.info("onInit: {}",controller.getClass().getSimpleName());
+				log.trace("onInit: {}",controller.getClass().getSimpleName());
 				((OnInit)controller).onInit(this);
 			}
 			oninit.add(id);
 		}
 		
 		if(controller instanceof OnChange) {
-			log.info("onChange: {}",controller.getClass().getSimpleName());
+			log.trace("onChange: {}",controller.getClass().getSimpleName());
 			((OnChange)controller).onChage(this);
 		}
 		
@@ -68,14 +68,14 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		String id = controller.getClass().getName()+controller.hashCode();
 		if(!oninit.contains(id)) {
 			if(controller instanceof OnInit) {
-				log.info("onInit: {}",controller.getClass().getSimpleName());
+				log.trace("onInit: {}",controller.getClass().getSimpleName());
 				((OnInit)controller).onInit(this);
 			}
 			oninit.add(id);
 		}
 		
 		if(controller instanceof OnChange) {
-			log.info("onChange: {}",controller.getClass().getSimpleName());
+			log.trace("onChange: {}",controller.getClass().getSimpleName());
 			((OnChange)controller).onChage(this);
 		}
 		getPanel().showHeader(controller.getPanel());
@@ -91,7 +91,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		String id = controller.getClass().getName()+controller.hashCode();
 		if(!oninit.contains(id)) {
 			if(controller instanceof OnInit) {
-				log.info("onInit: {}",controller.getClass().getSimpleName());
+				log.trace("onInit: {}",controller.getClass().getSimpleName());
 				((OnInit)controller).onInit(this);
 			}
 			oninit.add(id);
@@ -99,7 +99,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		
 		
 		if(controller instanceof OnChange) {
-			log.info("onChange: {}",controller.getClass().getSimpleName());
+			log.trace("onChange: {}",controller.getClass().getSimpleName());
 			((OnChange)controller).onChage(this);
 		}
 		
@@ -121,7 +121,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	public void addController(Controller Controller) {
 		
 		if(Controller instanceof OnInit) {
-			log.info("onInit: {}",Controller.getClass().getSimpleName());
+			log.trace("onInit: {}",Controller.getClass().getSimpleName());
 			((OnInit)Controller).onInit(this);
 		}
 	}
@@ -175,7 +175,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	
 	
 	public void updateAll(Class lookAndFeel) {
-		log.info("{} updateAll",this.getClass().getSimpleName());
+		log.trace("{} updateAll",this.getClass().getSimpleName());
 		getPanel().updateAll(lookAndFeel);
 	}
 

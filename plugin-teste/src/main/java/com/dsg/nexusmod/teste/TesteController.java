@@ -93,12 +93,12 @@ public class TesteController implements ControllerContent<TesteView>, OnInit, On
 		});
 		
 		panel.button5.addActionListener(e -> {
-			log.info("{} click",((JButton)e.getSource()).getText());
+			log.warn("{} click",((JButton)e.getSource()).getText());
 			contextApp.addNotification("Isso é uma notificação de informação", TaskNotificationType.WARN);
 		});
 		
 		panel.button6.addActionListener(e -> {
-			log.info("{} click",((JButton)e.getSource()).getText());
+			log.error("{} click",((JButton)e.getSource()).getText());
 			contextApp.addNotification("Isso é uma notificação de Erro", TaskNotificationType.ERROR);
 		});
 		

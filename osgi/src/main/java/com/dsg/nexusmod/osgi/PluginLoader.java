@@ -68,7 +68,7 @@ public class PluginLoader {
 
 					// Verifica se este plugin já foi carregado
 					if (!loadedPlugins.keySet().contains(canonicalPath)) {
-						log.info("install: {}", canonicalPath);
+						log.trace("install: {}", canonicalPath);
 						var id = pluginManager.installBundle(canonicalPath , started);
 						
 						
@@ -102,17 +102,17 @@ public class PluginLoader {
 				if(new File(path).isFile()) {
 				}
 				rm.add(path);
-				log.info("remover: {}", pluginId);
+				log.trace("remover: {}", pluginId);
 				pluginManager.uninstallBundle(pluginId);
 				consumer.accept(System.getProperty("app.home.plugins"), false);
 			}
 		});
 		rm.forEach(p->{
-			log.info("remover: {}", p);
-			log.info(loadedPlugins.remove(p));
+			log.trace("remover: {}", p);
+			log.trace(loadedPlugins.remove(p));
 		});
 		if(rm.size()>0) {
-			loadedPlugins.keySet().forEach( p ->log.info("mantidos: {}", p));
+			loadedPlugins.keySet().forEach( p ->log.trace("mantidos: {}", p));
 		}
 	}
 
