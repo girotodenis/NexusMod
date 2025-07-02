@@ -14,7 +14,7 @@
   <appender name="SWING" class="com.dsg.ui.SwingLogAppender">
     <!-- Não precisa de encoder, usaremos o formato personalizado -->
   </appender>
-  !-- Configuração específica para o pacote com.dsg.nexusmod (TRACE ou superior) -->
+  <!-- Configuração específica para o pacote com.dsg.nexusmod (TRACE ou superior) -->
   <logger name="com.dsg.nexusmod" level="TRACE"/>
   <root level="WARN">
     <appender-ref ref="CONSOLE" />

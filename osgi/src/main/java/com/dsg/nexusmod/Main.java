@@ -32,7 +32,6 @@ public class Main {
 	private static  String DB_DIRECTORY = "./db"; // Diretório padrão banco
 	
 	public static void main(String[] args) {
-		//LoggingConfigurator.configureSwingLogAppender();
 		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
 		PLUGIN_DIRECTORY = "../dist/target/NexusMod-app/plugins";
