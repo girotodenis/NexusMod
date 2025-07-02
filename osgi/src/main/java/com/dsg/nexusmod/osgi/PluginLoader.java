@@ -89,7 +89,7 @@ public class PluginLoader {
 					}
 				}
 			}
-			//System.out.println("removePlugins? "+loadedPlugins.size());
+			////System.out.println("removePlugins? "+loadedPlugins.size());
 			removePlugins(findJar,consumer);
 			
 		} 

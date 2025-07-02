@@ -74,7 +74,7 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 
                 // Compare as versões
 //                if (newPluginVersion.compareTo(existingDescriptor.getVersion()) > 0) {
-//                    System.out.println("A nova versão é mais recente. Atualizando...");
+//                    //System.out.println("A nova versão é mais recente. Atualizando...");
 //                    // Desative e desinstale o plugin existente
 //                    //pluginManager.disablePlugin(existingDescriptor.getPluginId());
 ////                    pluginManager.unloadPlugin(existingDescriptor.getPluginId());
@@ -82,9 +82,9 @@ public class Pf4jOSGiAdapter implements OSGiFramework {
 //                    // Carregue e ative o novo plugin
 //                    //String loadedPluginId = pluginManager.loadPlugin(pluginPath);
 //                   // pluginManager.enablePlugin(loadedPluginId);
-//                    System.out.println("Plugin atualizado com sucesso!");
+//                    //System.out.println("Plugin atualizado com sucesso!");
 //                } else {
-//                    System.out.println("O plugin existente já está atualizado ou é mais recente.");
+//                    //System.out.println("O plugin existente já está atualizado ou é mais recente.");
 //                }
             } 
                 

@@ -14,22 +14,22 @@ public class SwingLogAppender extends AppenderBase<ILoggingEvent> {
     private static final List<LogListener> listeners = new CopyOnWriteArrayList<>();
     
     public SwingLogAppender() {
-        System.out.println("SwingLogAppender construtor chamado");
+        //System.out.println("SwingLogAppender construtor chamado");
     }
 
     @Override
     public void start() {
         super.start();
-        System.out.println("SwingLogAppender iniciado");
+        //System.out.println("SwingLogAppender iniciado");
     }
 
     public static void addListener(LogListener listener) {
-        System.out.println("Adicionando listener: " + listener);
+        //System.out.println("Adicionando listener: " + listener);
         listeners.add(listener);
     }
 
     public static void removeListener(LogListener listener) {
-        System.out.println("Removendo listener: " + listener);
+        //System.out.println("Removendo listener: " + listener);
         listeners.remove(listener);
     }
 
@@ -39,7 +39,7 @@ public class SwingLogAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent event) {
-        System.out.println("SwingLogAppender.append: " + event.getFormattedMessage());
+        //System.out.println("SwingLogAppender.append: " + event.getFormattedMessage());
         
         LogEntry entry = new LogEntry(
             event.getTimeStamp(),

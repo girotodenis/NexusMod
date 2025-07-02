@@ -11,7 +11,8 @@ import java.util.Map;
 import javax.swing.text.StyleConstants;
 
 public class LogViewerDialog extends JDialog implements SwingLogAppender.LogListener {
-    private JTextPane logTextPane;
+    private static final long serialVersionUID = -7111889344264519445L;
+	private JTextPane logTextPane;
     private StyledDocument doc;
     private Map<String, Style> levelStyles = new HashMap<>();
     private JComboBox<String> logLevelFilter;
@@ -53,11 +54,11 @@ public class LogViewerDialog extends JDialog implements SwingLogAppender.LogList
         });
         
         // Teste direto no documento
-        try {
-            doc.insertString(doc.getLength(), "=== Visualizador de Logs Iniciado ===\n", null);
-        } catch (BadLocationException ex) {
-            ex.printStackTrace();
-        }
+//        try {
+//            doc.insertString(doc.getLength(), "=== Visualizador de Logs Iniciado ===\n", null);
+//        } catch (BadLocationException ex) {
+//            ex.printStackTrace();
+//        }
     }
 
     private void initComponents() {
@@ -193,7 +194,7 @@ public class LogViewerDialog extends JDialog implements SwingLogAppender.LogList
 
     @Override
     public void onNewLogEntry(SwingLogAppender.LogEntry entry) {
-        System.out.println("LogViewerDialog.onNewLogEntry: " + entry.getFormattedMessage());
+        //System.out.println("LogViewerDialog.onNewLogEntry: " + entry.getFormattedMessage());
         
         if (shouldDisplayLog(entry)) {
             SwingUtilities.invokeLater(() -> appendLog(entry));

@@ -6,6 +6,7 @@
   </appender>
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <file>logs/application.log</file>
+    <append>false</append>
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
@@ -13,8 +14,9 @@
   <appender name="SWING" class="com.dsg.ui.SwingLogAppender">
     <!-- Não precisa de encoder, usaremos o formato personalizado -->
   </appender>
-  
-  <root level="TRACE">
+  !-- Configuração específica para o pacote com.dsg.nexusmod (TRACE ou superior) -->
+  <logger name="com.dsg.nexusmod" level="TRACE"/>
+  <root level="WARN">
     <appender-ref ref="CONSOLE" />
     <appender-ref ref="FILE" />
     <appender-ref ref="SWING" />
