@@ -31,7 +31,7 @@ public class TelaCarteiraPanel extends JPanel implements ModelObserver<List<Cart
     private final DefaultTableModel tableModel;
     private final CarteirasModel carteirasModel;
     
-    JButton btnCriarCarteira = new JButton("Criar Carteira");
+    public JButton btnCriarCarteira = new JButton("Criar Carteira");
 
     public TelaCarteiraPanel(CarteirasModel model) {
         this.carteirasModel = model;

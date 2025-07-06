@@ -20,7 +20,7 @@ public class RendaActivator extends Plugin {
 
 	private static final Logger log = LoggerFactory.getLogger(RendaActivator.class);
 	
-	private static CarteiraController carteiraController;
+	private static CoreResourses resourses;
 	
     public RendaActivator(PluginWrapper wrapper) {
         super(wrapper);
@@ -30,7 +30,7 @@ public class RendaActivator extends Plugin {
     public static class OsgiPluginImpl implements OsgiPlugin {
 		@Override
 		public void load(CoreResourses resourses) {
-			carteiraController = new CarteiraController();
+			RendaActivator.resourses = resourses;
 		}
     }
    
@@ -46,7 +46,7 @@ public class RendaActivator extends Plugin {
 										.text("Carteira")
 										.group("Meu Dinenhiro")
 										.icon(UIManager.getIcon("FileChooser.detailsViewIcon"))
-										.controller(carteiraController)
+										.controller( ()-> new CarteiraController())
 									.build()
 			);
 			

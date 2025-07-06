@@ -1,5 +1,9 @@
 package com.dsg.nexusmod.controller;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import javax.swing.Icon;
 
 public class MenuItem {
@@ -14,7 +18,7 @@ public class MenuItem {
 	private final String group; // Grupo do item de menu
 	private final String text; // Texto do item de menu
 	private final Icon icon; // Ícone do item de menu
-	private final ControllerContent<?> controller; // Controller associado
+	private final Supplier<ControllerContent<?>> controller; // Controller associado
 	private final int order; // Ordem do item de menu
 
 	// Construtor privado (somente acessível pelo Builder)
@@ -44,7 +48,7 @@ public class MenuItem {
 	}
 
 	public ControllerContent<?> getController() {
-		return controller;
+		return controller.get();
 	}
 
 	public int getOrder() {
@@ -64,7 +68,7 @@ public class MenuItem {
 		private String group;
 		private String text;
 		private Icon icon;
-		private ControllerContent<?> controller;
+		private Supplier<ControllerContent<?>> controller;
 		private int order;
 
 		// Método para definir o grupo
@@ -86,7 +90,7 @@ public class MenuItem {
 		}
 
 		// Método para definir o controller
-		public Builder controller(ControllerContent<?> controller) {
+		public Builder controller(Supplier<ControllerContent<?>> controller) {
 			this.controller = controller;
 			return this;
 		}

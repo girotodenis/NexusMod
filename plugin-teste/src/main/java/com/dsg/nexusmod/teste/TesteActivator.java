@@ -59,7 +59,7 @@ public class TesteActivator extends Plugin {
 										.text("Tela de Teste")
 										.group("Teste")
 										.icon(UIManager.getIcon("FileChooser.detailsViewIcon"))
-										.controller(testeController)
+										.controller(()->testeController)
 									.build()
 			);
 			

@@ -1,5 +1,7 @@
 package com.dsg.nexusmod.renda.model;
 
+import java.util.Map;
+
 import com.dsg.nexusmod.model.ModelAbstract;
 import com.dsg.nexusmod.model.ModelObserver;
 import com.dsg.nexusmod.renda.entidade.Carteira;
@@ -7,16 +9,19 @@ import com.dsg.nexusmod.renda.entidade.Carteira;
 public class CarteiraModel extends ModelAbstract<Carteira>{
 
 	private CarteiraCommand command = null;
-	
+	 private Validator<Carteira> validator;
+	 
 	public CarteiraModel(Carteira carteira) {
 		super(carteira);
+		this.validator = new CarteiraValidator();
 	}
 	
-	public CarteiraModel(String nome, String descricao, String valorInvestido, String rentabilidade, 
+	public CarteiraModel(Long id, String nome, String descricao, String valorInvestido, String rentabilidade, 
 			ModelObserver<Carteira> obsevador,CarteiraCommand command) {
-		super(new Carteira(nome, descricao, valorInvestido, rentabilidade));
+		super(new Carteira(id, nome, descricao, valorInvestido, rentabilidade));
 		addObserver(obsevador);
 		this.command = command;
+		this.validator = new CarteiraValidator();
 	}
 	
 	public void setCommand(CarteiraCommand command) {
@@ -30,6 +35,13 @@ public class CarteiraModel extends ModelAbstract<Carteira>{
 	public String getDescricao() {
 		return getModel().getDescricao();
 	}
+	public void setNome(String nome) {
+		getModel().setNome(nome);
+	}
+	
+	public void setDescricao(String descricao) {
+		getModel().setDescricao(descricao);
+	}
 
 	public String getValorInvestido() {
 		return getModel().getValorInvestido();
@@ -38,6 +50,11 @@ public class CarteiraModel extends ModelAbstract<Carteira>{
 	public String getRentabilidade() {
 		return getModel().getRentabilidade();
 	}
+	
+	public Map<String, String> validate() {
+        return validator.validate(getModel());
+    }
+
 
 	public void execute(CarteiraCommand.COMMAND event) {
 		

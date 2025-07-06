@@ -55,7 +55,7 @@ public class ConfiguacaoActivator extends org.pf4j.Plugin {
 	        menu.addMenuItem(MenuItem.builder()
 							.text("Configuração")
 							.icon(icon)
-							.controller(configuracaoController)
+							.controller(()->configuracaoController)
 					.build() );
 			
 		}

@@ -20,7 +20,7 @@ public class Teste {
 				.text("Carteira")
 				.group("Meu Dinenhiro")
 				.icon(UIManager.getIcon("FileChooser.detailsViewIcon"))
-				.controller(new CarteiraController())
+				.controller(()->new CarteiraController())
 			.build());
 			
 			app.getPanel().loadMenu();

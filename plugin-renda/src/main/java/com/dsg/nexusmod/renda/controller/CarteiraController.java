@@ -19,7 +19,12 @@ ModelObserver<Carteira>, CarteiraCommand {
 
 	private TelaCarteiraPanel panel;
 	
-	private CarteirasModel model;
+	CarteirasModel model;
+	ControllerRoot contextApp;
+	
+	public CarteiraController() {
+		System.out.println("CarteiraController");
+	}
 	
 	@Override
 	public TelaCarteiraPanel getPanel() {
@@ -28,19 +33,28 @@ ModelObserver<Carteira>, CarteiraCommand {
 	
 	@Override
 	public void onInit(ControllerRoot contextApp) {
-        
+		this.contextApp=contextApp;
+		
 		model = new CarteirasModel(new ArrayList<CarteiraModel>());
 		this.panel = new TelaCarteiraPanel(model);
+		
+		panel.btnCriarCarteira.addActionListener(e->{
+			contextApp.showContent(new CadastroCarteiraController(this, new CarteiraModel(null, "", "", "", "", this, this)));
+		});
+		
+		List<CarteiraModel> lista = List.of(
+				new CarteiraModel(1l,"Carteira Rico", "Renda variavel e FII", "30.000,00", "21%", this, this),
+				new CarteiraModel(2l, "Carteira Santander", "ETF e Renda fixa", "200.000,00", "11%", this, this)
+				);
+		model.add(lista);
+		
+		model.notifyObservers();
 	}
 	
 	@Override
 	public void onChage(ControllerRoot contextApp) {
-		List<CarteiraModel> lista = List.of(
-                new CarteiraModel("Carteira Rico", "Renda variavel e FII", "30.000,00", "21%", this, this),
-                new CarteiraModel("Carteira Santander", "ETF e Renda fixa", "200.000,00", "11%", this, this)
-            );
-        model.add(lista);
 		
+        model.notifyObservers();
 	}
 
 	@Override
@@ -52,6 +66,7 @@ ModelObserver<Carteira>, CarteiraCommand {
 	@Override
 	public void editar(CarteiraModel model) {
 		System.out.printf("carteira modificada: %s -> %s%n", "editar", model.getNome());
+		contextApp.showContent(new CadastroCarteiraController(this, model));
 	}
 
 	@Override
