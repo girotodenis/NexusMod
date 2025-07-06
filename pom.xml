@@ -13,8 +13,9 @@
 		<module>plugin-configurar</module>
 		<module>plugin-teste</module>
 		<module>plugin-theme-mac-ligth</module>
+		<module>plugin-renda</module>
 		<module>dist</module>
-		<module>plugin-ia-teste</module>
+<!--		<module>plugin-ia-teste</module>-->
 	</modules>
 
 	<properties>

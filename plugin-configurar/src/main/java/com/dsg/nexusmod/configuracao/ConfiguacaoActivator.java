@@ -8,10 +8,7 @@ import com.dsg.nexusmod.configuracao.controller.ConfiguracaoController;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.controller.MenuItem;
 import com.dsg.nexusmod.osgi.CoreResourses;
-import com.dsg.nexusmod.osgi.OSGiFramework;
 import com.dsg.nexusmod.osgi.OsgiPlugin;
-import com.dsg.nexusmod.osgi.Plugin;
-import com.dsg.nexusmod.osgi.Session;
 import com.dsg.nexusmod.ui.ItemMenu;
 import com.dsg.nexusmod.ui.OnInit;
 
