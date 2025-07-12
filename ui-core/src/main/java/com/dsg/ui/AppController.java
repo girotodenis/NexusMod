@@ -19,6 +19,7 @@ import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.nexusmod.ui.TaskNotificationType;
 import com.dsg.ui.componente.CustomSideMenu;
 import com.dsg.ui.componente.NotificacaoEvent;
+import com.dsg.ui.componente.TaskNotificationManager;
 
 public class AppController implements ControllerRoot, ControllerContent<JPanelApp> {
 	
@@ -27,14 +28,23 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	private JPanelApp panel;
 	private JFrame frame;
 	private Set<String> oninit = new java.util.HashSet<>();
+	private TaskNotificationManager notificationManager;
+	
+	private final AbstractEventListener<Progress> eventProgressBar = (event) -> {
+		panel.updateProgress(event.getValue(), event.getMessage());
+	};
+	
+	private final AbstractEventListener<NotificacaoEvent> eventTask = (data)->{
+		notificationManager.addNotification(data.getMensagem(), data.getTipo());
+	};
 	
 	public AppController(JPanelApp panel,JFrame frame) {
 		this.panel = panel;
 		this.frame = frame;
+		this.notificationManager = new TaskNotificationManager(frame.getLayeredPane());
 		
-		registerEvent(Progress.class, (event) -> {
-				getPanel().updateProgress(event.getValue(), event.getMessage());
-		});
+		registerEvent(Progress.class, eventProgressBar);
+		registerEvent(NotificacaoEvent.class, eventTask);
 	}
 	
 	private void show(CustomSideMenu.MenuItem itemMenu, ControllerContent<? extends JPanel> controller) {

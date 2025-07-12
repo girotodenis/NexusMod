@@ -1,5 +1,6 @@
 package com.dsg.ui;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +15,7 @@ public class ContextApp {
 
 	private static final Logger log = LoggerFactory.getLogger(ContextApp.class);
 	
-	private Map<String, List<AbstractEventListener<?>>> eventListeners = new HashMap<String, List<AbstractEventListener<?>>>();
+	private Map<String, List<WeakReference<AbstractEventListener<?>>>> eventListeners = new HashMap<>();
 
 	private static ContextApp instance = new ContextApp();
 
@@ -36,16 +37,38 @@ public class ContextApp {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+//	public <T> void fireEvent(String event, T date) {
+//		log.trace("####################################");
+//		log.trace("fire: {} {}", event, eventListeners.containsKey(event));
+//		if (eventListeners.get(event) != null) {
+//			for (AbstractEventListener eventListener : eventListeners.get(event)) {
+//				log.trace("listener : {}", eventListener.getClass().getName());
+//				eventListener.handleEvent(date);
+//				log.trace("####################################");
+//			}
+//		}
+//	}
 	public <T> void fireEvent(String event, T date) {
-		log.trace("####################################");
-		log.trace("fire: {} {}", event, eventListeners.containsKey(event));
-		if (eventListeners.get(event) != null) {
-			for (AbstractEventListener eventListener : eventListeners.get(event)) {
-				log.trace("listener : {}", eventListener.getClass().getName());
-				eventListener.handleEvent(date);
-				log.trace("####################################");
-			}
-		}
+	    log.trace("####################################");
+	    log.trace("fire: {} {}", event, eventListeners.containsKey(event));
+	    List<WeakReference<AbstractEventListener<?>>> listeners = eventListeners.get(event);
+	    if (listeners != null) {
+	        List<WeakReference<AbstractEventListener<?>>> toRemove = new ArrayList<>();
+	        for (WeakReference<AbstractEventListener<?>> weakRef : listeners) {
+	            AbstractEventListener eventListener = weakRef.get();
+	            if (eventListener != null) {
+	                log.info("listener {}: {} {}", event ,date, eventListener.getClass().getName());
+	                eventListener.handleEvent(date);
+	            } else {
+	                // Listener foi coletado pelo GC, remova a referência
+	            	log.warn("Listener foi coletado pelo GC, remova a referência: {}", event);
+	                toRemove.add(weakRef);
+	            }
+	        }
+	        // Remove referências "mortas"
+	        listeners.removeAll(toRemove);
+	        log.trace("####################################");
+	    }
 	}
 
 	/**
@@ -60,12 +83,15 @@ public class ContextApp {
 	}
 	
 	public <T> void registerEvent(String event, AbstractEventListener<T> eventListener) {
-		List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
+		//List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
+		List<WeakReference<AbstractEventListener<?>>> listenersForEvent = eventListeners.get(event);
+	    
 		if (listenersForEvent == null) {
-			listenersForEvent = new ArrayList<AbstractEventListener<?>>();
+			listenersForEvent = new ArrayList<>();
 		}
-		listenersForEvent.clear();
-		listenersForEvent.add(eventListener);
+//		listenersForEvent.clear();
+//		listenersForEvent.add(eventListener);
+		listenersForEvent.add(new WeakReference<>(eventListener));
 		
 		eventListeners.put(event, listenersForEvent);
 		log.trace(" addEvent: {} {} ", event, listenersForEvent.size());
@@ -73,7 +99,7 @@ public class ContextApp {
 
 	public void removeEvent(String event) {
 		if(eventListeners.containsKey(event)) {
-			List<AbstractEventListener<?>> listenersForEvent = eventListeners.get(event);
+			List<WeakReference<AbstractEventListener<?>>> listenersForEvent = eventListeners.get(event);
 			listenersForEvent.clear();
 			eventListeners.remove(event);
 			log.trace(" removeEvent: {}", event);

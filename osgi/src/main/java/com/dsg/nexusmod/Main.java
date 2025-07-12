@@ -7,6 +7,7 @@ import javax.swing.UIManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.nexusmod.controller.Controller;
 import com.dsg.nexusmod.database.DatabaseManager;
 import com.dsg.nexusmod.database.DatabaseSession;
@@ -31,6 +32,12 @@ public class Main {
 	private static  String PLUGIN_DIRECTORY = "./plugins"; // Diretório padrão para plugins
 	private static  String DB_DIRECTORY = "./db"; // Diretório padrão banco
 	
+	static AppController app;
+	
+	static AbstractEventListener<Object> eventLoadMenu = (valor)->{
+		app.getPanel().loadMenu();
+	};
+	
 	public static void main(String[] args) {
 		OsgiCore osgiCore = new OsgiCore(new Pf4jOSGiAdapter());
 
@@ -39,9 +46,9 @@ public class Main {
 		
 		creatSessionDB();
 		
-		var app = AppUtilities.builder()
+		app = AppUtilities.builder()
 				//.lookAndFeel(FlatDarculaLaf.class)
-				.size(1024, 768).title("Teste OSGi").build()
+				.size(1124, 768).title("Teste OSGi").build()
 				.getMain();
 
 		registerPluginOrder(osgiCore, app);
@@ -102,9 +109,8 @@ public class Main {
 
 	private static void registerPluginOrder(OsgiCore osgiCore, AppController app) {
 		
-		app.registerEvent("app.loadMenu", (valor)->{
-			app.getPanel().loadMenu();
-		});
+		
+		app.registerEvent("app.loadMenu", eventLoadMenu);
 		
 		osgiCore.registerPlugin(LoadPlugin.class, (item, plugin) ->  {
 			Plugin pluginDTO = (Plugin) plugin;

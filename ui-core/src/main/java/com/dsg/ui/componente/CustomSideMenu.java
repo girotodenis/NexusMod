@@ -19,16 +19,20 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.ui.ContextApp;
 import com.dsg.ui.util.UIUtils;
 
 // Classe para o menu lateral
 public class CustomSideMenu extends JPanel {
-    private static final long serialVersionUID = 670027307508379334L;
+    private static final int WIDTH_MENU_EXPANDED = 250;
+    private static final int WIDTH_MENU_COLLAPSED = 65;
+
+	private static final long serialVersionUID = 670027307508379334L;
     
 	private boolean expanded = true; // Indica se o menu está expandido
-    private final int expandedWidth = 300; // Largura do menu expandido
-    private final int collapsedWidth = 65; // Largura do menu encolhido
+    private final int expandedWidth = WIDTH_MENU_EXPANDED; // Largura do menu expandido
+    private final int collapsedWidth = WIDTH_MENU_COLLAPSED; // Largura do menu encolhido
     private final List<MenuItem> menuItems = new ArrayList<>();
 
 //    private final ContextMenu app; // Contêiner para os itens do menu
@@ -37,6 +41,10 @@ public class CustomSideMenu extends JPanel {
     private final Color menuContainerColor; 
     private final Color itemMenuColor; 
     private final Color toggleMenuColor; 
+    
+    private final AbstractEventListener<Object> eventToggleMenu = (date)-> {
+    	this.toggleMenu();
+    };
 
     public CustomSideMenu() {
     	
@@ -60,7 +68,7 @@ public class CustomSideMenu extends JPanel {
         toggleButton.setHorizontalTextPosition(SwingConstants.LEFT); // Texto à esquerda
         toggleButton.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        toggleButton.addActionListener(e -> toggleMenu());
+        toggleButton.addActionListener(e -> ContextApp.getInstance().fireEvent("menu.toggle",null));
 
         // Adiciona o botão no topo
         add(toggleButton, BorderLayout.NORTH);
@@ -77,6 +85,8 @@ public class CustomSideMenu extends JPanel {
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         add(scrollPane, BorderLayout.CENTER);
+        
+        ContextApp.getInstance().registerEvent("menu.toggle", eventToggleMenu);
     }
     
   
@@ -164,14 +174,25 @@ public class CustomSideMenu extends JPanel {
 		
     	private static final long serialVersionUID = 5652164465879606302L;
 		
-    	private final ItemMenu item;
-    	private final LabelWithBadge labelIcon;
+    	private  ItemMenu item;
+    	private LabelWithBadge labelIcon;
 		private final JLabel label;
         private boolean isExpanded = false;
         private Color padrao = null;
         protected MenuItem root;
         private List<CustomSideMenu.MenuItem> filhos = new ArrayList<CustomSideMenu.MenuItem>();
 
+        private final AbstractEventListener<Object> eventBadgeNumber = (date)-> {
+        	this.setBadgeNumber((int)date) ;
+        	labelIcon.setVisible(true);
+        };
+        
+        private final AbstractEventListener<Object> eventVisible = (date)-> {
+        	this.setEnabled((boolean)date); 
+        	this.setVisible((boolean)date) ;
+        	this.item.setEnabled((boolean)date);
+        };
+        
         public MenuItem(ItemMenu item) {
         	this.item = item;
         	
@@ -198,16 +219,9 @@ public class CustomSideMenu extends JPanel {
             add(labelIcon, BorderLayout.WEST);
             add(label, BorderLayout.CENTER);
             
-            ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", (date)-> {
-            	this.setBadgeNumber((int)date) ;
-            	labelIcon.setVisible(true);
-            });
             
-            ContextApp.getInstance().registerEvent(this.item.getId()+".visible", (date)-> {
-            	this.setEnabled((boolean)date); 
-            	this.setVisible((boolean)date) ;
-            	this.item.setEnabled((boolean)date);
-            });
+			ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", eventBadgeNumber);
+			ContextApp.getInstance().registerEvent(this.item.getId()+".visible", eventVisible);
 
             // Configura ação ao clicar no item principal
             if (this.item.getAction() != null) {

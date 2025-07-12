@@ -15,6 +15,7 @@ import com.dsg.nexusmod.configuracao.model.ListaPluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginModel;
 import com.dsg.nexusmod.configuracao.model.PluginlObserver;
 import com.dsg.nexusmod.configuracao.ui.ConfiguracaoView;
+import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.nexusmod.controller.ControllerContent;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.osgi.OSGiFramework;
@@ -34,6 +35,11 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 	
 	ListaPluginModel listaPlugin = new ListaPluginModel(new ArrayList<>());
 	
+	final AbstractEventListener<Object> enventNotificacao = (data)->{
+		carregarListaPlugins();
+		atualizarBadgeNumber(contextApp, data);
+	};
+	
 	@Override
 	public ConfiguracaoView getPanel() {
 		return panel;
@@ -52,10 +58,8 @@ public class ConfiguracaoController implements ControllerContent<ConfiguracaoVie
 			return ;
 		}
 		
-		contextApp.registerEvent("ConfiguracaoController.notificacao", (data)->{
-			carregarListaPlugins();
-			atualizarBadgeNumber(contextApp, data);
-		});
+		
+		contextApp.registerEvent("ConfiguracaoController.notificacao", enventNotificacao);
 	}
 	
 	@Override
