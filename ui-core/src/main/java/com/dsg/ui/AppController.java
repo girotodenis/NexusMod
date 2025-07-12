@@ -19,6 +19,7 @@ import com.dsg.nexusmod.ui.OnInit;
 import com.dsg.nexusmod.ui.TaskNotificationType;
 import com.dsg.ui.componente.CustomSideMenu;
 import com.dsg.ui.componente.NotificacaoEvent;
+import com.dsg.ui.componente.TaskNotificationManager;
 
 public class AppController implements ControllerRoot, ControllerContent<JPanelApp> {
 	
@@ -28,13 +29,25 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	private JFrame frame;
 	private Set<String> oninit = new java.util.HashSet<>();
 	
+	private final AbstractEventListener<Progress> updateProgress = (event) -> {
+		AppController.this.getPanel().updateProgress(event.getValue(), event.getMessage());
+	};
+	
+	private final AbstractEventListener<NotificacaoEvent> updateNotification;
+	
 	public AppController(JPanelApp panel,JFrame frame) {
 		this.panel = panel;
 		this.frame = frame;
 		
-		registerEvent(Progress.class, (event) -> {
-				getPanel().updateProgress(event.getValue(), event.getMessage());
-		});
+		TaskNotificationManager notificationManager = new TaskNotificationManager(frame.getLayeredPane());
+        
+		updateNotification = (data) -> {
+			notificationManager.addNotification(data.getMensagem(), data.getTipo());
+		};
+		
+		ContextApp.getInstance().registerEvent(NotificacaoEvent.class, updateNotification);
+		
+		registerEvent(Progress.class, updateProgress);
 	}
 	
 	private void show(CustomSideMenu.MenuItem itemMenu, ControllerContent<? extends JPanel> controller) {
@@ -58,6 +71,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		}
 		
 		getPanel().showContent( controller.getPanel() );
+		System.gc();
 	}
 	
 	
@@ -118,11 +132,11 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 		getPanel().addMenuItem(menuItem.getGroup(), menuItem.getText(), menuItem.getIcon(), (item) -> show(item, menuItem.getController()));
 	}
 	
-	public void addController(Controller Controller) {
+	public void addController(Controller controller) {
 		
-		if(Controller instanceof OnInit) {
-			log.trace("onInit: {}",Controller.getClass().getSimpleName());
-			((OnInit)Controller).onInit(this);
+		if(controller instanceof OnInit) {
+			log.trace("onInit: {}",controller.getClass().getSimpleName());
+			((OnInit)controller).onInit(this);
 		}
 	}
 	
@@ -177,6 +191,7 @@ public class AppController implements ControllerRoot, ControllerContent<JPanelAp
 	public void updateAll(Class lookAndFeel) {
 		log.trace("{} updateAll",this.getClass().getSimpleName());
 		getPanel().updateAll(lookAndFeel);
+		System.gc();
 	}
 
 }

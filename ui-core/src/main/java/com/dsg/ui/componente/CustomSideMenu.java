@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.ui.ContextApp;
 import com.dsg.ui.util.UIUtils;
 
@@ -172,6 +173,9 @@ public class CustomSideMenu extends JPanel {
         protected MenuItem root;
         private List<CustomSideMenu.MenuItem> filhos = new ArrayList<CustomSideMenu.MenuItem>();
 
+        private final AbstractEventListener<Integer> updateBadgeNumber;
+        private final AbstractEventListener<Boolean> updateVisible;
+        
         public MenuItem(ItemMenu item) {
         	this.item = item;
         	
@@ -198,16 +202,19 @@ public class CustomSideMenu extends JPanel {
             add(labelIcon, BorderLayout.WEST);
             add(label, BorderLayout.CENTER);
             
-            ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", (date)-> {
-            	this.setBadgeNumber((int)date) ;
+            updateBadgeNumber = (date)-> {
+            	this.setBadgeNumber(date) ;
             	labelIcon.setVisible(true);
-            });
+            };
+            ContextApp.getInstance().registerEvent(this.item.getId()+".badgeNumber", updateBadgeNumber);
             
-            ContextApp.getInstance().registerEvent(this.item.getId()+".visible", (date)-> {
-            	this.setEnabled((boolean)date); 
-            	this.setVisible((boolean)date) ;
-            	this.item.setEnabled((boolean)date);
-            });
+            updateVisible = (date)-> {
+            	this.setEnabled(date); 
+            	this.setVisible(date) ;
+            	this.item.setEnabled(date);
+            };
+            
+            ContextApp.getInstance().registerEvent(this.item.getId()+".visible", updateVisible);
 
             // Configura ação ao clicar no item principal
             if (this.item.getAction() != null) {

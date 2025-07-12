@@ -45,11 +45,7 @@ public class AppUtilities {
             int x = bounds.x + (bounds.width - frame.getWidth()) / 2;
             int y = bounds.y + (bounds.height - frame.getHeight()) / 2;
             frame.setLocation(x, y);
-            TaskNotificationManager notificationManager = new TaskNotificationManager(frame.getLayeredPane());
             
-            ContextApp.getInstance().registerEvent(NotificacaoEvent.class, (data)->{
-            	notificationManager.addNotification(data.getMensagem(), data.getTipo());
-            });
             
             frame.setVisible(true);
         });

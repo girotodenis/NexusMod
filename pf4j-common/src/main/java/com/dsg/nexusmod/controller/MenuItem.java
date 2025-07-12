@@ -1,7 +1,5 @@
 package com.dsg.nexusmod.controller;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.swing.Icon;

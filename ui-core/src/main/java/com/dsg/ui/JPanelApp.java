@@ -329,6 +329,7 @@ public class JPanelApp extends JPanel {
     public void showHeader(JPanel panel) {
     	// Limpar o painel de conteúdo existente
     	headerPanel.removeAll();
+    	
     	headerPanel.setPreferredSize(new Dimension(800, 50));
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
     	
@@ -345,6 +346,11 @@ public class JPanelApp extends JPanel {
     public void showContent(JPanel panel) {
     	// Limpar o painel de conteúdo existente
         contentPanel.removeAll();
+        
+        contentPanel = createContentPanel(); // Inicializa o painel de conteúdo
+		add(contentPanel, BorderLayout.CENTER);
+		
+        
         contentPanel.setLayout(new BorderLayout());
         JScrollPane scrollPane = new JScrollPane(panel);
         scrollPane.setBorder(null);

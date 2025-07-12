@@ -1,5 +1,6 @@
 package com.dsg.nexusmod.renda.controller;
 
+import com.dsg.nexusmod.controller.AbstractEventListener;
 import com.dsg.nexusmod.controller.ControllerContent;
 import com.dsg.nexusmod.controller.ControllerRoot;
 import com.dsg.nexusmod.renda.model.CarteiraModel;
@@ -14,6 +15,11 @@ public class CadastroCarteiraController implements ControllerContent<CadastroCar
 	CarteiraController pai;
 	CarteiraModel model;
 	
+	final AbstractEventListener<String> eventListenerMeuPau =  (data)->{
+//		log.error("meu pau:"+data);
+		System.out.println("meu event cadastro:"+data+" - "+pai.valor);
+	};
+	
 	@Override
 	public CadastroCarteiraPanel getPanel() {
 		return panel;
@@ -27,11 +33,6 @@ public class CadastroCarteiraController implements ControllerContent<CadastroCar
 
 	@Override
 	public void onInit(ControllerRoot contextApp) {	
-	}
-
-	@Override
-	public void onChage(ControllerRoot contextApp) {
-		
 		this.panel = new CadastroCarteiraPanel(model);
 		
 		this.panel.botaoSalvar.addActionListener(e ->{
@@ -52,8 +53,7 @@ public class CadastroCarteiraController implements ControllerContent<CadastroCar
 				
 				contextApp.showContent(pai);
 			});
-		} 
-		);
+		});
 		
 		this.panel.botaoLimpar.addActionListener(e -> {
 			panel.limparCampos();
@@ -61,6 +61,13 @@ public class CadastroCarteiraController implements ControllerContent<CadastroCar
 		});
 		
 		this.model.notifyObservers();
+		
+		contextApp.registerEvent("meuEVENT", eventListenerMeuPau);
+	}
+
+	@Override
+	public void onChage(ControllerRoot contextApp) {
+		
 	}
 
 	

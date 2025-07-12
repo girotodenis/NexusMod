@@ -75,6 +75,8 @@ public class TesteController implements ControllerContent<TesteView>, OnInit, On
 		panel.button.addActionListener(e -> {
 			log.info("{} click",((JButton)e.getSource()).getText());
 			contextApp.menuEvent("Tela_de_Teste", "badgeNumber", ++count);
+			
+			contextApp.fireEvent("meuEVENT", "teste");
 		});
 		
 		panel.button2.addActionListener(e -> {
